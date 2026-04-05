@@ -7,116 +7,175 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #080808; color: #eee; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
-        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
-        .glass-card:hover { background: rgba(255, 255, 255, 0.05); border-color: #8b5cf6; }
-        .hidden-works { display: none; }
-        .active-client { display: block !important; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Základný reset a smooth feeling */
+        * { cursor: none !important; } /* Skryje reálnu myš */
+        body { 
+            background-color: #050505; 
+            color: #eee; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            scroll-behavior: smooth; 
+            overflow-x: hidden;
+        }
+
+        /* Custom Mouse Cursor s Glow efektom */
+        #custom-cursor {
+            width: 20px;
+            height: 20px;
+            background: #1e3a8a; /* Tmavomodrá */
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px 10px rgba(30, 58, 138, 0.6);
+            transition: transform 0.1s ease-out;
+            mix-blend-mode: screen;
+        }
+
+        /* Smooth animácie pre karty */
+        .client-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .client-card:hover {
+            transform: scale(1.05);
+            border-color: #1e40af;
+            background: rgba(30, 58, 138, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .active-work { display: block !important; animation: slideUp 0.6s ease forwards; }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .glass-nav { backdrop-filter: blur(20px); background: rgba(5, 5, 5, 0.8); }
     </style>
 </head>
 <body class="antialiased">
 
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center backdrop-blur-md border-b border-white/5">
-        <div class="text-xl font-extrabold tracking-tighter uppercase">GULSA<span class="text-violet-500">.</span>STUDIO</div>
-        <div class="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest text-gray-400">
+    <div id="custom-cursor"></div>
+
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass-nav border-b border-white/5">
+        <div class="text-xl font-extrabold tracking-tighter uppercase">GULSA<span class="text-blue-600">.</span>STUDIO</div>
+        <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">
             <a href="#services" class="hover:text-white transition">Služby</a>
             <a href="#clients" class="hover:text-white transition">Klienti</a>
-            <a href="#reviews" class="hover:text-white transition">Recenzie</a>
-            <a href="#contact" class="text-violet-500 border border-violet-500 px-4 py-1 rounded-full hover:bg-violet-500 hover:text-white transition">Let's Talk</a>
+            <a href="#contact" class="text-blue-500 border border-blue-500 px-5 py-2 rounded-full hover:bg-blue-600 hover:text-white transition">Kontakt</a>
         </div>
     </nav>
 
-    <header class="pt-40 pb-20 px-6 text-center">
-        <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter uppercase leading-none">
-            Digital <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-fuchsia-500 text-italic font-light">Architect</span>
+    <header class="h-screen flex flex-col justify-center items-center text-center px-6">
+        <h1 class="text-6xl md:text-9xl font-black mb-6 tracking-tighter uppercase leading-none">
+            Creative <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Director</span>
         </h1>
-        <p class="text-gray-500 text-lg max-w-2xl mx-auto mb-12">
-            Strihám videá, ktoré virálne rastú. Navrhujem designy, ktoré predávajú. Staviam portfóliá, ktoré budujú tvoj brand.
+        <p class="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+            Video Edit • Brand Design • Web Architect
         </p>
+        <a href="#clients" class="group relative px-12 py-5 bg-white text-black font-bold rounded-full overflow-hidden transition-all">
+            <span class="relative z-10">POZRIEŤ PRÁCU</span>
+            <div class="absolute inset-0 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+        </a>
     </header>
 
-    <section id="services" class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-24">
-        <div class="glass-card p-8 rounded-3xl">
-            <div class="text-violet-500 mb-4 font-bold text-sm">01. VIDEO EDIT</div>
-            <h3 class="text-2xl font-bold mb-2 text-white">Post-Produkcia</h3>
-            <p class="text-gray-500 text-sm italic">YT, Shorts, Ads</p>
-        </div>
-        <div class="glass-card p-8 rounded-3xl">
-            <div class="text-fuchsia-500 mb-4 font-bold text-sm">02. DESIGN</div>
-            <h3 class="text-2xl font-bold mb-2 text-white">Visual Identity</h3>
-            <p class="text-gray-500 text-sm italic">Thumbnails, Branding</p>
-        </div>
-        <div class="glass-card p-8 rounded-3xl">
-            <div class="text-blue-500 mb-4 font-bold text-sm">03. WEB/PORTFOLIO</div>
-            <h3 class="text-2xl font-bold mb-2 text-white">AI-Powered Webs</h3>
-            <p class="text-gray-500 text-sm italic">Fast, Clean, Professional</p>
-        </div>
-    </section>
-
-    <section id="clients" class="max-w-6xl mx-auto px-6 mb-32">
-        <h2 class="text-3xl font-black mb-12 uppercase border-l-4 border-violet-500 pl-6">Pre koho som tvoril</h2>
+    <section id="clients" class="max-w-6xl mx-auto px-6 py-32">
+        <h2 class="text-4xl font-black mb-16 uppercase tracking-tight text-center">Vybraní Klienti</h2>
         
-        <div class="flex flex-wrap gap-4 mb-10">
-            <button onclick="showClient('client1')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 1</button>
-            <button onclick="showClient('client2')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 2</button>
-            <button onclick="showClient('client3')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 3</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <button onclick="showWork('adameantius')" class="client-card p-10 rounded-[2rem] text-left">
+                <div class="text-blue-500 font-bold mb-2">1,7k subs</div>
+                <h3 class="text-3xl font-black">Adameantius</h3>
+                <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Klikni pre detail</p>
+            </button>
+
+            <button onclick="showWork('drwoolf')" class="client-card p-10 rounded-[2rem] text-left">
+                <div class="text-blue-500 font-bold mb-2">1,4k subs</div>
+                <h3 class="text-3xl font-black text-white">Drwoolf</h3>
+                <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Klikni pre detail</p>
+            </button>
+
+            <button onclick="showWork('ajhttv')" class="client-card p-10 rounded-[2rem] text-left">
+                <div class="text-blue-500 font-bold mb-2">6k subs</div>
+                <h3 class="text-3xl font-black">ajhttv</h3>
+                <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Klikni pre detail</p>
+            </button>
+
+            <button onclick="showWork('pandak')" class="client-card p-10 rounded-[2rem] text-left">
+                <div class="text-blue-500 font-bold mb-2">6k subs</div>
+                <h3 class="text-3xl font-black text-white text-opacity-100">Pandak</h3>
+                <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Klikni pre detail</p>
+            </button>
+
+            <button onclick="showWork('gulsa')" class="client-card p-10 rounded-[2rem] text-left border-blue-500/30 bg-blue-500/5">
+                <div class="text-blue-500 font-bold mb-2">3k subs</div>
+                <h3 class="text-3xl font-black">Gulša</h3>
+                <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Moje kanály</p>
+            </button>
         </div>
 
-        <div id="client-works" class="bg-zinc-900/50 p-8 rounded-3xl min-h-[300px]">
-            <div id="default-msg" class="text-gray-600 italic">Klikni na klienta a pozri si realizáciu...</div>
+        <div id="work-display" class="bg-zinc-900/30 border border-white/5 rounded-[3rem] p-12 text-center min-h-[300px] flex items-center justify-center transition-all">
+            <div id="placeholder-text" class="text-gray-600 text-xl italic uppercase tracking-widest">Vyber klienta vyššie...</div>
             
-            <div id="client1" class="hidden-works">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="aspect-video bg-zinc-800 rounded-xl overflow-hidden">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_VIDEA"></iframe>
-                    </div>
-                    <div>
-                        <h4 class="text-2xl font-bold mb-2">Kompletný rebranding kanálu</h4>
-                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">Pre tohto klienta som robil strih videí aj grafické podklady. Výsledkom bol 30% nárast sledovanosti.</p>
-                        <div class="flex gap-2">
-                            <span class="text-[10px] bg-white/10 px-2 py-1 rounded">Edit</span>
-                            <span class="text-[10px] bg-white/10 px-2 py-1 rounded">Design</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div id="client2" class="hidden-works">
-                <p>Tu vložíš práce pre druhého klienta (Obrázky/Videá)...</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews" class="max-w-4xl mx-auto px-6 mb-32 text-center">
-        <h2 class="text-2xl font-black mb-12 uppercase tracking-widest text-violet-400">Feedback</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-            <div class="glass-card p-8 rounded-3xl italic">
-                <p class="text-gray-300 mb-4">"GULSA je beast. Premenil moje portfólio na niečo, čo konečne vyzerá profi. Odporúčam každému."</p>
-                <span class="text-white font-bold text-sm">— YouTuber Meno</span>
-            </div>
-            <div class="glass-card p-8 rounded-3xl italic">
-                <p class="text-gray-300 mb-4">"Skvelý prístup a rýchlosť. Videá majú dynamiku a design je presne to, čo som hľadal."</p>
-                <span class="text-white font-bold text-sm">— Streamer X</span>
+            <div id="work-content" class="hidden w-full">
+                <h4 id="client-name" class="text-4xl font-black mb-4 uppercase tracking-tighter"></h4>
+                <div class="h-[2px] w-20 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-gray-400 text-lg">Pomáhal som s kompletným designom kanálu a vizuálnou identitou.</p>
+                <div class="mt-10 opacity-50 text-sm italic underline">Prípadová štúdia / Videá sa pripravujú...</div>
             </div>
         </div>
     </section>
 
     <footer id="contact" class="py-20 border-t border-white/5 text-center px-6">
-        <div class="mb-8">
-            <p class="text-gray-500 uppercase text-xs tracking-widest mb-2">Ready to scale?</p>
-            <a href="mailto:gulsa.business@gmail.com" class="text-4xl md:text-6xl font-black hover:text-violet-500 transition">Let's Work Together</a>
-        </div>
-        <div class="text-gray-600 text-xs mt-20">© 2026 GULSA. Vyrobené pomocou AI a čistého kódu.</div>
+        <a href="mailto:gulsa.business@gmail.com" class="text-3xl md:text-5xl font-black hover:text-blue-500 transition duration-500">GULSA.BUSINESS@GMAIL.COM</a>
+        <div class="mt-10 text-gray-700 uppercase tracking-[0.5em] text-[10px]">© 2026 GULSA DESIGN • ALL RIGHTS RESERVED</div>
     </footer>
 
     <script>
-        function showClient(id) {
-            // Skry všetko
-            document.querySelectorAll('.hidden-works').forEach(el => el.classList.remove('active-client'));
-            document.getElementById('default-msg').style.display = 'none';
-            // Ukáž vybrané
-            document.getElementById(id).classList.add('active-client');
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursor = document.getElementById('custom-cursor');
+        
+        document.addEventListener('mousemove', e => {
+            // Myš nasleduje kurzor so smooth oneskorením cez CSS transition
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Efekt pri kliknutí
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+
+        // Zväčšenie kurzora na buttonoch
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+            el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+        });
+
+        // --- CLIENT WORK DISPLAY LOGIC ---
+        function showWork(clientKey) {
+            const display = document.getElementById('work-display');
+            const placeholder = document.getElementById('placeholder-text');
+            const content = document.getElementById('work-content');
+            const nameField = document.getElementById('client-name');
+
+            placeholder.style.display = 'none';
+            content.classList.remove('active-work');
+            
+            // Force reflow pre animáciu
+            void content.offsetWidth; 
+
+            nameField.innerText = clientKey;
+            content.classList.add('active-work');
+            
+            // Scroll k výsledku pre mobilných používateľov
+            if(window.innerWidth < 768) {
+                display.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     </script>
 </body>
