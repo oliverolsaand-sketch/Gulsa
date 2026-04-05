@@ -3,167 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GULŠA | Creative Studio</title>
+    <title>GULŠA | Creative Editor & Designer</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        
+        /* ZÁKLADNÉ NASTAVENIA */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; /* Úplné skrytie systémovej myši */
+        }
+
         body {
             background-color: #020202;
             color: #ffffff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
 
-        /* 1. DOKONALE PLYNULÉ POZADIE (FADE) */
-        #ambient-layer {
-            position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, rgba(2, 2, 2, 1) 100%);
-            animation: ambientFade 15s infinite alternate;
+        /* 1. EXTRÉMNE PLYNULÁ ZMENA FARIEB POZADIA (FADE) */
+        .ambient-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, rgba(2, 2, 2, 1) 100%);
+            animation: colorShift 12s infinite alternate ease-in-out;
         }
 
-        @keyframes ambientFade {
-            0% { background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, rgba(2, 2, 2, 1) 100%); }
-            50% { background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.2) 0%, rgba(2, 2, 2, 1) 100%); }
-            100% { background: radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.15) 0%, rgba(2, 2, 2, 1) 100%); }
+        @keyframes colorShift {
+            0% { background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, rgba(2, 2, 2, 1) 100%); }
+            50% { background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.15) 0%, rgba(2, 2, 2, 1) 100%); }
+            100% { background: radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.12) 0%, rgba(2, 2, 2, 1) 100%); }
         }
 
-        /* 2. PLYNULÝ KURZOR (Zväčšený o 10%) */
-        #cursor-main {
-            position: fixed; top: 0; left: 0; 
-            width: 25px; height: 25px; /* Zväčšené */
-            background-color: #2563eb; z-index: 10000; pointer-events: none;
+        /* 2. VYLEPŠENÝ KURZOR (+10% VEĽKOSŤ) */
+        #cursor-pointer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 26px; /* Zväčšené o 10% */
+            height: 26px; /* Zväčšené o 10% */
+            background-color: #2563eb;
+            z-index: 10000;
+            pointer-events: none;
             clip-path: polygon(0% 0%, 0% 100%, 25% 75%, 45% 100%, 55% 90%, 35% 65%, 70% 65%);
             will-change: transform;
+            filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.5));
         }
 
-        #cursor-glow {
-            position: fixed; top: 0; left: 0; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(0,0,0,0) 70%);
-            z-index: 9999; pointer-events: none; transform: translate(-50%, -50%);
+        #cursor-glow-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 9999;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
             will-change: transform;
         }
 
-        /* 3. ANIMÁCIA TITULKU (GLOW PRÍCHOD) */
-        .hero-title {
+        /* 3. INTRO ANIMÁCIA NÁPISU GULŠA */
+        .hero-reveal {
             opacity: 0;
-            filter: blur(10px);
-            transform: scale(0.9);
-            animation: heroReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            filter: blur(20px);
+            transform: scale(0.8) translateY(20px);
+            animation: mainReveal 1.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        @keyframes heroReveal {
+        @keyframes mainReveal {
             to {
                 opacity: 1;
                 filter: blur(0);
-                transform: scale(1);
-                text-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+                transform: scale(1) translateY(0);
+                text-shadow: 0 0 40px rgba(37, 99, 235, 0.6);
             }
         }
 
-        /* KARTY */
-        .client-card {
-            background: rgba(255, 255, 255, 0.02);
+        /* KARTY A DIZAJN */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .client-card:hover {
-            transform: translateY(-8px);
-            background: rgba(37, 99, 235, 0.08);
+        .glass-card:hover {
+            background: rgba(37, 99, 235, 0.05);
+            border-color: rgba(37, 99, 235, 0.3);
+            transform: translateY(-10px);
+        }
+
+        .subs-indicator {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #3b82f6;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* GALÉRIA OBRÁZKOV */
+        .portfolio-image {
+            width: 100%;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .portfolio-image:hover {
+            transform: scale(1.04);
             border-color: #2563eb;
         }
 
-        .subs-text {
-            font-weight: 800;
-            color: #3b82f6;
-            font-size: 1.1rem;
-            letter-spacing: 0.1em;
+        /* NAVIGÁCIA */
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(2, 2, 2, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
     </style>
 </head>
 <body>
 
-    <div id="ambient-layer"></div>
-    <div id="cursor-glow"></div>
-    <div id="cursor-main"></div>
+    <div class="ambient-background"></div>
+    <div id="cursor-glow-layer"></div>
+    <div id="cursor-pointer"></div>
 
-    <nav class="fixed w-full z-50 p-8 flex justify-between items-center">
-        <div class="text-2xl font-black tracking-tighter uppercase">GULSA<span class="text-blue-600">.</span></div>
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center nav-blur">
+        <div class="text-2xl font-black tracking-tighter uppercase">Gulša<span class="text-blue-600">.</span></div>
+        <div class="hidden md:flex space-x-12 text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-500">
+            <a href="#portfolio" class="hover:text-white transition-all">Práca</a>
+            <a href="mailto:studiogulsatvedit@gmail.com" class="hover:text-white transition-all">Kontakt</a>
+        </div>
     </nav>
 
-    <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="hero-title text-8xl md:text-[12rem] font-black tracking-tighter uppercase leading-none select-none">
+    <header class="h-screen flex flex-col justify-center items-center text-center px-4">
+        <h1 class="hero-reveal text-[15vw] md:text-[12rem] font-black tracking-tighter uppercase leading-none select-none text-white">
             GUL<span class="text-blue-600">ŠA</span>
         </h1>
-        <p class="hero-title text-zinc-500 text-sm md:text-lg uppercase tracking-[0.8em] mt-6 font-light" style="animation-delay: 0.3s;">
-            Creative Editor & Designer
+        <p class="hero-reveal text-zinc-500 text-sm md:text-xl uppercase tracking-[1em] mt-8 font-light" style="animation-delay: 0.4s;">
+            Visionary Editor & Designer
         </p>
     </header>
 
-    <section id="clients" class="max-w-7xl mx-auto px-6 py-40">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
-            <button onclick="loadWork('Gulša')" class="client-card p-12 rounded-[2.5rem] text-left group">
-                <div class="subs-text mb-2 uppercase">Personal</div>
-                <h3 class="text-3xl font-black uppercase text-white group-hover:italic transition-all">Gulša</h3>
+    <section id="portfolio" class="max-w-7xl mx-auto px-6 py-40">
+        <h2 class="text-center text-zinc-800 text-xs font-bold uppercase tracking-[1.5em] mb-24">Portfólio & Klienti</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-40">
+            <button onclick="displayGallery('Gulša')" class="glass-card p-14 rounded-[3rem] text-left group">
+                <div class="subs-indicator mb-3">Creative</div>
+                <h3 class="text-4xl font-black uppercase text-white group-hover:italic transition-all">Osobná Tvorba</h3>
             </button>
 
-            <button onclick="loadWork('Adameantius')" class="client-card p-12 rounded-[2.5rem] text-left group">
-                <div class="subs-text mb-2">1.7K SUBS</div>
-                <h3 class="text-3xl font-black uppercase text-white group-hover:italic">Adameantius</h3>
+            <button onclick="displayGallery('Adameantius')" class="glass-card p-14 rounded-[3rem] text-left group">
+                <div class="subs-indicator mb-3">1.7K SUBS</div>
+                <h3 class="text-4xl font-black uppercase text-white group-hover:italic transition-all">Adameantius</h3>
+            </button>
+
+            <button onclick="displayGallery('Pandak')" class="glass-card p-14 rounded-[3rem] text-left group">
+                <div class="subs-indicator mb-3">6K SUBS</div>
+                <h3 class="text-4xl font-black uppercase text-white group-hover:italic transition-all">Pandak</h3>
             </button>
             
-            <button onclick="loadWork('Pandak')" class="client-card p-12 rounded-[2.5rem] text-left group">
-                <div class="subs-text mb-2">6K SUBS</div>
-                <h3 class="text-3xl font-black uppercase text-white group-hover:italic">Pandak</h3>
+            <button onclick="displayGallery('DrWoolf')" class="glass-card p-14 rounded-[3rem] text-left group">
+                <div class="subs-indicator mb-3">1.4K SUBS</div>
+                <h3 class="text-4xl font-black uppercase text-white group-hover:italic transition-all">DrWoolf</h3>
+            </button>
+
+            <button onclick="displayGallery('ajhttv')" class="glass-card p-14 rounded-[3rem] text-left group">
+                <div class="subs-indicator mb-3">6K SUBS</div>
+                <h3 class="text-4xl font-black uppercase text-white italic group-hover:not-italic transition-all">ajhttv</h3>
             </button>
         </div>
 
-        <div id="portfolio-box" class="w-full bg-white/[0.01] border border-white/5 rounded-[4rem] p-12 text-center min-h-[500px]">
-            <div id="portfolio-content" class="hidden">
-                <h4 id="display-name" class="text-5xl font-black uppercase mb-16 italic text-blue-600"></h4>
-                <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
-            </div>
+        <div id="gallery-container" class="w-full bg-white/[0.02] border border-white/5 rounded-[4rem] p-12 md:p-24 hidden min-h-[600px]">
+            <h4 id="active-client-name" class="text-6xl md:text-8xl font-black uppercase mb-20 text-center italic text-blue-600"></h4>
+            <div id="image-grid" class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                </div>
         </div>
     </section>
 
+    <footer class="py-40 text-center border-t border-white/5">
+        <a href="mailto:studiogulsatvedit@gmail.com" class="text-2xl md:text-4xl font-black text-white hover:text-blue-500 transition-all underline underline-offset-8 decoration-blue-600/10 uppercase tracking-tighter">
+            studiogulsatvedit@gmail.com
+        </a>
+        <p class="mt-20 text-zinc-800 text-[10px] font-bold tracking-[1.2em] uppercase">© 2026 GULŠA DESIGN STUDIO</p>
+    </footer>
+
     <script>
-        // 1. ZLEPŠENÁ MYŠ (Rýchlejšia reakcia 0.06)
-        const mainCursor = document.getElementById('cursor-main');
-        const glowCursor = document.getElementById('cursor-glow');
-        let mx = 0, my = 0, cx = 0, cy = 0;
+        /**
+         * ANIMÁCIA MYŠI (LERP - Lineárna Interpolácia)
+         */
+        const ptr = document.getElementById('cursor-pointer');
+        const glw = document.getElementById('cursor-glow-layer');
+        
+        let mX = 0, mY = 0; // Pozícia myši
+        let cX = 0, cY = 0; // Plynulá pozícia kurzora
 
         document.addEventListener('mousemove', (e) => {
-            mx = e.clientX;
-            my = e.clientY;
+            mX = e.clientX;
+            mY = e.clientY;
         });
 
-        function animateCursor() {
-            // 0.06 = plynulé, ale už nie "ťažké"
-            cx += (mx - cx) * 0.06;
-            cy += (my - cy) * 0.06;
-            mainCursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-            glowCursor.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-            requestAnimationFrame(animateCursor);
+        function smoothMove() {
+            // Koeficient 0.07 - Plynulé ale responzívne
+            cX += (mX - cX) * 0.07;
+            cY += (mY - cY) * 0.07;
+
+            ptr.style.transform = `translate3d(${cX}px, ${cY}px, 0)`;
+            glw.style.transform = `translate3d(${mX}px, ${mY}px, 0)`;
+
+            requestAnimationFrame(smoothMove);
         }
-        animateCursor();
+        smoothMove();
 
-        // 2. NAČÍTANIE OBRÁZKOV
-        function loadWork(name) {
-            const content = document.getElementById('portfolio-content');
-            const grid = document.getElementById('gallery-grid');
-            const displayName = document.getElementById('display-name');
+        /**
+         * NAČÍTANIE OBRÁZKOV DO GALÉRIE
+         */
+        function displayGallery(clientName) {
+            const container = document.getElementById('gallery-container');
+            const grid = document.getElementById('image-grid');
+            const label = document.getElementById('active-client-name');
 
-            content.classList.remove('hidden');
-            displayName.innerText = name;
-            grid.innerHTML = ""; 
+            container.classList.remove('hidden');
+            label.innerText = clientName;
+            grid.innerHTML = ""; // Vyčistiť predchádzajúce
 
-            if (name === 'Gulša') {
-                const images = [
+            if (clientName === 'Gulša') {
+                // List tvojich súborov
+                const imageFiles = [
                     "ovjavil som crazy editovaci styl 1.jpg",
                     "objavil som crazy editovaci style - zuby timeline_.jpg",
                     "objavil som crazy editovaci style - 3d nahledak.jpg",
@@ -174,13 +252,24 @@
                     "fps challenge 2v2.jpg"
                 ];
 
-                images.forEach(imgName => {
+                imageFiles.forEach(fileName => {
                     const img = document.createElement('img');
-                    // Pridaná cesta Gulsa/
-                    img.src = "Gulsa/" + encodeURIComponent(imgName);
-                    img.className = "w-full rounded-3xl shadow-2xl border border-white/5 hover:scale-105 transition-transform duration-500";
+                    const encodedName = encodeURIComponent(fileName);
+                    
+                    // Poistka: Skúsime cestu s priečinkom aj bez neho
+                    img.src = `Gulsa/${encodedName}`;
+                    img.onerror = () => { img.src = encodedName; };
+                    
+                    img.className = "portfolio-image";
+                    img.loading = "lazy";
+                    
                     grid.appendChild(img);
                 });
+                
+                // Plynulé odrolovanie k výsledkom
+                container.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                grid.innerHTML = "<p class='col-span-full text-zinc-600 uppercase tracking-widest text-center'>Tento projekt sa pripravuje...</p>";
             }
         }
     </script>
