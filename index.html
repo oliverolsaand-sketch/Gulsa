@@ -17,18 +17,34 @@
             overflow-x: hidden;
         }
 
-        /* Custom Mouse Cursor s Glow efektom */
+        /* Custom Mouse Cursor - Šípka s Glow efektom */
         #custom-cursor {
-            width: 20px;
-            height: 20px;
-            background: #1e3a8a; /* Tmavomodrá */
-            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            background: #1e40af; /* Tmavomodrá */
             position: fixed;
+            top: 0;
+            left: 0;
             pointer-events: none;
             z-index: 9999;
-            box-shadow: 0 0 20px 10px rgba(30, 58, 138, 0.6);
-            transition: transform 0.1s ease-out;
-            mix-blend-mode: screen;
+            /* Vytvorenie tvaru klasického kurzora (šípky) */
+            clip-path: polygon(0% 0%, 0% 100%, 25% 75%, 45% 100%, 55% 90%, 35% 65%, 70% 65%);
+            filter: drop-shadow(0 0 12px rgba(30, 64, 175, 0.9));
+            box-shadow: 0 0 20px 5px rgba(30, 58, 138, 0.6);
+            will-change: transform;
+        }
+
+        /* Prídavný glow efekt, ktorý nasleduje kurzor */
+        #cursor-glow {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(30, 64, 175, 0.15) 0%, rgba(0,0,0,0) 70%);
+            position: fixed;
+            top: -75px;
+            left: -75px;
+            pointer-events: none;
+            z-index: 9998;
+            will-change: transform;
         }
 
         /* Smooth animácie pre karty */
@@ -56,6 +72,7 @@
 </head>
 <body class="antialiased">
 
+    <div id="cursor-glow"></div>
     <div id="custom-cursor"></div>
 
     <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass-nav border-b border-white/5">
@@ -68,11 +85,11 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="text-6xl md:text-9xl font-black mb-6 tracking-tighter uppercase leading-none">
+        <h1 class="text-6xl md:text-9xl font-black mb-6 tracking-tighter uppercase leading-none text-white">
             Creative <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Director</span>
         </h1>
         <p class="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-12">
-            Video Edit • Brand Design • Web Architect
+            Od strihu až k designu
         </p>
         <a href="#clients" class="group relative px-12 py-5 bg-white text-black font-bold rounded-full overflow-hidden transition-all">
             <span class="relative z-10">POZRIEŤ PRÁCU</span>
@@ -80,8 +97,8 @@
         </a>
     </header>
 
-    <section id="clients" class="max-w-6xl mx-auto px-6 py-32">
-        <h2 class="text-4xl font-black mb-16 uppercase tracking-tight text-center">Vybraní Klienti</h2>
+    <section id="clients" class="max-w-6xl mx-auto px-6 py-32 text-white">
+        <h2 class="text-4xl font-black mb-16 uppercase tracking-tight text-center">Klienti</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             <button onclick="showWork('adameantius')" class="client-card p-10 rounded-[2rem] text-left">
@@ -98,7 +115,7 @@
 
             <button onclick="showWork('ajhttv')" class="client-card p-10 rounded-[2rem] text-left">
                 <div class="text-blue-500 font-bold mb-2">6k subs</div>
-                <h3 class="text-3xl font-black">ajhttv</h3>
+                <h3 class="text-3xl font-black text-white">ajhttv</h3>
                 <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Klikni pre detail</p>
             </button>
 
@@ -110,7 +127,7 @@
 
             <button onclick="showWork('gulsa')" class="client-card p-10 rounded-[2rem] text-left border-blue-500/30 bg-blue-500/5">
                 <div class="text-blue-500 font-bold mb-2">3k subs</div>
-                <h3 class="text-3xl font-black">Gulša</h3>
+                <h3 class="text-3xl font-black text-white">Gulša</h3>
                 <p class="text-gray-500 mt-4 text-sm uppercase tracking-widest">Moje kanály</p>
             </button>
         </div>
@@ -118,7 +135,7 @@
         <div id="work-display" class="bg-zinc-900/30 border border-white/5 rounded-[3rem] p-12 text-center min-h-[300px] flex items-center justify-center transition-all">
             <div id="placeholder-text" class="text-gray-600 text-xl italic uppercase tracking-widest">Vyber klienta vyššie...</div>
             
-            <div id="work-content" class="hidden w-full">
+            <div id="work-content" class="hidden w-full text-white">
                 <h4 id="client-name" class="text-4xl font-black mb-4 uppercase tracking-tighter"></h4>
                 <div class="h-[2px] w-20 bg-blue-600 mx-auto mb-6"></div>
                 <p class="text-gray-400 text-lg">Pomáhal som s kompletným designom kanálu a vizuálnou identitou.</p>
@@ -128,32 +145,60 @@
     </section>
 
     <footer id="contact" class="py-20 border-t border-white/5 text-center px-6">
-        <a href="mailto:gulsa.business@gmail.com" class="text-3xl md:text-5xl font-black hover:text-blue-500 transition duration-500">studiogulsatvedit@gmail.com</a>
+        <a href="mailto:studiogulsatvedit@gmail.com" class="text-3xl md:text-5xl font-black text-white hover:text-blue-500 transition duration-500">studiogulsatvedit@gmail.com</a>
         <div class="mt-10 text-gray-700 uppercase tracking-[0.5em] text-[20px]">© 2026 Gulša </div>
     </footer>
 
     <script>
-        // --- CUSTOM CURSOR LOGIC ---
+        // --- EXTRÉMNE SMOOTH CURSOR LOGIC (LERP) ---
         const cursor = document.getElementById('custom-cursor');
+        const glow = document.getElementById('cursor-glow');
         
+        let mouseX = 0, mouseY = 0; // Aktuálna pozícia myši
+        let cursorX = 0, cursorY = 0; // Oneskorená pozícia kurzora
+        let glowX = 0, glowY = 0; // Oneskorená pozícia žiary
+
         document.addEventListener('mousemove', e => {
-            // Myš nasleduje kurzor so smooth oneskorením cez CSS transition
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        function animate() {
+            // LERP výpočet: aktuálna pozícia + (cieľ - aktuálna) * plynulosť
+            // 0.15 je plynulosť (nižšie číslo = viac smooth/viac oneskorené)
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            glowX += (mouseX - glowX) * 0.08; // Žiara je ešte pomalšia pre "liquid" efekt
+            glowY += (mouseY - glowY) * 0.08;
+
+            cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+            glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+
+            requestAnimationFrame(animate);
+        }
+        animate();
 
         // Efekt pri kliknutí
         document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
+            cursor.style.transform += ' scale(0.8)';
+            cursor.style.filter = 'drop-shadow(0 0 5px rgba(30, 64, 175, 1))';
         });
         document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
+            cursor.style.transform = cursor.style.transform.replace(' scale(0.8)', '');
+            cursor.style.filter = 'drop-shadow(0 0 12px rgba(30, 64, 175, 0.9))';
         });
 
-        // Zväčšenie kurzora na buttonoch
+        // Interakcia s prvkami
         document.querySelectorAll('button, a').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
-            el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+            el.addEventListener('mouseenter', () => {
+                cursor.style.background = '#3b82f6'; // Zosvetlenie na linkoch
+                cursor.style.transform += ' scale(1.2)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.background = '#1e40af';
+                cursor.style.transform = cursor.style.transform.replace(' scale(1.2)', '');
+            });
         });
 
         // --- CLIENT WORK DISPLAY LOGIC ---
@@ -165,14 +210,11 @@
 
             placeholder.style.display = 'none';
             content.classList.remove('active-work');
-            
-            // Force reflow pre animáciu
             void content.offsetWidth; 
 
             nameField.innerText = clientKey;
             content.classList.add('active-work');
             
-            // Scroll k výsledku pre mobilných používateľov
             if(window.innerWidth < 768) {
                 display.scrollIntoView({ behavior: 'smooth' });
             }
