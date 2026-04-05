@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GULSA | Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .accent-text { background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass">
+        <div class="text-2xl font-black tracking-tighter">GULSA<span class="text-violet-500">.</span></div>
+        <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
+            <a href="#gaming" class="hover:text-violet-400 transition">Gaming</a>
+            <a href="#shorts" class="hover:text-violet-400 transition">Shorts</a>
+            <a href="#contact" class="hover:text-violet-400 transition">Kontakt</a>
+        </div>
+    </nav>
+
+    <section class="h-screen flex flex-col justify-center items-center text-center px-6">
+        <h1 class="text-7xl md:text-9xl font-black mb-4 tracking-tighter uppercase">VIDEO <span class="accent-text">EDITOR</span></h1>
+        <p class="text-gray-400 text-lg md:text-xl max-w-xl mb-10">Z tvojho surového materiálu urobím video, ktoré ľudia dopozerajú do konca.</p>
+        <a href="#gaming" class="bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-violet-500 hover:text-white transition-all transform hover:scale-105">MOJA TVORBA</a>
+    </section>
+
+    <section id="gaming" class="py-24 px-6 max-w-6xl mx-auto">
+        <h2 class="text-4xl font-black mb-12 uppercase tracking-tight">Gaming <span class="text-violet-500">&</span> IRL</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="space-y-4">
+                <div class="video-container shadow-2xl shadow-violet-900/20">
+                    <iframe src="https://www.youtube.com/embed/TUO_ID_VIDEA" allowfullscreen></iframe>
+                </div>
+                <h3 class="text-xl font-bold">Longform Edit</h3>
+                <p class="text-gray-500">Strih, sound design a dynamické titulky pre YouTube vlogy a hry.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/TUO_ID_VIDEA_2" allowfullscreen></iframe>
+                </div>
+                <h3 class="text-xl font-bold">Cinematic Montage</h3>
+                <p class="text-gray-500">Zamerané na atmosféru a plynulé prechody.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="shorts" class="py-24 bg-zinc-950 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl font-black mb-16 uppercase">Shorts / TikToks</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
+                     <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_1"></iframe>
+                </div>
+                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_2"></iframe>
+                </div>
+                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_3"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="py-32 text-center">
+        <h2 class="text-5xl font-black mb-8 accent-text italic uppercase">Poďme spolupracovať</h2>
+        <p class="text-2xl text-gray-300 mb-10">gulsa.business@gmail.com</p>
+        <div class="flex justify-center space-x-8 text-sm font-bold tracking-widest text-gray-500 uppercase">
+            <a href="#" class="hover:text-white transition">Instagram</a>
+            <a href="#" class="hover:text-white transition">Discord</a>
+            <a href="#" class="hover:text-white transition">Twitter / X</a>
+        </div>
+    </footer>
+
+</body>
+</html>
