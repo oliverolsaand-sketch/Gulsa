@@ -3,80 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GULSA | Editor</title>
+    <title>GULSA | Creative Director</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .accent-text { background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { background-color: #080808; color: #eee; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
+        .glass-card:hover { background: rgba(255, 255, 255, 0.05); border-color: #8b5cf6; }
+        .hidden-works { display: none; }
+        .active-client { display: block !important; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass">
-        <div class="text-2xl font-black tracking-tighter">GULSA<span class="text-violet-500">.</span></div>
-        <div class="hidden md:flex space-x-8 font-medium text-sm uppercase tracking-widest">
-            <a href="#gaming" class="hover:text-violet-400 transition">Gaming</a>
-            <a href="#shorts" class="hover:text-violet-400 transition">Shorts</a>
-            <a href="#contact" class="hover:text-violet-400 transition">Kontakt</a>
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center backdrop-blur-md border-b border-white/5">
+        <div class="text-xl font-extrabold tracking-tighter uppercase">GULSA<span class="text-violet-500">.</span>STUDIO</div>
+        <div class="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest text-gray-400">
+            <a href="#services" class="hover:text-white transition">Služby</a>
+            <a href="#clients" class="hover:text-white transition">Klienti</a>
+            <a href="#reviews" class="hover:text-white transition">Recenzie</a>
+            <a href="#contact" class="text-violet-500 border border-violet-500 px-4 py-1 rounded-full hover:bg-violet-500 hover:text-white transition">Let's Talk</a>
         </div>
     </nav>
 
-    <section class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="text-7xl md:text-9xl font-black mb-4 tracking-tighter uppercase">VIDEO <span class="accent-text">EDITOR</span></h1>
-        <p class="text-gray-400 text-lg md:text-xl max-w-xl mb-10">Z tvojho surového materiálu urobím video, ktoré ľudia dopozerajú do konca.</p>
-        <a href="#gaming" class="bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-violet-500 hover:text-white transition-all transform hover:scale-105">MOJA TVORBA</a>
+    <header class="pt-40 pb-20 px-6 text-center">
+        <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter uppercase leading-none">
+            Digital <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-fuchsia-500 text-italic font-light">Architect</span>
+        </h1>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto mb-12">
+            Strihám videá, ktoré virálne rastú. Navrhujem designy, ktoré predávajú. Staviam portfóliá, ktoré budujú tvoj brand.
+        </p>
+    </header>
+
+    <section id="services" class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-24">
+        <div class="glass-card p-8 rounded-3xl">
+            <div class="text-violet-500 mb-4 font-bold text-sm">01. VIDEO EDIT</div>
+            <h3 class="text-2xl font-bold mb-2 text-white">Post-Produkcia</h3>
+            <p class="text-gray-500 text-sm italic">YT, Shorts, Ads</p>
+        </div>
+        <div class="glass-card p-8 rounded-3xl">
+            <div class="text-fuchsia-500 mb-4 font-bold text-sm">02. DESIGN</div>
+            <h3 class="text-2xl font-bold mb-2 text-white">Visual Identity</h3>
+            <p class="text-gray-500 text-sm italic">Thumbnails, Branding</p>
+        </div>
+        <div class="glass-card p-8 rounded-3xl">
+            <div class="text-blue-500 mb-4 font-bold text-sm">03. WEB/PORTFOLIO</div>
+            <h3 class="text-2xl font-bold mb-2 text-white">AI-Powered Webs</h3>
+            <p class="text-gray-500 text-sm italic">Fast, Clean, Professional</p>
+        </div>
     </section>
 
-    <section id="gaming" class="py-24 px-6 max-w-6xl mx-auto">
-        <h2 class="text-4xl font-black mb-12 uppercase tracking-tight">Gaming <span class="text-violet-500">&</span> IRL</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div class="space-y-4">
-                <div class="video-container shadow-2xl shadow-violet-900/20">
-                    <iframe src="https://www.youtube.com/embed/TUO_ID_VIDEA" allowfullscreen></iframe>
+    <section id="clients" class="max-w-6xl mx-auto px-6 mb-32">
+        <h2 class="text-3xl font-black mb-12 uppercase border-l-4 border-violet-500 pl-6">Pre koho som tvoril</h2>
+        
+        <div class="flex flex-wrap gap-4 mb-10">
+            <button onclick="showClient('client1')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 1</button>
+            <button onclick="showClient('client2')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 2</button>
+            <button onclick="showClient('client3')" class="glass-card px-8 py-4 rounded-2xl font-bold hover:scale-105 transform transition">Meno Klienta 3</button>
+        </div>
+
+        <div id="client-works" class="bg-zinc-900/50 p-8 rounded-3xl min-h-[300px]">
+            <div id="default-msg" class="text-gray-600 italic">Klikni na klienta a pozri si realizáciu...</div>
+            
+            <div id="client1" class="hidden-works">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="aspect-video bg-zinc-800 rounded-xl overflow-hidden">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_VIDEA"></iframe>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold mb-2">Kompletný rebranding kanálu</h4>
+                        <p class="text-gray-400 mb-4 text-sm leading-relaxed">Pre tohto klienta som robil strih videí aj grafické podklady. Výsledkom bol 30% nárast sledovanosti.</p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] bg-white/10 px-2 py-1 rounded">Edit</span>
+                            <span class="text-[10px] bg-white/10 px-2 py-1 rounded">Design</span>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold">Longform Edit</h3>
-                <p class="text-gray-500">Strih, sound design a dynamické titulky pre YouTube vlogy a hry.</p>
             </div>
-            <div class="space-y-4">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/TUO_ID_VIDEA_2" allowfullscreen></iframe>
-                </div>
-                <h3 class="text-xl font-bold">Cinematic Montage</h3>
-                <p class="text-gray-500">Zamerané na atmosféru a plynulé prechody.</p>
+
+             <div id="client2" class="hidden-works">
+                <p>Tu vložíš práce pre druhého klienta (Obrázky/Videá)...</p>
             </div>
         </div>
     </section>
 
-    <section id="shorts" class="py-24 bg-zinc-950 px-6">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl font-black mb-16 uppercase">Shorts / TikToks</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
-                     <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_1"></iframe>
-                </div>
-                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_2"></iframe>
-                </div>
-                <div class="aspect-[9/16] bg-zinc-900 rounded-2xl overflow-hidden glass">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_SHORTS_3"></iframe>
-                </div>
+    <section id="reviews" class="max-w-4xl mx-auto px-6 mb-32 text-center">
+        <h2 class="text-2xl font-black mb-12 uppercase tracking-widest text-violet-400">Feedback</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+            <div class="glass-card p-8 rounded-3xl italic">
+                <p class="text-gray-300 mb-4">"GULSA je beast. Premenil moje portfólio na niečo, čo konečne vyzerá profi. Odporúčam každému."</p>
+                <span class="text-white font-bold text-sm">— YouTuber Meno</span>
+            </div>
+            <div class="glass-card p-8 rounded-3xl italic">
+                <p class="text-gray-300 mb-4">"Skvelý prístup a rýchlosť. Videá majú dynamiku a design je presne to, čo som hľadal."</p>
+                <span class="text-white font-bold text-sm">— Streamer X</span>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="py-32 text-center">
-        <h2 class="text-5xl font-black mb-8 accent-text italic uppercase">Poďme spolupracovať</h2>
-        <p class="text-2xl text-gray-300 mb-10">gulsa.business@gmail.com</p>
-        <div class="flex justify-center space-x-8 text-sm font-bold tracking-widest text-gray-500 uppercase">
-            <a href="#" class="hover:text-white transition">Instagram</a>
-            <a href="#" class="hover:text-white transition">Discord</a>
-            <a href="#" class="hover:text-white transition">Twitter / X</a>
+    <footer id="contact" class="py-20 border-t border-white/5 text-center px-6">
+        <div class="mb-8">
+            <p class="text-gray-500 uppercase text-xs tracking-widest mb-2">Ready to scale?</p>
+            <a href="mailto:gulsa.business@gmail.com" class="text-4xl md:text-6xl font-black hover:text-violet-500 transition">Let's Work Together</a>
         </div>
+        <div class="text-gray-600 text-xs mt-20">© 2026 GULSA. Vyrobené pomocou AI a čistého kódu.</div>
     </footer>
 
+    <script>
+        function showClient(id) {
+            // Skry všetko
+            document.querySelectorAll('.hidden-works').forEach(el => el.classList.remove('active-client'));
+            document.getElementById('default-msg').style.display = 'none';
+            // Ukáž vybrané
+            document.getElementById(id).classList.add('active-client');
+        }
+    </script>
 </body>
 </html>
