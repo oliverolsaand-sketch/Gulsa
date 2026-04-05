@@ -6,7 +6,7 @@
     <title>GULŠA | Creative Studio</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;800&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
@@ -19,67 +19,70 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* AMBIENTNÉ POZADIE - MENIACE FARBY */
+        /* 1. DOKONALE PLYNULÉ POZADIE (FADE) */
         #ambient-layer {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, rgba(2, 2, 2, 1) 100%);
-            transition: background 4s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: background;
+            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, rgba(2, 2, 2, 1) 100%);
+            animation: ambientFade 15s infinite alternate;
         }
 
-        /* ŠPECIÁLNY KURZOR */
+        @keyframes ambientFade {
+            0% { background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, rgba(2, 2, 2, 1) 100%); }
+            50% { background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.2) 0%, rgba(2, 2, 2, 1) 100%); }
+            100% { background: radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.15) 0%, rgba(2, 2, 2, 1) 100%); }
+        }
+
+        /* 2. PLYNULÝ KURZOR (Zväčšený o 10%) */
         #cursor-main {
-            position: fixed; top: 0; left: 0; width: 22px; height: 22px;
+            position: fixed; top: 0; left: 0; 
+            width: 25px; height: 25px; /* Zväčšené */
             background-color: #2563eb; z-index: 10000; pointer-events: none;
             clip-path: polygon(0% 0%, 0% 100%, 25% 75%, 45% 100%, 55% 90%, 35% 65%, 70% 65%);
             will-change: transform;
         }
 
         #cursor-glow {
-            position: fixed; top: 0; left: 0; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(0,0,0,0) 70%);
+            position: fixed; top: 0; left: 0; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(0,0,0,0) 70%);
             z-index: 9999; pointer-events: none; transform: translate(-50%, -50%);
             will-change: transform;
         }
 
-        /* KARTY KLIENTOV */
+        /* 3. ANIMÁCIA TITULKU (GLOW PRÍCHOD) */
+        .hero-title {
+            opacity: 0;
+            filter: blur(10px);
+            transform: scale(0.9);
+            animation: heroReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes heroReveal {
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+            }
+        }
+
+        /* KARTY */
         .client-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .client-card:hover {
-            transform: translateY(-10px);
-            background: rgba(37, 99, 235, 0.05);
+            transform: translateY(-8px);
+            background: rgba(37, 99, 235, 0.08);
             border-color: #2563eb;
         }
 
         .subs-text {
             font-weight: 800;
-            letter-spacing: 0.1em;
             color: #3b82f6;
-            font-size: 1.1rem; /* Zväčšené o cca 50% oproti pôvodnému */
-        }
-
-        /* GALÉRIA */
-        #gallery-grid img {
-            width: 100%;
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.5s;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-        
-        #gallery-grid img:hover {
-            transform: scale(1.03);
-            border-color: #2563eb;
-        }
-
-        .glass-nav {
-            backdrop-filter: blur(20px);
-            background: rgba(2, 2, 2, 0.8);
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
         }
     </style>
 </head>
@@ -89,67 +92,47 @@
     <div id="cursor-glow"></div>
     <div id="cursor-main"></div>
 
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center glass-nav">
+    <nav class="fixed w-full z-50 p-8 flex justify-between items-center">
         <div class="text-2xl font-black tracking-tighter uppercase">GULSA<span class="text-blue-600">.</span></div>
-        <div class="hidden md:flex space-x-10 text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-500">
-            <a href="#clients" class="hover:text-white transition-colors">Portfolio</a>
-            <a href="mailto:studiogulsatvedit@gmail.com" class="hover:text-white transition-colors">Kontakt</a>
-        </div>
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="text-8xl md:text-[12rem] font-black tracking-tighter uppercase leading-none select-none">
+        <h1 class="hero-title text-8xl md:text-[12rem] font-black tracking-tighter uppercase leading-none select-none">
             GUL<span class="text-blue-600">ŠA</span>
         </h1>
-        <p class="text-zinc-500 text-sm md:text-lg uppercase tracking-[0.8em] mt-6 font-light">Creative Editor & Designer</p>
+        <p class="hero-title text-zinc-500 text-sm md:text-lg uppercase tracking-[0.8em] mt-6 font-light" style="animation-delay: 0.3s;">
+            Creative Editor & Designer
+        </p>
     </header>
 
     <section id="clients" class="max-w-7xl mx-auto px-6 py-40">
-        <h2 class="text-center text-zinc-800 text-[10px] font-bold uppercase tracking-[1.5em] mb-24">Vybraní Klienti</h2>
-        
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+            <button onclick="loadWork('Gulša')" class="client-card p-12 rounded-[2.5rem] text-left group">
+                <div class="subs-text mb-2 uppercase">Personal</div>
+                <h3 class="text-3xl font-black uppercase text-white group-hover:italic transition-all">Gulša</h3>
+            </button>
+
             <button onclick="loadWork('Adameantius')" class="client-card p-12 rounded-[2.5rem] text-left group">
                 <div class="subs-text mb-2">1.7K SUBS</div>
                 <h3 class="text-3xl font-black uppercase text-white group-hover:italic">Adameantius</h3>
             </button>
-
-            <button onclick="loadWork('DrWoolf')" class="client-card p-12 rounded-[2.5rem] text-left group">
-                <div class="subs-text mb-2">1.4K SUBS</div>
-                <h3 class="text-3xl font-black uppercase text-white group-hover:italic">DrWoolf</h3>
-            </button>
-
-            <button onclick="loadWork('ajhttv')" class="client-card p-12 rounded-[2.5rem] text-left group">
-                <div class="subs-text mb-2">6K SUBS</div>
-                <h3 class="text-3xl font-black uppercase text-white italic group-hover:not-italic">ajhttv</h3>
-            </button>
-
+            
             <button onclick="loadWork('Pandak')" class="client-card p-12 rounded-[2.5rem] text-left group">
                 <div class="subs-text mb-2">6K SUBS</div>
                 <h3 class="text-3xl font-black uppercase text-white group-hover:italic">Pandak</h3>
             </button>
-
-            <button onclick="loadWork('Gulša')" class="client-card p-12 rounded-[2.5rem] text-left border-blue-600/20 bg-blue-600/5 group">
-                <div class="subs-text text-blue-300 mb-2 uppercase">Personal</div>
-                <h3 class="text-3xl font-black uppercase text-white tracking-tighter group-hover:italic">Gulša</h3>
-            </button>
         </div>
 
-        <div id="portfolio-box" class="w-full bg-white/[0.01] border border-white/5 rounded-[4rem] p-12 md:p-20 text-center min-h-[600px] flex flex-col items-center justify-center">
-            <div id="placeholder-text" class="text-zinc-900 text-[10px] font-bold uppercase tracking-[1.2em]">Vyber projekt pre zobrazenie</div>
-            <div id="portfolio-content" class="w-full hidden">
-                <h4 id="display-name" class="text-5xl md:text-7xl font-black mb-16 uppercase italic text-blue-600"></h4>
+        <div id="portfolio-box" class="w-full bg-white/[0.01] border border-white/5 rounded-[4rem] p-12 text-center min-h-[500px]">
+            <div id="portfolio-content" class="hidden">
+                <h4 id="display-name" class="text-5xl font-black uppercase mb-16 italic text-blue-600"></h4>
                 <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
             </div>
         </div>
     </section>
 
-    <footer class="py-40 text-center border-t border-white/5">
-        <a href="mailto:studiogulsatvedit@gmail.com" class="text-2xl font-black text-white hover:text-blue-500 transition-all underline underline-offset-8 decoration-blue-600/20">studiogulsatvedit@gmail.com</a>
-        <p class="mt-20 text-zinc-800 text-[10px] font-bold tracking-[1em] uppercase">© 2026 GULŠA STUDIO</p>
-    </footer>
-
     <script>
-        // 1. ULTRA SMOOTH MOUSE (LERP 0.015)
+        // 1. ZLEPŠENÁ MYŠ (Rýchlejšia reakcia 0.06)
         const mainCursor = document.getElementById('cursor-main');
         const glowCursor = document.getElementById('cursor-glow');
         let mx = 0, my = 0, cx = 0, cy = 0;
@@ -160,30 +143,17 @@
         });
 
         function animateCursor() {
-            cx += (mx - cx) * 0.015;
-            cy += (my - cy) * 0.015;
+            // 0.06 = plynulé, ale už nie "ťažké"
+            cx += (mx - cx) * 0.06;
+            cy += (my - cy) * 0.06;
             mainCursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
             glowCursor.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // 2. BACKGROUND COLOR SWAP
-        const ambient = document.getElementById('ambient-layer');
-        const colors = [
-            'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, rgba(2, 2, 2, 1) 100%)', // Modrá
-            'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.2) 0%, rgba(2, 2, 2, 1) 100%)', // Fialová
-            'radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.15) 0%, rgba(2, 2, 2, 1) 100%)' // Tyrkysová
-        ];
-        let ci = 0;
-        setInterval(() => {
-            ci = (ci + 1) % colors.length;
-            ambient.style.background = colors[ci];
-        }, 5000);
-
-        // 3. PORTFOLIO LOADER
+        // 2. NAČÍTANIE OBRÁZKOV
         function loadWork(name) {
-            document.getElementById('placeholder-text').classList.add('hidden');
             const content = document.getElementById('portfolio-content');
             const grid = document.getElementById('gallery-grid');
             const displayName = document.getElementById('display-name');
@@ -206,13 +176,11 @@
 
                 images.forEach(imgName => {
                     const img = document.createElement('img');
-                    // OPRAVA: Použitie priečinka Gulsa/ a kódovanie medzier
+                    // Pridaná cesta Gulsa/
                     img.src = "Gulsa/" + encodeURIComponent(imgName);
-                    img.loading = "lazy";
+                    img.className = "w-full rounded-3xl shadow-2xl border border-white/5 hover:scale-105 transition-transform duration-500";
                     grid.appendChild(img);
                 });
-            } else {
-                grid.innerHTML = "<p class='col-span-full text-zinc-600 uppercase tracking-widest'>Práce pre tohto klienta sa pripravujú...</p>";
             }
         }
     </script>
