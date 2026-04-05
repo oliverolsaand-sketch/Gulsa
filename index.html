@@ -20,48 +20,29 @@
 
         /* ULTRA SMOOTH CURSOR */
         #custom-cursor {
-            width: 30px; 
-            height: 30px;
+            width: 30px; height: 30px;
             background: #1e40af;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 10000;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 10000;
             clip-path: polygon(0% 0%, 0% 100%, 25% 75%, 45% 100%, 55% 90%, 35% 65%, 70% 65%);
             filter: drop-shadow(0 0 15px rgba(30, 64, 175, 0.6));
             will-change: transform;
-            transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
-                        height 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
-                        background 0.5s ease, 
-                        clip-path 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), background 0.5s ease;
         }
 
         #cursor-glow {
-            width: 350px;
-            height: 350px;
+            width: 350px; height: 350px;
             background: radial-gradient(circle, rgba(30, 64, 175, 0.1) 0%, rgba(0,0,0,0) 70%);
-            position: fixed;
-            top: -175px;
-            left: -175px;
-            pointer-events: none;
-            z-index: 9999;
+            position: fixed; top: -175px; left: -175px;
+            pointer-events: none; z-index: 9999;
             will-change: transform;
         }
 
-        /* HERO TEXT EFFECT */
-        .hero-title {
-            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative;
-        }
-        
         .hero-title:hover {
-            color: #fff;
             text-shadow: 0 0 50px rgba(37, 99, 235, 0.6);
             transform: scale(1.03);
         }
 
-        /* KARTY */
         .client-card {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -74,20 +55,22 @@
             transform: translateY(-10px);
         }
 
-        /* DETAIL PRÁCE - CINEMATIC */
+        /* GALÉRIA ANIMÁCIA */
+        .thumb-img {
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            filter: grayscale(20%) brightness(0.8);
+        }
+        .thumb-img:hover {
+            filter: grayscale(0%) brightness(1.1);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
         #work-content { 
-            display: none; 
-            opacity: 0; 
-            filter: blur(20px); 
-            transform: translateY(40px); 
-            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1); 
+            display: none; opacity: 0; filter: blur(20px); transform: translateY(40px); 
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1); 
         }
-        #work-content.active-work { 
-            display: block !important; 
-            opacity: 1; 
-            filter: blur(0); 
-            transform: translateY(0); 
-        }
+        #work-content.active-work { display: block !important; opacity: 1; filter: blur(0); transform: translateY(0); }
 
         .glass-nav { backdrop-filter: blur(20px); background: rgba(2, 2, 2, 0.8); border-bottom: 1px solid rgba(255,255,255,0.03); }
     </style>
@@ -106,7 +89,7 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="hero-title text-8xl md:text-[12rem] font-black tracking-tighter uppercase leading-none text-white select-none">
+        <h1 class="hero-title text-8xl md:text-[12rem] font-black tracking-tighter uppercase leading-none text-white select-none transition-all duration-700">
             Gul<span class="text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-900">ša</span>
         </h1>
         <p class="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto mt-6 mb-12 uppercase tracking-[0.8em] font-light">
@@ -124,108 +107,108 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
             <button onclick="showWork('Adameantius')" class="client-card p-14 rounded-[3rem] text-left">
                 <div class="text-blue-600 font-bold text-[10px] tracking-widest mb-4">1.7K SUBS</div>
-                <h3 class="text-3xl font-black text-white uppercase tracking-tight">Adameantius</h3>
+                <h3 class="text-3xl font-black text-white uppercase">Adameantius</h3>
             </button>
-
             <button onclick="showWork('Drwoolf')" class="client-card p-14 rounded-[3rem] text-left">
                 <div class="text-blue-600 font-bold text-[10px] tracking-widest mb-4">1.4K SUBS</div>
-                <h3 class="text-3xl font-black text-white uppercase tracking-tight">Drwoolf</h3>
+                <h3 class="text-3xl font-black text-white uppercase">Drwoolf</h3>
             </button>
-
             <button onclick="showWork('ajhttv')" class="client-card p-14 rounded-[3rem] text-left">
                 <div class="text-blue-600 font-bold text-[10px] tracking-widest mb-4">6K SUBS</div>
-                <h3 class="text-3xl font-black text-white uppercase italic tracking-tight">ajhttv</h3>
+                <h3 class="text-3xl font-black text-white uppercase italic">ajhttv</h3>
             </button>
-
             <button onclick="showWork('Pandak')" class="client-card p-14 rounded-[3rem] text-left">
                 <div class="text-blue-600 font-bold text-[10px] tracking-widest mb-4">6K SUBS</div>
-                <h3 class="text-3xl font-black text-white uppercase tracking-tight">Pandak</h3>
+                <h3 class="text-3xl font-black text-white uppercase">Pandak</h3>
             </button>
-
-            <button onclick="showWork('Gulša')" class="client-card p-14 rounded-[3rem] text-left border-blue-600/20 bg-blue-600/5">
-                <div class="text-blue-600 font-bold text-[10px] tracking-widest mb-4">3K SUBS</div>
-                <h3 class="text-3xl font-black text-white uppercase tracking-tight">Gulša</h3>
+            <button onclick="showWork('Gulša')" class="client-card p-14 rounded-[3rem] text-left border-blue-600/40 bg-blue-600/10 scale-[1.02]">
+                <div class="text-blue-400 font-bold text-[10px] tracking-widest mb-4">ME</div>
+                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Gulša</h3>
             </button>
         </div>
 
-        <div id="work-display" class="bg-white/[0.01] border border-white/5 rounded-[4rem] p-24 text-center min-h-[500px] flex items-center justify-center transition-all duration-1000">
+        <div id="work-display" class="bg-white/[0.01] border border-white/5 rounded-[4rem] p-10 md:p-20 text-center min-h-[600px] flex items-center justify-center transition-all duration-1000 overflow-hidden">
             <div id="placeholder-text" class="text-zinc-800 text-[10px] font-bold uppercase tracking-[1.2em]">Select project</div>
+            
             <div id="work-content" class="w-full">
-                <h4 id="client-name" class="text-6xl md:text-8xl font-black mb-8 uppercase tracking-tighter text-white"></h4>
-                <div class="h-1 w-12 bg-blue-600 mx-auto mb-10"></div>
-                <p class="text-zinc-500 text-lg uppercase tracking-[0.2em] max-w-2xl mx-auto font-light leading-relaxed">
-                    Kompletná vizuálna identita, strih a strategický design obsahu.
-                </p>
+                <h4 id="client-name" class="text-5xl md:text-7xl font-black mb-8 uppercase tracking-tighter text-white"></h4>
+                <div id="client-description" class="text-zinc-500 text-lg uppercase tracking-[0.2em] mb-12 font-light"></div>
+                
+                <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
     </section>
 
     <footer id="contact" class="py-40 border-t border-white/5 text-center">
-        <a href="mailto:studiogulsatvedit@gmail.com" class="text-4xl md:text-5xl font-black text-white hover:text-blue-600 transition duration-700 uppercase tracking-tighter decoration-blue-600/20 underline underline-offset-8">studiogulsatvedit@gmail.com</a>
+        <a href="mailto:studiogulsatvedit@gmail.com" class="text-3xl md:text-5xl font-black text-white hover:text-blue-600 transition duration-700 uppercase tracking-tighter underline underline-offset-8 decoration-blue-600/20">studiogulsatvedit@gmail.com</a>
         <div class="mt-20 text-zinc-900 text-[10px] font-bold tracking-[1.2em] uppercase">©2026 Gulša Design Studio</div>
     </footer>
 
     <script>
         const cursor = document.getElementById('custom-cursor');
         const glow = document.getElementById('cursor-glow');
+        const images = [
+            "ovjavil som crazy editovaci styl 1.jpg",
+            "objavil som crazy editovaci style - zuby timeline_.jpg",
+            "objavil som crazy editovaci style - 3d nahledak.jpg",
+            "pvp_king_nahledak_clutch.jpg",
+            "gulsa zapol omylom stream.jpg",
+            "reakcie na odhalenie.. nahledak.jpg",
+            "fps challenge w bright nahledak.jpg",
+            "fps challenge 2v2.jpg"
+        ];
         
-        let mouseX = 0, mouseY = 0;
-        let curX = 0, curY = 0;
-        let glowX = 0, glowY = 0;
-        let rotation = 0;
+        let mouseX = 0, mouseY = 0, curX = 0, curY = 0, glowX = 0, glowY = 0, rotation = 0;
 
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
         function animate() {
-            // LERP - Nastavené na 0.08 pre EXTRA "heavy" luxusný pocit
-            let dx = mouseX - curX;
-            let dy = mouseY - curY;
-            
-            curX += dx * 0.08;
-            curY += dy * 0.08;
-            
-            glowX += (mouseX - glowX) * 0.05;
-            glowY += (mouseY - glowY) * 0.05;
-
-            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
-                rotation = Math.atan2(dy, dx) * (180 / Math.PI);
-            }
-
+            let dx = mouseX - curX; let dy = mouseY - curY;
+            curX += dx * 0.08; curY += dy * 0.08;
+            glowX += (mouseX - glowX) * 0.05; glowY += (mouseY - glowY) * 0.05;
+            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) rotation = Math.atan2(dy, dx) * (180 / Math.PI);
             cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) rotate(${rotation}deg)`;
             glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
-
             requestAnimationFrame(animate);
         }
         animate();
 
-        // HOVER EFEKTY - GULŠA A OSTATNÉ
         document.querySelectorAll('.hero-title, button, a').forEach(el => {
             el.addEventListener('mouseenter', () => {
-                cursor.style.width = '100px';
-                cursor.style.height = '100px';
+                cursor.style.width = '100px'; cursor.style.height = '100px';
                 cursor.style.background = 'rgba(30, 64, 175, 0.12)';
                 cursor.style.clipPath = 'circle(50% at 50% 50%)';
-                cursor.style.border = '1px solid rgba(255,255,255,0.05)';
             });
             el.addEventListener('mouseleave', () => {
-                cursor.style.width = '30px';
-                cursor.style.height = '30px';
+                cursor.style.width = '30px'; cursor.style.height = '30px';
                 cursor.style.background = '#1e40af';
                 cursor.style.clipPath = 'polygon(0% 0%, 0% 100%, 25% 75%, 45% 100%, 55% 90%, 35% 65%, 70% 65%)';
-                cursor.style.border = 'none';
             });
         });
 
         function showWork(name) {
             document.getElementById('placeholder-text').style.display = 'none';
             const content = document.getElementById('work-content');
+            const gallery = document.getElementById('gallery-grid');
+            const desc = document.getElementById('client-description');
+            
             document.getElementById('client-name').innerText = name;
+            gallery.innerHTML = ""; // Vyčistiť predošlé
             content.classList.remove('active-work');
-            void content.offsetWidth; 
-            content.classList.add('active-work');
+
+            if(name === "Gulša") {
+                desc.innerText = "Môj osobný štýl a crazy edity";
+                images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.className = "thumb-img w-full rounded-2xl border border-white/10 shadow-2xl";
+                    gallery.appendChild(img);
+                });
+            } else {
+                desc.innerText = "Kompletná vizuálna identita a strih videí.";
+            }
+
+            setTimeout(() => { content.classList.add('active-work'); }, 50);
         }
     </script>
 </body>
