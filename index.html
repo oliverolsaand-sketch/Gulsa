@@ -23,6 +23,15 @@
             padding: 0;
             box-sizing: border-box;
             cursor: none !important;
+            text-transform: none;
+        }
+
+        .uppercase-style {
+            text-transform: uppercase !important;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -31,7 +40,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            scroll-behavior: smooth;
         }
 
         /* 1. DYNAMICKÉ POZADIE */
@@ -53,7 +61,7 @@
             }
         }
 
-        /* 2. SMOOTH CURSOR SYSTEM */
+        /* 2. CURSOR SYSTEM */
         #cursor-pointer {
             position: fixed;
             top: 0;
@@ -82,43 +90,30 @@
             animation: rainbowFlow 15s infinite linear;
         }
 
-        /* 3. ANIMÁCIE */
-        .hero-reveal {
-            opacity: 0;
-            filter: blur(20px);
-            transform: translateY(30px);
-            animation: heroIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes heroIn {
-            to {
-                opacity: 1;
-                filter: blur(0);
-                transform: translateY(0);
-            }
-        }
-
-        /* 4. VISKÓZNY HOVER */
-        .glass-card,
-        .btn-main,
-        .price-tag {
-            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-                background 0.6s ease, border-color 0.6s ease, box-shadow 0.8s ease !important;
-        }
-
-        .glass-card:hover,
-        .price-tag:hover {
-            transform: scale(1.05) translateY(-8px);
-            background: var(--glass-hover);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* 5. KOMPONENTY */
+        /* 3. KOMPONENTY */
         .glass-card {
             background: var(--glass);
             border: 1px solid rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(25px);
             border-radius: 2.5rem;
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: scale(1.02) translateY(-10px);
+            background: var(--glass-hover);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-main {
+            padding: 1.3rem 4rem;
+            border-radius: 99px;
+            background: #fff;
+            color: #000;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            font-size: 0.75rem;
+            display: inline-block;
         }
 
         .price-tag {
@@ -129,6 +124,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.4s;
+        }
+
+        .price-tag:hover {
+            background: var(--glass-hover);
         }
 
         .price-value {
@@ -137,47 +137,100 @@
             font-size: 1.4rem;
         }
 
-        .review-bubble {
-            padding: 3rem;
+        .contact-btn {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.2rem 2.5rem;
+            border-radius: 1.2rem;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            transition: 0.3s;
         }
 
-        .stars {
-            color: #fbbf24;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+        .contact-btn:hover {
+            background: var(--glass-hover);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .review-text {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.8);
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-
-        .author-name {
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #fff;
-        }
-
-        .logo-blue {
-            color: var(--accent-blue);
-        }
-
-        .btn-main {
-            padding: 1.3rem 4rem;
-            border-radius: 99px;
+        .copy-tooltip {
+            position: absolute;
+            top: -40px;
             background: #fff;
             color: #000;
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.4em;
-            font-size: 0.75rem;
-            display: inline-block;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        /* 4. AI WINDOW */
+        #ai-window {
+            position: fixed;
+            bottom: 40px;
+            right: 100px;
+            width: 380px;
+            height: 520px;
+            min-width: 320px;
+            min-height: 400px;
+            resize: both;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 2000;
+            background: rgba(8, 8, 8, 0.95);
+            backdrop-filter: blur(50px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2.5rem;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        #ai-header {
+            padding: 1.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        #ai-chat-history {
+            flex-grow: 1;
+            padding: 1.8rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        #ai-trigger {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2001;
+            background: #fff;
+            padding: 24px 14px;
+            border-radius: 24px 0 0 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #ai-trigger span {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: 900;
+            font-size: 11px;
+            color: #000;
+            text-transform: uppercase !important;
         }
 
         ::-webkit-scrollbar {
@@ -185,21 +238,20 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #333;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
         }
     </style>
 </head>
 
 <body>
-
     <div id="ambient-layer"></div>
     <div id="cursor-glow"></div>
     <div id="cursor-pointer"></div>
 
     <nav class="fixed w-full z-[100] p-10 flex justify-between items-center mix-blend-difference">
-        <div class="text-2xl font-black tracking-tighter uppercase">GUL<span class="logo-blue">ŠA</span></div>
-        <div class="hidden md:flex gap-10 text-[10px] uppercase tracking-[0.4em] font-bold opacity-40">
+        <div class="text-2xl font-black tracking-tighter uppercase-style">GUL<span style="color:#1e40af">ŠA</span></div>
+        <div class="hidden md:flex gap-10 text-[10px] uppercase-style tracking-[0.4em] font-bold opacity-40">
             <a href="#about-section">O mne</a>
             <a href="#clients-section">Klienti</a>
             <a href="#reviews-section">Recenzie</a>
@@ -208,14 +260,12 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <div class="hero-reveal">
-            <h1 class="text-[14vw] font-black tracking-tighter uppercase leading-[0.8] mb-4">GUL<span
-                    class="logo-blue">ŠA</span></h1>
-        </div>
-        <p class="hero-reveal text-zinc-500 text-xs md:text-sm uppercase tracking-[2em] mt-3 font-light translate-x-[1em]"
-            style="animation-delay: 0.4s;">Od strihu až po design</p>
-        <div class="hero-reveal mt-20" style="animation-delay: 0.8s;">
-            <a href="#about-section" class="btn-main">Kto som?</a>
+        <h1 class="text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">GUL<span
+                style="color:#1e40af">ŠA</span></h1>
+        <p class="text-zinc-500 text-xs md:text-sm uppercase-style tracking-[2em] mt-3 font-light translate-x-[1em]">Od
+            strihu až po design</p>
+        <div class="mt-20">
+            <a href="#about-section" class="btn-main uppercase-style">Kto som?</a>
         </div>
     </header>
 
@@ -226,9 +276,8 @@
                     class="w-full h-full object-cover">
             </div>
             <div class="flex-grow">
-                <span class="text-blue-600 font-bold tracking-[0.5em] uppercase text-[10px] mb-4 block">Visual
-                    Engineer</span>
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6">Gulša</h2>
+                <span class="text-blue-600 font-bold uppercase-style text-[10px] mb-4 block">Visual Engineer</span>
+                <h2 class="text-4xl md:text-6xl font-black uppercase-style tracking-tighter mb-6">Gulša</h2>
                 <div class="space-y-4 text-zinc-400 text-lg leading-relaxed">
                     <p>Strihám už <span class="text-white font-bold">3 roky</span>, z toho posledný rok sa venujem
                         strihu profesionálnejšie v <span class="text-white font-bold">Adobe Premiere Pro</span>.</p>
@@ -241,199 +290,283 @@
         </div>
     </section>
 
-    <section id="clients-section" class="max-w-7xl mx-auto px-6 py-60">
-        <div class="flex flex-col items-center mb-40 text-center">
-            <span class="text-blue-600 font-bold tracking-[0.5em] uppercase text-[10px] mb-4">Portfolio</span>
-            <h2 class="text-6xl md:text-8xl font-black uppercase tracking-tighter">Klienti</h2>
-        </div>
-
+    <section id="clients-section" class="max-w-7xl mx-auto px-6 py-40">
+        <h2 class="text-6xl md:text-8xl font-black uppercase-style tracking-tighter text-center mb-20">Klienti</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <button onclick="openGallery('Gulša')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">3k+</span>
-                <h3 class="text-4xl font-extrabold text-white">Gulša</h3>
+            <button onclick="openGallery('Gulša')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">3k+</span>
+                <h3 class="text-3xl font-extrabold text-white">Gulša</h3>
             </button>
-            <button onclick="openGallery('PandaK')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">6k+ subs</span>
-                <h3 class="text-4xl font-extrabold text-white">PandaK</h3>
+            <button onclick="openGallery('PandaK')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">6k+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">PandaK</h3>
             </button>
-            <button onclick="openGallery('AJHT TV')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">6k+ subs</span>
-                <h3 class="text-4xl font-extrabold text-white">AJHT TV</h3>
+            <button onclick="openGallery('AJHT TV')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">6k+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">AJHT TV</h3>
             </button>
-            <button onclick="openGallery('DrWoolf')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">1,4k subs</span>
-                <h3 class="text-4xl font-extrabold text-white">DrWoolf</h3>
+            <button onclick="openGallery('DrWoolf')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">1,4k+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">DrWoolf</h3>
             </button>
-            <button onclick="openGallery('Sheltix')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">300 subs</span>
-                <h3 class="text-4xl font-extrabold text-white">Sheltix</h3>
+            <button onclick="openGallery('Sheltix')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">300+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">Sheltix</h3>
             </button>
-            <button onclick="openGallery('Drindo')" class="glass-card p-14 text-left group">
-                <span class="text-white/20 text-[14px] font-bold uppercase tracking-widest mb-4 block">450 subs</span>
-                <h3 class="text-4xl font-extrabold text-white">Drindo</h3>
+            <button onclick="openGallery('Drindo')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">450+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">Drindo</h3>
+            </button>
+            <button onclick="openGallery('Adameantius')" class="glass-card p-10 text-left">
+                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">1,3k+ subs</span>
+                <h3 class="text-3xl font-extrabold text-white">Adameantius</h3>
             </button>
         </div>
 
         <div id="gallery-box" class="mt-40 hidden opacity-0 transition-all duration-1000 translate-y-20">
             <h2 id="gallery-title"
-                class="text-6xl md:text-9xl font-black uppercase mb-32 text-center italic tracking-tighter"></h2>
+                class="text-5xl md:text-7xl font-black uppercase-style mb-20 text-center italic tracking-tighter"></h2>
             <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
         </div>
     </section>
 
     <section id="reviews-section" class="max-w-7xl mx-auto px-6 py-40">
-        <div class="flex flex-col items-center mb-32 text-center">
-            <span class="text-blue-600 font-bold tracking-[0.5em] uppercase text-[10px] mb-4">Feedback</span>
-            <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter">Recenzie</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="glass-card review-bubble">
-                <p class="review-text">"Moc hezká práce, řekl bych že i prémiová, Moc radím!"</p>
-                <div>
-                    <div class="stars">★★★★★</div>
-                    <p class="author-name">PandaK</p>
-                </div>
+        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">Recenzie</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass-card p-10">
+                <span class="text-yellow-500 mb-4 block">★★★★★</span>
+                <p class="italic text-zinc-400 mb-6">"Moc hezká práce, řekl bych že i prémiová, Moc radím!"</p>
+                <p class="font-bold text-white uppercase-style text-sm tracking-widest">PandaK</p>
             </div>
-            <div class="glass-card review-bubble">
-                <p class="review-text">"Dodanie bolo rýchle a miniatúra, na to že bola zadarmo, pekná."</p>
-                <div>
-                    <div class="stars">★★★★★</div>
-                    <p class="author-name">AJHT TV</p>
-                </div>
+            <div class="glass-card p-10">
+                <span class="text-yellow-500 mb-4 block">★★★★★</span>
+                <p class="italic text-zinc-400 mb-6">"Dodanie bolo rýchle a miniatúra, na to že bola zadarmo, pekná."
+                </p>
+                <p class="font-bold text-white uppercase-style text-sm tracking-widest">AJHT TV</p>
             </div>
-            <div class="glass-card review-bubble">
-                <p class="review-text">"Výborná spolupráca - rýchly, kreatívny a vždy doručí kvalitnú miniatúru."</p>
-                <div>
-                    <div class="stars">★★★★★</div>
-                    <p class="author-name">DrWoolf</p>
-                </div>
+            <div class="glass-card p-10">
+                <span class="text-yellow-500 mb-4 block">★★★★★</span>
+                <p class="italic text-zinc-400 mb-6">"Výborná spolupráca - rýchly, kreatívny a vždy doručí kvalitnú
+                    miniaturu."</p>
+                <p class="font-bold text-white uppercase-style text-sm tracking-widest">DrWoolf</p>
             </div>
-            <div class="glass-card review-bubble">
-                <p class="review-text">"Objednávku jsem dostala rychle. Kvalitní práce a dobrá komunikace."</p>
-                <div>
-                    <div class="stars">★★★★★</div>
-                    <p class="author-name">Sheltix</p>
-                </div>
+            <div class="glass-card p-10">
+                <span class="text-yellow-500 mb-4 block">★★★★★</span>
+                <p class="italic text-zinc-400 mb-6">"Objednávku jsem dostala rychle. Kvalitní práce a dobrá komunikace.
+                    Rozhodně doporučuji."</p>
+                <p class="font-bold text-white uppercase-style text-sm tracking-widest">Sheltix</p>
             </div>
-            <div class="glass-card review-bubble md:col-span-2 max-w-4xl mx-auto w-full">
-                <p class="review-text">"Dneska ráno som ho poprosil a večer som to dostal ešte lepšie ako som si
-                    predstavoval... Vrelo doporučujem 👍🔥"</p>
-                <div>
-                    <div class="stars">★★★★★</div>
-                    <p class="author-name">Drindo</p>
-                </div>
+            <div class="glass-card p-10 md:col-span-2 lg:col-span-1">
+                <span class="text-yellow-500 mb-4 block">★★★★★</span>
+                <p class="italic text-zinc-400 mb-6">"Dneska ráno som ho poprosil a večer som to dostal ešte lepšie ako
+                    som si predstavoval... Vrelo doporúčam👍🏻👍🏻"</p>
+                <p class="font-bold text-white uppercase-style text-sm tracking-widest">Drindo</p>
             </div>
         </div>
     </section>
 
-    <section id="faq-section" class="max-w-4xl mx-auto px-6 py-60">
-        <div class="flex flex-col items-center mb-32 text-center">
-            <span class="text-blue-600 font-bold tracking-[0.8em] uppercase text-[10px] mb-4">Price</span>
-            <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter">Cenník & FAQ</h2>
-        </div>
-
+    <section id="faq-section" class="max-w-4xl mx-auto px-6 py-40">
+        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">Cenník</h2>
         <div class="space-y-6">
             <div class="price-tag">
                 <div>
                     <h4 class="text-xl font-bold">Minecraft Thumbnail</h4>
                     <p class="text-zinc-500 text-sm">3D rendery, špičkové nasvietenie</p>
                 </div>
-                <div class="price-value text-right">4€ — 7€</div>
+                <div class="price-value">4€ — 7€</div>
             </div>
-
             <div class="price-tag">
                 <div>
                     <h4 class="text-xl font-bold">IRL Thumbnail</h4>
-                    <p class="text-zinc-500 text-sm">Vlogy, challenge,..</p>
+                    <p class="text-zinc-500 text-sm">Vlogy, challenge, cestovanie</p>
                 </div>
-                <div class="price-value text-right">5€ — 10€</div>
+                <div class="price-value">5€ — 10€</div>
             </div>
-
-            <div class="glass-card p-12 mt-12 border-white/10">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-                    <div>
-                        <h4 class="text-3xl font-black uppercase tracking-tighter">Video Editing</h4>
-                        <p class="text-blue-500 text-xs font-bold uppercase tracking-widest mt-1">High-End Production
-                        </p>
-                    </div>
-                    <div class="price-value text-3xl">20€ — 50€+</div>
+            <div class="price-tag">
+                <div>
+                    <h4 class="text-xl font-bold">Video Editing</h4>
+                    <p class="text-zinc-500 text-sm">Adobe Premiere Pro, dynamický strih</p>
                 </div>
-                <p class="text-zinc-400 leading-relaxed text-lg mb-8">
-                    Cena strihu závisí od náročnosti projektu. Zvyčajne sa pohybuje v rozmedzí 20-50€...
-                </p>
-                <ul class="text-zinc-500 text-sm space-y-4 mb-10">
-                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span> Dĺžky
-                        materiálu</li>
-                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
-                        Množstva efektov</li>
-                </ul>
-                <div class="pt-8 border-t border-white/5 opacity-40 text-[9px] uppercase tracking-[0.4em] text-center">
-                    Ceny sú orientačné, presná suma po dohode.
-                </div>
+                <div class="price-value">20€ — 50€+</div>
             </div>
         </div>
     </section>
 
-    <footer class="py-40 text-center opacity-10">
-        <p class="text-[9px] uppercase tracking-[1.5em] font-bold">© 2026 GULŠA STUDIO</p>
+    <section class="max-w-7xl mx-auto px-6 py-60 border-t border-white/5">
+        <div class="flex flex-col items-center text-center">
+            <h2 class="text-4xl md:text-6xl font-black uppercase-style tracking-tighter mb-12">Chceš spolupracovať?</h2>
+            <div class="flex flex-wrap justify-center gap-8">
+                <button onclick="copyToClipboard('gulsa_yt', this)" class="contact-btn">
+                    <span class="copy-tooltip">Klikni pre skopírovanie</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                    </svg>
+                    <span class="font-bold text-lg">gulsa_yt</span>
+                </button>
+                <button onclick="copyToClipboard('_gulsa_yt', this)" class="contact-btn">
+                    <span class="copy-tooltip">Klikni pre skopírovanie</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.058-1.69-.072-4.949-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                    <span class="font-bold text-lg">_gulsa_yt</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center opacity-10">
+        <p class="text-[9px] uppercase-style tracking-[1.5em] font-bold">©2026 GULŠA STUDIO</p>
     </footer>
 
+    <button id="ai-trigger" onclick="toggleChat()">
+        <span>Otázky?</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
+    <div id="ai-window" class="hidden opacity-0 translate-y-10 transition-all duration-500">
+        <div id="ai-header">
+            <div>
+                <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI ASSISTANT</h4>
+                <div class="flex items-center gap-1.5 mt-1"><span
+                        class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span
+                        class="text-[8px] text-zinc-500 uppercase-style font-bold">Online</span></div>
+            </div>
+            <button onclick="toggleChat()" class="text-white/20 hover:text-white transition-colors"><svg width="20"
+                    height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg></button>
+        </div>
+        <div id="ai-chat-history">
+            <div class="bg-white/5 p-4 rounded-3xl rounded-tl-none text-zinc-400 text-xs leading-relaxed">Čau! Som tvoj
+                sprievodca Gulšovou tvorbou. Pýtaj sa na čokoľvek: ceny, moju prax, v čom strihám alebo ako robím
+                miniatúry.</div>
+        </div>
+        <div class="p-6 bg-white/5 border-t border-white/5 flex gap-3">
+            <input type="text" id="ai-input" placeholder="Opýtaj sa niečo..."
+                class="flex-grow bg-black/40 border border-white/10 rounded-2xl px-5 py-3 text-xs text-white outline-none"
+                onkeypress="if(event.key === 'Enter') askAI()">
+            <button onclick="askAI()" class="bg-white text-black px-4 rounded-2xl font-bold">➔</button>
+        </div>
+    </div>
+
     <script>
+        // DATA - Len 'Gulša' má fotky, ostatní sú zatiaľ prázdni
+        const portfolioData = {
+            'Gulša': [
+                "ovjavil som crazy editovaci styl 1.jpg",
+                "objavl som crazy editovaci style - zuby timeline_.jpg",
+                "objavil som crazy editovaci style - 3d nahledak.jpg",
+                "pvp_king_nahledak_clutch.jpg",
+                "gulsa zapol omylom stream.jpg",
+                "reakcie na odhalenie.. nahledak.jpg",
+                "fps challenge w bright nahledak.jpg",
+                "fps challenge 2v2.jpg"
+            ],
+            'PandaK': [],
+            'AJHT TV': [],
+            'DrWoolf': [],
+            'Sheltix': [],
+            'Drindo': [],
+            'Adameantius': []
+        };
+
         const ptr = document.getElementById('cursor-pointer');
         const glw = document.getElementById('cursor-glow');
+        let mouseX = 0, mouseY = 0, ptrX = 0, ptrY = 0, glwX = 0, glwY = 0;
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
-        let mouseX = 0, mouseY = 0;
-        let ptrX = 0, ptrY = 0;
-        let glwX = 0, glwY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animate() {
-            // Biely ukazovateľ (rýchlejšie sledovanie)
-            ptrX += (mouseX - ptrX) * 0.25;
-            ptrY += (mouseY - ptrY) * 0.25;
+        function animateCursor() {
+            ptrX += (mouseX - ptrX) * 0.25; ptrY += (mouseY - ptrY) * 0.25;
             ptr.style.transform = `translate(${ptrX}px, ${ptrY}px)`;
-
-            // Modré glow (pomalšie a plynulejšie)
-            glwX += (mouseX - glwX) * 0.05;
-            glwY += (mouseY - glwY) * 0.05;
+            glwX += (mouseX - glwX) * 0.05; glwY += (mouseY - glwY) * 0.05;
             glw.style.transform = `translate(calc(${glwX}px - 50%), calc(${glwY}px - 50%))`;
-
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateCursor);
         }
-        animate();
+        animateCursor();
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text);
+            const tooltip = btn.querySelector('.copy-tooltip');
+            tooltip.innerText = "Skopírované!"; tooltip.style.opacity = "1";
+            setTimeout(() => { tooltip.style.opacity = "0"; tooltip.innerText = "Klikni pre skopírovanie"; }, 2000);
+        }
 
         function openGallery(name) {
             const box = document.getElementById('gallery-box');
-            const grid = document.getElementById('gallery-grid');
             const title = document.getElementById('gallery-title');
+            const grid = document.getElementById('gallery-grid');
             box.classList.remove('hidden');
-            setTimeout(() => {
-                box.classList.remove('opacity-0', 'translate-y-20');
-                box.classList.add('opacity-100', 'translate-y-0');
-            }, 50);
+            setTimeout(() => { box.classList.replace('opacity-0', 'opacity-100'); box.classList.replace('translate-y-20', 'translate-y-0'); }, 50);
             title.innerText = name;
-
-            if (name === 'Gulša') {
-                const imgs = ["ovjavil som crazy editovaci styl 1.jpg", "objavil som crazy editovaci style - zuby timeline_.jpg", "objavil som crazy editovaci style - 3d nahledak.jpg", "pvp_king_nahledak_clutch.jpg", "gulsa zapol omylom stream.jpg", "reakcie na odhalenie.. nahledak.jpg", "fps challenge w bright nahledak.jpg", "fps challenge 2v2.jpg"];
-                grid.innerHTML = "";
-                imgs.forEach((src, i) => {
-                    const el = document.createElement('img');
-                    el.src = `Gulsa/${encodeURIComponent(src)}`;
-                    el.className = "portfolio-img opacity-0";
-                    el.style.animation = `heroIn 1s forwards ${i * 0.1}s`;
-                    grid.appendChild(el);
-                });
+            grid.innerHTML = "";
+            const files = portfolioData[name] || [];
+            if (files.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center opacity-30 italic">Ukážky pre klienta ${name} budú doplnené už čoskoro...</div>`;
             } else {
-                grid.innerHTML = `<div class="col-span-full py-40 border border-white/5 rounded-[3rem] text-center opacity-40 uppercase tracking-[0.5em] text-[10px]">Pripravuje sa...</div>`;
+                files.forEach(file => {
+                    const container = document.createElement('div');
+                    container.className = "overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 aspect-video";
+                    const img = document.createElement('img');
+                    img.src = `Gulša/${encodeURIComponent(file)}`;
+                    img.className = "w-full h-full object-cover transition-transform duration-700 hover:scale-105";
+                    container.appendChild(img);
+                    grid.appendChild(container);
+                });
             }
-
-            const offset = box.offsetTop - 100;
-            window.scrollTo({ top: offset, behavior: 'smooth' });
+            window.scrollTo({ top: box.offsetTop - 100, behavior: 'smooth' });
         }
+
+        let chatOpen = false;
+        function toggleChat() {
+            const win = document.getElementById('ai-window');
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                win.classList.remove('hidden');
+                setTimeout(() => { win.classList.replace('opacity-0', 'opacity-100'); win.classList.replace('translate-y-10', 'translate-y-0'); }, 10);
+            } else {
+                win.classList.replace('opacity-100', 'opacity-0');
+                win.classList.replace('translate-y-0', 'translate-y-10');
+                setTimeout(() => win.classList.add('hidden'), 500);
+            }
+        }
+
+        function askAI() {
+            const input = document.getElementById('ai-input');
+            const history = document.getElementById('ai-chat-history');
+            const question = input.value.trim().toLowerCase();
+            if (!question) return;
+
+            history.innerHTML += `<div class="flex justify-end"><div class="bg-blue-600/40 p-3 rounded-2xl rounded-tr-none text-xs text-white">${input.value}</div></div>`;
+            input.value = "";
+            history.scrollTop = history.scrollHeight;
+
+            let answer = "Zaujímavé! Spýtaj sa na ceny, moju prax alebo referencie.";
+            if (question.includes("irl") || question.includes("thumbnail") || question.includes("miniatúr") || question.includes("miniatur")) {
+                answer = "Miniatúry (thumbnails) designujem v **Adobe Photoshope** už približne rok. Pri Minecraft videách používam pokročilé 3D rendery s vlastným nasvietením, aby výsledok pôsobil čo najviac 'clean'. Cena sa pohybuje od 4€ do 10€.";
+            }
+            else if (question.includes("minecraft") || question.includes("mc")) answer = "Minecraft 3D nahľadáky stoja u mňa 4€ — 7€.";
+            else if (question.includes("cena") || question.includes("koľko")) answer = "MC: 4-7€, IRL: 5-10€, Strih videa: 20€+.";
+            else if (question.includes("klient") || question.includes("referencie")) answer = "Pracujem pre mená ako PandaK, AJHT TV, DrWoolf a ďalších.";
+
+            // Format bolds for simple markdown
+            answer = answer.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>');
+
+            setTimeout(() => {
+                history.innerHTML += `<div class="flex justify-start"><div class="bg-white/5 p-3 rounded-2xl rounded-tl-none border border-white/5 text-zinc-300 text-xs leading-relaxed">${answer}</div></div>`;
+                history.scrollTop = history.scrollHeight;
+            }, 600);
+        }
+
+        const aiWin = document.getElementById("ai-window");
+        const aiHead = document.getElementById("ai-header");
+        let isDragging = false; let offset = { x: 0, y: 0 };
+        aiHead.onmousedown = (e) => { isDragging = true; offset.x = e.clientX - aiWin.offsetLeft; offset.y = e.clientY - aiWin.offsetTop; aiWin.style.transition = "none"; };
+        document.onmousemove = (e) => { if (!isDragging) return; aiWin.style.left = (e.clientX - offset.x) + "px"; aiWin.style.top = (e.clientY - offset.y) + "px"; aiWin.style.bottom = "auto"; aiWin.style.right = "auto"; };
+        document.onmouseup = () => { isDragging = false; aiWin.style.transition = "opacity 0.5s, transform 0.5s"; };
     </script>
 </body>
 
