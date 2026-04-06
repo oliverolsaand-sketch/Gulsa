@@ -105,6 +105,7 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
+        /* UPRAVENÉ: Hover efekt pre tlačidlo */
         .btn-main {
             padding: 1.3rem 4rem;
             border-radius: 99px;
@@ -114,6 +115,21 @@
             letter-spacing: 0.2em;
             font-size: 0.75rem;
             display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-main:hover {
+            transform: scale(1.1);
+        }
+
+        /* PRIDANÉ: Hover efekt pre veľký nadpis */
+        .hero-title-container {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
+        
+        .hero-title-container:hover {
+            transform: scale(1.05);
         }
 
         .price-tag {
@@ -250,7 +266,7 @@
     <div id="cursor-pointer"></div>
 
     <nav class="fixed w-full z-[100] p-10 flex justify-between items-center mix-blend-difference">
-        <div class="text-2xl font-black tracking-tighter uppercase-style">GUL<span style="color:#1e40af">ŠA</span></div>
+        <a href="#" class="text-2xl font-black tracking-tighter uppercase-style transition-opacity hover:opacity-50">GUL<span style="color:#1e40af">ŠA</span></a>
         <div class="hidden md:flex gap-10 text-[10px] uppercase-style tracking-[0.4em] font-bold opacity-40">
             <a href="#about-section">O mne</a>
             <a href="#clients-section">Klienti</a>
@@ -260,8 +276,10 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <h1 class="text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">GUL<span
-                style="color:#1e40af">ŠA</span></h1>
+        <div class="hero-title-container">
+            <h1 class="text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">GUL<span
+                    style="color:#1e40af">ŠA</span></h1>
+        </div>
         <p class="text-zinc-500 text-xs md:text-sm uppercase-style tracking-[2em] mt-3 font-light translate-x-[1em]">Od
             strihu až po design</p>
         <div class="mt-20">
