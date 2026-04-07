@@ -1080,12 +1080,15 @@
             style="width: 300px; height: 300px; border-radius: 50%; translate: -50% -50%; background: radial-gradient(circle, var(--ai-accent-glow) 0%, transparent 70%); mix-blend-mode: screen; z-index: 0; opacity: 0; pointer-events: none;">
         </div>
         <div id="ai-resize-handle"></div>
-        <div id="ai-header">
-            <div>
-                <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
-                <div class="flex items-center gap-1.5 mt-1">
-                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                    <span class="text-[8px] text-zinc-500 uppercase-style font-bold">Online</span>
+        <div id="ai-header" class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="pandak_pfp_.png" alt="Gulša AI Avatar" class="w-10 h-10 rounded-full border border-[var(--ai-accent-dim)] object-cover shadow-[0_0_15px_var(--ai-accent-glow)] transition-all duration-[3000ms]">
+                <div>
+                    <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                        <span class="text-[8px] text-zinc-500 uppercase-style font-bold">Online</span>
+                    </div>
                 </div>
             </div>
             <button onclick="toggleChat()" class="text-white/20 hover:text-white transition-colors">
@@ -1188,9 +1191,9 @@
                     "thumb_1.jpg", "thumb_2.jpg", "thumb_3.jpg", "thumb_4.jpg"
                 ],
                 videos: [
-                    { link: "https://youtu.be/yhGVigTKi7U", thumb: "https://i.ytimg.com/vi/yhGVigTKi7U/maxresdefault.jpg", title: "Najlepší server v Česko-Slovensku?!" },
-                    { link: "https://youtu.be/g4XkFVSI-jo", thumb: "https://i.ytimg.com/vi/g4XkFVSI-jo/maxresdefault.jpg", title: "Setup 14 ročného YouTubera" },
-                    { link: "https://youtu.be/LY3dzMeiB6M", thumb: "https://i.ytimg.com/vi/LY3dzMeiB6M/maxresdefault.jpg", title: "Tieto Packy sú Hrozné" }
+                    { link: "https://youtu.be/yhGVigTKi7U", thumb: "fps challenge 2v2.png", title: "Najlepší server v Česko-Slovensku?!" },
+                    { link: "https://youtu.be/g4XkFVSI-jo", thumb: "gulsa zapol omylom stream.png", title: "Setup 14 ročného YouTubera" },
+                    { link: "https://youtu.be/LY3dzMeiB6M", thumb: "reakcie na odhalenie.. nahledak.png", title: "Tieto Packy sú Hrozné" }
                 ]
             },
             'PandaK': { thumbnails: ["panda_pfp.jpg", "panda_1.jpg"], videos: [] },
@@ -1258,7 +1261,7 @@
                     grid.innerHTML += `
                         <a href="${item.link}" target="_blank" class="glass-card p-4 rounded-[2.5rem] border border-white/10 group backdrop-blur-[25px] hover:scale-[1.03] transition-all bg-black/20 shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:shadow-[0_10px_50px_var(--ai-accent-glow)] flex flex-col justify-center gap-4">
                             <div class="overflow-hidden rounded-[1.5rem] aspect-video relative flex-shrink-0">
-                                <img src="${item.thumb}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <img src="${encodeURI(item.thumb)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                                     <svg class="w-16 h-16 text-white scale-[0.8] group-hover:scale-100 transition-transform duration-500 popup-shadow" style="filter: drop-shadow(0 4px 15px rgba(0,0,0,0.9));" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
                                 </div>
