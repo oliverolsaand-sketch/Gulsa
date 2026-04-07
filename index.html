@@ -100,23 +100,61 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 2. DYNAMICKÉ POZADIE */
-        #ambient-layer {
+        /* 2. DYNAMICKÉ POZADIE (GLOBAL 3D) & SMOOTH REVEAL */
+        #bg-canvas {
             position: fixed;
             inset: 0;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, rgba(2, 2, 2, 1) 100%);
-            animation: rainbowFlow 15s infinite linear;
+            width: 100vw;
+            height: 100vh;
+            z-index: -50;
+            pointer-events: none;
+            background: #020202;
         }
 
-        @keyframes rainbowFlow {
-            0% {
-                filter: hue-rotate(0deg);
-            }
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            filter: blur(10px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
+        }
 
-            100% {
-                filter: hue-rotate(360deg);
-            }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        #reviews-slider > div {
+            min-width: 85vw;
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media(min-width: 768px) { #reviews-slider > div { min-width: 400px; } }
+
+        #reviews-slider:hover > div:not(:hover) {
+            filter: blur(4px);
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        #reviews-slider > div:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 0 40px var(--ai-accent-glow);
+            border-color: var(--ai-accent) !important;
+            z-index: 10;
+        }
+
+        .hero-anim-text {
+            display: inline-block;
+            animation: heroTextReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes heroTextReveal {
+            0% { transform: scale(1.5) translateY(50px); opacity: 0; filter: blur(20px); letter-spacing: -0.2em; }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); letter-spacing: normal; }
         }
 
         /* 3. KOMPONENTY */
@@ -270,7 +308,17 @@
             color: #1e40af;
         }
 
-        /* 5. AI WINDOW */
+        /* ============================================
+           5. AI WINDOW — ULTRA-PREMIUM OP EDITION
+           CSS variables are driven by JS color engine
+           ============================================ */
+        :root {
+            --ai-accent: rgba(0, 255, 100, 1);
+            /* cycles via JS */
+            --ai-accent-dim: rgba(0, 255, 100, 0.25);
+            --ai-accent-glow: rgba(0, 255, 100, 0.12);
+        }
+
         #ai-window {
             position: fixed;
             bottom: 40px;
@@ -284,14 +332,178 @@
             display: flex;
             flex-direction: column;
             z-index: 2000;
-            background: rgba(8, 8, 8, 0.95);
-            backdrop-filter: blur(50px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(4, 4, 6, 0.88);
+            /* Deep glassmorphism */
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            /* Border driven by JS CSS var */
+            border: 1px solid var(--ai-accent-dim);
             border-radius: 2.5rem;
             overflow: hidden !important;
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
-            transform: translate3d(0px, 0px, 0px);
-            will-change: transform, width, height;
+            box-shadow: 0 30px 80px var(--ai-accent-glow), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            will-change: transform, opacity, filter;
+            /* Extreme entrance — starts blurred, scaled-down, far below */
+            opacity: 0;
+            transform: translateY(100px) scale(0.8);
+            filter: blur(20px);
+            pointer-events: none;
+            /* Gentle floating animation (non-conflicting with entrance) */
+            animation: floatingChat 7s ease-in-out infinite;
+        }
+
+        /* Pulsing neon border — keyframe on border-color via CSS var fallback */
+        @keyframes borderPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px var(--ai-accent-glow), 0 30px 80px var(--ai-accent-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 35px var(--ai-accent-dim), 0 30px 80px var(--ai-accent-glow);
+            }
+        }
+
+        #ai-window.ai-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+            pointer-events: all;
+            /* 1.5s Apple-spring entrance */
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: floatingChat 7s ease-in-out infinite, borderPulse 3s ease-in-out infinite;
+        }
+
+        #ai-window.ai-closing {
+            opacity: 0;
+            transform: translateY(100px) scale(0.85);
+            filter: blur(20px);
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes floatingChat {
+
+            0%,
+            100% {
+                translate: 0px 0px;
+            }
+
+            50% {
+                translate: 0px -10px;
+            }
+        }
+
+        /* AI message bubbles — border & glow use CSS variable updated by JS */
+        .ai-bubble-glow {
+            background: var(--ai-accent-glow);
+            border: 1px solid var(--ai-accent-dim);
+            box-shadow: 0 0 15px var(--ai-accent-glow);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: border-color 0.1s, box-shadow 0.1s, background 0.1s;
+        }
+
+        /* Neon input border — uses CSS var updated by JS */
+        #ai-input {
+            border: 1px solid var(--ai-accent-dim) !important;
+            box-shadow: 0 0 12px var(--ai-accent-glow) !important;
+            transition: border-color 3s, box-shadow 3s, opacity 0.3s;
+        }
+
+        #ai-input:focus {
+            border-color: var(--ai-accent) !important;
+            box-shadow: 0 0 22px var(--ai-accent-dim), inset 0 0 10px var(--ai-accent-glow) !important;
+        }
+
+        /* Message bounce-in animation */
+        .chat-msg-anim {
+            animation: messageBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            transform: translateY(24px) scale(0.95);
+        }
+
+        @keyframes messageBounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.95);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(-4px) scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .ai-send-btn {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px var(--ai-accent-glow);
+        }
+
+        .ai-send-btn:active {
+            transform: scale(0.88);
+            box-shadow: 0 0 25px var(--ai-accent-dim);
+        }
+
+        /* Thinking dots loader */
+        .thinking-dots {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .thinking-dots:after {
+            content: '.';
+            animation: dots 1.4s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                color: rgba(255, 255, 255, 0);
+                text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            40% {
+                color: white;
+                text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            60% {
+                text-shadow: .25em 0 0 white, .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            80%,
+            100% {
+                text-shadow: .25em 0 0 white, .5em 0 0 white;
+            }
+        }
+
+        /* Radial mouse glow overlay */
+        #ai-mouse-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--ai-accent-glow) 0%, transparent 70%);
+            transition: background 3s;
+            z-index: 0;
+            opacity: 0;
+            will-change: left, top;
         }
 
         #ai-resize-handle {
@@ -346,19 +558,33 @@
             text-transform: uppercase !important;
         }
 
+        /* Ultra-thin custom scrollbar */
+        #ai-chat-history::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        #ai-chat-history::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #ai-chat-history::-webkit-scrollbar-thumb {
+            background: var(--ai-accent-dim);
+            border-radius: 10px;
+        }
+
         ::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
         }
     </style>
 </head>
 
 <body>
-    <div id="ambient-layer"></div>
+    <canvas id="bg-canvas"></canvas>
     <div id="cursor-glow"></div>
     <div id="cursor-pointer"></div>
 
@@ -395,8 +621,8 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <div class="hero-title-container">
-            <h1 class="text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">
+        <div class="hero-title-container overflow-hidden p-10">
+            <h1 class="hero-anim-text text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">
                 GUL<span style="color:#1e40af">ŠA</span>
             </h1>
         </div>
@@ -427,6 +653,29 @@
                     <p data-i18n="about-3">Okrem videa sa venujem aj grafike – už približne rok designujem thumbnaily
                         cez <span class="text-white font-bold">Photoshop</span>.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="toolbox-section" class="max-w-7xl mx-auto px-6 py-40">
+        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">
+            Toolbox</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-80">
+            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro" class="w-16 h-16">
+                <span class="font-bold text-xs tracking-widest uppercase-style text-center">Premiere</span>
+            </div>
+            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" class="w-16 h-16">
+                <span class="font-bold text-xs tracking-widest uppercase-style text-center">After Effects</span>
+            </div>
+            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop" class="w-16 h-16">
+                <span class="font-bold text-xs tracking-widest uppercase-style text-center">Photoshop</span>
+            </div>
+            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg" alt="Blender 3D" class="w-16 h-16">
+                <span class="font-bold text-xs tracking-widest uppercase-style text-center">Blender 3D</span>
             </div>
         </div>
     </section>
@@ -472,10 +721,10 @@
         </div>
     </section>
 
-    <section id="reviews-section" class="max-w-7xl mx-auto px-6 py-40">
+    <section id="reviews-section" class="max-w-7xl mx-auto px-6 py-40 overflow-hidden">
         <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20" data-i18n="nav-reviews">
             Recenzie</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="reviews-slider" class="flex gap-8 overflow-x-auto py-10 px-4 hide-scrollbar cursor-grab active:cursor-grabbing" style="will-change: scroll-position;">
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
@@ -599,7 +848,11 @@
         </svg>
     </button>
 
-    <div id="ai-window" class="hidden opacity-0 translate-y-10 transition-all duration-500">
+    <div id="ai-window" class="hidden">
+        <!-- 3D Background Particles Canvas -->
+        <canvas id="ai-canvas-particles" class="absolute inset-0 pointer-events-none z-[-1]"
+            style="border-radius: 2.5rem;"></canvas>
+        <div id="ai-mouse-glow" class="absolute pointer-events-none" style="width: 300px; height: 300px; border-radius: 50%; translate: -50% -50%; background: radial-gradient(circle, var(--ai-accent-glow) 0%, transparent 70%); mix-blend-mode: screen; z-index: 0; opacity: 0; pointer-events: none;"></div>
         <div id="ai-resize-handle"></div>
         <div id="ai-header">
             <div>
@@ -625,7 +878,8 @@
             <input type="text" id="ai-input" placeholder="..."
                 class="flex-grow bg-black/40 border border-white/10 rounded-2xl px-5 py-3 text-xs text-white outline-none"
                 onkeypress="if(event.key === 'Enter') askAI()">
-            <button onclick="askAI()" class="bg-white text-black px-4 rounded-2xl font-bold">➔</button>
+            <button onclick="askAI()"
+                class="ai-send-btn bg-white text-black px-4 rounded-2xl font-bold min-w-[40px]">➔</button>
         </div>
     </div>
 
@@ -869,16 +1123,24 @@
 
         function toggleChat() {
             const win = document.getElementById('ai-window');
-            if (win.classList.contains('hidden')) {
-                win.classList.remove('hidden');
-                setTimeout(() => {
-                    win.classList.replace('opacity-0', 'opacity-100');
-                    win.classList.replace('translate-y-10', 'translate-y-0');
-                }, 10);
+            const isOpen = win.classList.contains('ai-open');
+
+            if (!isOpen) {
+                // OPEN: Remove hidden, then trigger entrance animation
+                win.classList.remove('hidden', 'ai-closing');
+                // Force reflow so transition fires correctly
+                void win.offsetWidth;
+                win.classList.add('ai-open');
+                // Auto-focus input after animation
+                setTimeout(() => document.getElementById('ai-input')?.focus(), 820);
             } else {
-                win.classList.replace('opacity-100', 'opacity-0');
-                win.classList.replace('translate-y-0', 'translate-y-10');
-                setTimeout(() => win.classList.add('hidden'), 500);
+                // CLOSE: trigger exit animation, then hide
+                win.classList.remove('ai-open');
+                win.classList.add('ai-closing');
+                setTimeout(() => {
+                    win.classList.add('hidden');
+                    win.classList.remove('ai-closing');
+                }, 420);
             }
         }
 
@@ -890,8 +1152,22 @@
             const userPrompt = inputField.value.trim();
             if (!userPrompt) return;
 
-            chatHistory.innerHTML += '<div class="flex justify-end mb-4"><div class="bg-blue-600/40 text-white p-3 rounded-2xl max-w-[80%] border border-blue-400/20">' + userPrompt + '</div></div>';
+            const submitBtn = inputField.nextElementSibling;
+
+            // UZAMKNUTIE VSTUPU POČAS ODPOVEDE (Input Protection)
+            inputField.disabled = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="thinking-dots text-black mix-blend-difference" style="filter: invert(1);"></span>';
+            }
+            inputField.style.opacity = '0.5';
+
+            chatHistory.innerHTML += '<div class="flex justify-end mb-4 chat-msg-anim"><div class="bg-blue-600/40 text-white p-3 rounded-2xl max-w-[80%] border border-blue-400/20 shadow-lg">' + userPrompt + '</div></div>';
             inputField.value = '';
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            chatHistory.innerHTML += `<div id="${loadingId}" class="flex justify-start mb-4 chat-msg-anim"><div class="bg-white/5 text-white/50 p-3 rounded-2xl max-w-[80%] border border-white/5"><span class="thinking-dots"></span></div></div>`;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
             try {
@@ -906,17 +1182,7 @@
                         messages: [
                             {
                                 role: 'system',
-                                content: `Si Gulša AI, osobný asistent YouTubera a strihača menom Gulša. Tvoje vedomosti:
-
-Striháš 3 roky, z toho posledný rok profesionálne v Adobe Premiere Pro.
-
-Si YouTuber (Gulša), doteraz si editoval hlavne pre seba, teraz ponúkaš služby iným.
-
-Cenník: Minecraft náhľadovky (4-7€), IRL náhľadovky (5-10€), Edit videa (20-50€).
-
-Všetko závisí od náročnosti a dohody.
-
-Odpovedaj vždy v prvej osobe (Ja) a v slovenčine. Buď kamoš, ale profík.`
+                                content: 'Si Gulša AI. YouTuber a strihač (3 roky praxe). Expert na Premiere Pro a 3D. Tvoje ceny: Minecraft thumbnails 4-7€, IRL 5-10€, Video edit 20-50€. Odpovedaj stručne, kamošsky a v slovenčine.'
                             },
                             { role: 'user', content: userPrompt }
                         ]
@@ -924,16 +1190,34 @@ Odpovedaj vždy v prvej osobe (Ja) a v slovenčine. Buď kamoš, ale profík.`
                 });
 
                 const data = await response.json();
+                const loadEl = document.getElementById(loadingId);
+                if (loadEl) loadEl.remove();
 
-                if (data.error) throw new Error(data.error.message);
+                // ROBUSTNÉ ERROR HANDLING
+                if (!response.ok || data.error) {
+                    throw new Error(data.error?.message || `API Error: ${response.status}`);
+                }
 
                 const aiText = data.choices[0].message.content;
 
-                chatHistory.innerHTML += '<div class="flex justify-start mb-4"><div class="bg-white/10 text-white p-3 rounded-2xl max-w-[80%] border border-white/10 backdrop-blur-md">' + aiText + '</div></div>';
-                chatHistory.scrollTop = chatHistory.scrollHeight;
+                chatHistory.innerHTML += '<div class="flex justify-start mb-4 chat-msg-anim"><div class="ai-bubble-glow text-white p-3 rounded-2xl max-w-[80%]">' + aiText + '</div></div>';
 
             } catch (error) {
-                chatHistory.innerHTML += '<div class="flex justify-start mb-4"><div class="bg-red-500/20 text-red-200 p-3 rounded-2xl text-xs">Error: ' + error.message + '</div></div>';
+                console.error("AI Fetch Error:", error);
+                const loadEl = document.getElementById(loadingId);
+                if (loadEl) loadEl.remove();
+                chatHistory.innerHTML += '<div class="flex justify-start mb-4 chat-msg-anim"><div class="bg-red-500/20 text-red-200 p-3 rounded-2xl text-xs">Ospravedlňujem sa, niečo sa pokazilo a odpoveď sa nenačítala. Skús to prosím znovu.</div></div>';
+            } finally {
+                // UVOĽNENIE VSTUPU A AUTO-FOCUS
+                inputField.disabled = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '➔';
+                }
+                inputField.style.opacity = '1';
+
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                inputField.focus(); // AUTO-FOCUS func
             }
         }
 
@@ -945,11 +1229,239 @@ Odpovedaj vždy v prvej osobe (Ja) a v slovenčine. Buď kamoš, ale profík.`
             }
         }
 
+        // DYNAMIC COLOR ENGINE & 3D PARTICLES SYSTEM WITH CONNECTIONS (Vanilla HTML5 Canvas)
+        let aiHue = 140; // Cyberpunk Green
+        let aiHueDir = 0.2;
+        let globalColorStr = '140, 100%, 50%';
+
+        function updateColorEngine() {
+            aiHue += aiHueDir;
+            if (aiHue >= 220 || aiHue <= 140) aiHueDir *= -1;
+            
+            globalColorStr = `${aiHue.toFixed(1)}, 100%, 50%`;
+            document.documentElement.style.setProperty('--ai-accent', `hsl(${globalColorStr})`);
+            document.documentElement.style.setProperty('--ai-accent-dim', `hsla(${globalColorStr}, 0.25)`);
+            document.documentElement.style.setProperty('--ai-accent-glow', `hsla(${globalColorStr}, 0.12)`);
+            
+            requestAnimationFrame(updateColorEngine);
+        }
+        updateColorEngine();
+
+        const initParticles = () => {
+            const canvas = document.getElementById('ai-canvas-particles');
+            const aiWin = document.getElementById('ai-window');
+            const mouseGlow = document.getElementById('ai-mouse-glow');
+            if (!canvas || !aiWin) return;
+
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let mouse = { x: -1000, y: -1000 };
+            
+            function resize() {
+                width = canvas.width = aiWin.clientWidth;
+                height = canvas.height = aiWin.clientHeight;
+            }
+            resize();
+            if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(aiWin);
+
+            // Clean 3D Starfield specifically for AI window
+            const stars = [];
+            for (let i = 0; i < 150; i++) {
+                stars.push({
+                    x: Math.random() * 2000 - 1000,
+                    y: Math.random() * 2000 - 1000,
+                    z: Math.random() * 1000 + 10,
+                    vz: Math.random() * 1.5 + 0.5
+                });
+            }
+
+            aiWin.addEventListener('mousemove', e => {
+                const rect = aiWin.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+                
+                if(mouseGlow) {
+                    mouseGlow.style.opacity = '1';
+                    mouseGlow.style.left = mouse.x + 'px';
+                    mouseGlow.style.top = mouse.y + 'px';
+                }
+            });
+            aiWin.addEventListener('mouseleave', () => { 
+                mouse.x = -1000; mouse.y = -1000; 
+                if(mouseGlow) mouseGlow.style.opacity = '0';
+            });
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                const fl = 300; 
+                const centerX = width / 2;
+                const centerY = height / 2;
+
+                // Sync with elegant global color string
+                const neonColorStr = (typeof globalColorStr !== 'undefined') ? globalColorStr : '140, 100%, 50%';
+                ctx.fillStyle = `hsl(${neonColorStr})`;
+
+                stars.forEach((s) => {
+                    s.z -= s.vz;
+                    if (s.z <= 0) {
+                        s.z = 1000;
+                        s.x = Math.random() * 2000 - 1000;
+                        s.y = Math.random() * 2000 - 1000;
+                    }
+
+                    if (mouse.x > -500) {
+                        let dx = (mouse.x - centerX) * (s.z / fl) - s.x;
+                        let dy = (mouse.y - centerY) * (s.z / fl) - s.y;
+                        let dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 200) {
+                            const force = (200 - dist) / 200;
+                            s.x -= dx * force * 0.05;
+                            s.y -= dy * force * 0.05;
+                        }
+                    }
+
+                    const scale = fl / (fl + s.z);
+                    const drawX = centerX + s.x * scale;
+                    const drawY = centerY + s.y * scale;
+                    const drawRadius = Math.max(0.1, 1.2 * scale);
+                    
+                    ctx.globalAlpha = Math.max(0, 1 - (s.z / 1000));
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, drawRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
+            }
+            animate();
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initParticles);
+        } else {
+            initParticles();
+        }
+
         // Skrytie kurzora
         document.body.style.cursor = 'none';
         const style = document.createElement('style');
         style.innerHTML = '* { cursor: none !important; } #cursor-pointer { pointer-events: none !important; z-index: 99999 !important; }';
         document.head.appendChild(style);
+
+        // 6. ALL SMOOTH REVEAL OBSERVER
+        document.querySelectorAll('section, header').forEach(el => el.classList.add('reveal'));
+        
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.12 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 7. DRAG TO SCROLL & AUTO INFINITE LOOP FOR REVIEWS
+        const slider = document.getElementById('reviews-slider');
+        if (slider) {
+            slider.innerHTML += slider.innerHTML; // duplicate for loop
+            let isDown = false;
+            let isHovered = false;
+            let startX, scrollLeft;
+            
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.classList.add('active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            slider.addEventListener('mouseenter', () => isHovered = true);
+            slider.addEventListener('mouseleave', () => { isDown = false; isHovered = false; slider.classList.remove('active'); });
+            slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2.5; 
+                slider.scrollLeft = scrollLeft - walk;
+            });
+
+            function autoScrollReviews() {
+                if(!isHovered && !isDown) {
+                    slider.scrollLeft += 0.5; // Auto loop speed significantly slowed
+                    if (slider.scrollLeft >= slider.scrollWidth / 2) {
+                        slider.scrollLeft = 0;
+                    }
+                }
+                requestAnimationFrame(autoScrollReviews);
+            }
+            autoScrollReviews();
+        }
+
+        // 8. GLOBAL "TUFF" 3D BACKGROUND CANVAS
+        function initGlobalBg() {
+            const bgCanvas = document.getElementById('bg-canvas');
+            if(!bgCanvas) return;
+            const bctx = bgCanvas.getContext('2d');
+            let w, h;
+            
+            function resizeBg() {
+                w = bgCanvas.width = window.innerWidth;
+                h = bgCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeBg);
+            resizeBg();
+
+            const stars = [];
+            // 400 particles flying towards camera
+            for(let i=0; i<400; i++) {
+                stars.push({
+                    x: Math.random() * w - w/2,
+                    y: Math.random() * h - h/2,
+                    z: Math.random() * w,
+                    vz: Math.random() * 2 + 0.8
+                });
+            }
+
+            function drawBg() {
+                bctx.fillStyle = '#020202';
+                bctx.fillRect(0, 0, w, h);
+                
+                const fl = 400; // Focal length
+                const cx = w/2;
+                const cy = h/2;
+
+                // Sync with the global Color Engine (fallback safely)
+                const neonColorStr = (typeof globalColorStr !== 'undefined') ? globalColorStr : '140, 100%, 50%';
+                bctx.fillStyle = `hsl(${neonColorStr})`;
+                
+                stars.forEach(s => {
+                    s.z -= s.vz;
+                    if(s.z <= 0) {
+                        s.z = w;
+                        s.x = Math.random() * w - cx;
+                        s.y = Math.random() * h - cy;
+                    }
+                    
+                    const scale = fl / (fl + s.z);
+                    const px = cx + s.x * scale;
+                    const py = cy + s.y * scale;
+                    let radius = Math.max(0.1, 1.5 * scale);
+                    
+                    bctx.globalAlpha = Math.max(0, 1 - (s.z / w));
+                    bctx.beginPath();
+                    bctx.arc(px, py, radius, 0, Math.PI*2);
+                    bctx.fill();
+                });
+                
+                bctx.globalAlpha = 1;
+                requestAnimationFrame(drawBg);
+            }
+            drawBg();
+        }
+        initGlobalBg();
 
     </script>
 </body>
