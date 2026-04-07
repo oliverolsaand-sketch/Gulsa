@@ -148,14 +148,65 @@
             z-index: 10;
         }
 
-        .hero-anim-text {
+        .hero-frag-box { display: inline-block; position: relative; }
+        .hero-frag-box span {
             display: inline-block;
-            animation: heroTextReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translate(calc(var(--rand-x, 100px)), calc(var(--rand-y, 100px))) rotate(calc(var(--rand-r, 45deg))) scale(2);
+            filter: blur(10px);
+            animation: assembleFrag 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--d);
         }
-        @keyframes heroTextReveal {
-            0% { transform: scale(1.5) translateY(50px); opacity: 0; filter: blur(20px); letter-spacing: -0.2em; }
-            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); letter-spacing: normal; }
+        @keyframes assembleFrag { 100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); filter: blur(0); } }
+        .hero-frag-box span:nth-child(1) { --rand-x: -200px; --rand-y: -150px; --rand-r: -60deg; }
+        .hero-frag-box span:nth-child(2) { --rand-x: 100px;  --rand-y: -250px; --rand-r: 40deg; }
+        .hero-frag-box span:nth-child(3) { --rand-x: -100px; --rand-y: 200px; --rand-r: 90deg; }
+        .hero-frag-box span:nth-child(4) { --rand-x: 200px;  --rand-y: 100px; --rand-r: -30deg; }
+        .hero-frag-box span:nth-child(5) { --rand-x: -80px;  --rand-y: -80px; --rand-r: 120deg; }
+
+        .hero-frag-box::after {
+            content: "GULŠA";
+            position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+            color: transparent;
+            -webkit-text-stroke: 4px var(--ai-accent-glow);
+            mask-image: linear-gradient(120deg, transparent 40%, #fff 50%, transparent 60%);
+            -webkit-mask-image: linear-gradient(120deg, transparent 40%, #fff 50%, transparent 60%);
+            mask-size: 300% 100%;
+            -webkit-mask-size: 300% 100%;
+            animation: maskSweep 4s infinite linear;
+            pointer-events: none;
+            filter: blur(2px) drop-shadow(0 0 20px var(--ai-accent));
+            mix-blend-mode: screen;
+            z-index: 20;
         }
+        @keyframes maskSweep {
+            0% { mask-position: 150% 0; -webkit-mask-position: 150% 0; }
+            100% { mask-position: -50% 0; -webkit-mask-position: -50% 0; }
+        }
+
+        .ai-border-tracer {
+            position: absolute; width: 250%; height: 250%; top: -75%; left: -75%;
+            background: conic-gradient(transparent, transparent, var(--ai-accent-glow), #fff, transparent, transparent);
+            animation: spinBorder 4s linear infinite; z-index: -3; pointer-events: none;
+        }
+        @keyframes spinBorder { 100% { transform: rotate(360deg); } }
+
+        #ai-trigger {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 99;
+            background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff; padding: 1rem 1.5rem; border-radius: 3rem; display: flex; align-items: center; gap: 0.75rem;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: levitateBtn 4s infinite ease-in-out;
+        }
+        @keyframes levitateBtn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        #ai-trigger:hover {
+            background: var(--ai-accent); color: #000; box-shadow: 0 15px 40px var(--ai-accent-glow);
+            transform: translateY(-5px) scale(1.05); border-color: transparent; animation: none;
+        }
+        #ai-trigger:hover svg { stroke: #000; }
+        #ai-trigger svg { stroke: #fff; transition: stroke 0.4s; }
 
         /* 3. KOMPONENTY */
         .glass-card {
@@ -163,9 +214,14 @@
             border: 1px solid rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(25px);
             border-radius: 2.5rem;
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+        }
+        .glass-card:hover {
+            box-shadow: inset 0 0 40px var(--ai-accent-glow), 0 10px 30px rgba(0,0,0,0.5);
+            transform: scale(1.02);
+            border-color: var(--ai-accent);
         }
 
         .glass-card:hover {
@@ -621,10 +677,12 @@
     </nav>
 
     <header class="h-screen flex flex-col justify-center items-center text-center px-6">
-        <div class="hero-title-container overflow-hidden p-10">
-            <h1 class="hero-anim-text text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8]">
-                GUL<span style="color:#1e40af">ŠA</span>
-            </h1>
+        <div class="relative group cursor-default">
+            <div class="hero-title-container p-10 relative z-10 transition-transform duration-[1s] ease-out group-hover:scale-[1.1]">
+                <h1 class="text-[14vw] font-black tracking-tighter uppercase-style leading-[0.8] hero-frag-box">
+                    <span style="--d: 0.1s">G</span><span style="--d: 0.2s">U</span><span style="--d: 0.3s">L</span><span class="text-blue-600" style="--d: 0.4s">Š</span><span style="--d: 0.5s">A</span>
+                </h1>
+            </div>
         </div>
         <p class="text-zinc-500 text-xs md:text-sm uppercase-style tracking-[2em] mt-3 font-light translate-x-[1em]"
             data-i18n="hero-sub">
@@ -660,7 +718,7 @@
     <section id="toolbox-section" class="max-w-7xl mx-auto px-6 py-40">
         <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">
             Toolbox</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-80">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 opacity-80 max-w-4xl mx-auto">
             <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro" class="w-16 h-16">
                 <span class="font-bold text-xs tracking-widest uppercase-style text-center">Premiere</span>
@@ -672,10 +730,6 @@
             <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop" class="w-16 h-16">
                 <span class="font-bold text-xs tracking-widest uppercase-style text-center">Photoshop</span>
-            </div>
-            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg" alt="Blender 3D" class="w-16 h-16">
-                <span class="font-bold text-xs tracking-widest uppercase-style text-center">Blender 3D</span>
             </div>
         </div>
     </section>
@@ -721,10 +775,10 @@
         </div>
     </section>
 
-    <section id="reviews-section" class="max-w-7xl mx-auto px-6 py-40 overflow-hidden">
-        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20" data-i18n="nav-reviews">
+    <section id="reviews-section" class="w-full py-40 overflow-hidden">
+        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20 px-6 max-w-7xl mx-auto" data-i18n="nav-reviews">
             Recenzie</h2>
-        <div id="reviews-slider" class="flex gap-8 overflow-x-auto py-10 px-4 hide-scrollbar cursor-grab active:cursor-grabbing" style="will-change: scroll-position;">
+        <div id="reviews-slider" class="flex gap-8 overflow-x-auto py-10 hide-scrollbar cursor-grab active:cursor-grabbing" style="will-change: scroll-position; padding-left: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem)); padding-right: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem));">
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
@@ -785,27 +839,29 @@
     <section id="faq-section" class="max-w-4xl mx-auto px-6 py-40">
         <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20" data-i18n="nav-pricing">
             Cenník</h2>
-        <div class="space-y-6">
-            <div class="price-tag">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-10 flex flex-col justify-between text-center group">
                 <div>
-                    <h4 class="text-xl font-bold">Minecraft Thumbnail</h4>
-                    <p class="text-zinc-500 text-sm" data-i18n="p-mc">3D rendery, špičkové nasvietenie</p>
+                    <h4 class="text-xl font-bold uppercase-style mb-4">Minecraft Thumbnail</h4>
+                    <p class="text-zinc-500 text-sm mb-6" data-i18n="p-mc">3D rendery, špičkové nasvietenie</p>
                 </div>
-                <div class="price-value">4€ — 7€</div>
+                <div class="text-3xl font-black text-white">4€ — 7€</div>
             </div>
-            <div class="price-tag">
-                <div>
-                    <h4 class="text-xl font-bold">IRL Thumbnail</h4>
-                    <p class="text-zinc-500 text-sm" data-i18n="p-irl">Vlogy, challenge, cestovanie</p>
+            <div class="glass-card p-10 flex flex-col justify-between text-center relative overflow-hidden group border-blue-500" style="transform: scale(1.05); z-index: 5;">
+                <div class="absolute inset-0 bg-blue-500/10 pointer-events-none"></div>
+                <!-- Vlastne sa to vrati do class scale ked zbehne :hover -->
+                <div class="relative z-10">
+                    <h4 class="text-xl font-bold uppercase-style mb-4">Video Edit</h4>
+                    <p class="text-zinc-500 text-sm mb-6" data-i18n="p-edit">Adobe Premiere Pro, dynamický strih</p>
                 </div>
-                <div class="price-value">5€ — 10€</div>
+                <div class="text-3xl font-black text-blue-400 relative z-10">20€ — 50€+</div>
             </div>
-            <div class="price-tag">
+            <div class="glass-card p-10 flex flex-col justify-between text-center group">
                 <div>
-                    <h4 class="text-xl font-bold">Video Editing</h4>
-                    <p class="text-zinc-500 text-sm" data-i18n="p-edit">Adobe Premiere Pro, dynamický strih</p>
+                    <h4 class="text-xl font-bold uppercase-style mb-4">IRL Thumbnail</h4>
+                    <p class="text-zinc-500 text-sm mb-6" data-i18n="p-irl">Vlogy, challenge, cestovanie</p>
                 </div>
-                <div class="price-value">20€ — 50€+</div>
+                <div class="text-3xl font-black text-white">5€ — 10€</div>
             </div>
         </div>
     </section>
@@ -843,15 +899,18 @@
 
     <button id="ai-trigger" onclick="toggleChat()">
         <span data-i18n="ai-q">Otázky?</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
     </button>
 
-    <div id="ai-window" class="hidden">
+    <div id="ai-window" class="hidden relative overflow-hidden" style="background: transparent; border: none;">
+        <div class="ai-border-tracer"></div>
+        <div class="absolute inset-[2px] bg-[rgba(5,5,8,0.98)] z-[-2] rounded-[2.3rem]"></div>
+        
         <!-- 3D Background Particles Canvas -->
-        <canvas id="ai-canvas-particles" class="absolute inset-0 pointer-events-none z-[-1]"
-            style="border-radius: 2.5rem;"></canvas>
+        <canvas id="ai-canvas-particles" class="absolute inset-[2px] pointer-events-none z-[-1]"
+            style="border-radius: 2.3rem;"></canvas>
         <div id="ai-mouse-glow" class="absolute pointer-events-none" style="width: 300px; height: 300px; border-radius: 50%; translate: -50% -50%; background: radial-gradient(circle, var(--ai-accent-glow) 0%, transparent 70%); mix-blend-mode: screen; z-index: 0; opacity: 0; pointer-events: none;"></div>
         <div id="ai-resize-handle"></div>
         <div id="ai-header">
