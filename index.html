@@ -816,7 +816,7 @@
                 </div>
 
                 <!-- The Photo (Full Color) -->
-                <img src="gulsa_tuuff_pfp.jpg" alt="Gulša"
+                <img src="gulsa_tuuff_pfp.jpg" alt="Gulsa"
                     class="absolute inset-[2px] w-[calc(100%-4px)] h-[calc(100%-4px)] object-cover rounded-[1.9rem] z-20 transition-all duration-700 transform group-hover:scale-[1.05] filter brightness-110 saturate-[1.1]">
 
                 <!-- Vignette Overlay to blend the image into the dark UI softly at the edges -->
@@ -924,11 +924,13 @@
         <div id="gallery-box" class="mt-40 hidden opacity-0 transition-all duration-1000 translate-y-20">
             <h2 id="gallery-title"
                 class="text-5xl md:text-7xl font-black uppercase-style mb-10 text-center italic tracking-tighter"></h2>
-            
+
             <!-- Category Tabs -->
             <div id="gallery-tabs" class="flex justify-center gap-6 mb-20">
-                <button id="tab-design" onclick="switchTab('design')" class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_var(--ai-accent-glow)] border-white/50 text-white">Design</button>
-                <button id="tab-edit" onclick="switchTab('edit')" class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full opacity-50 hover:opacity-100 transition-all duration-300 text-white border-transparent">Edit</button>
+                <button id="tab-design" onclick="switchTab('design')"
+                    class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_var(--ai-accent-glow)] border-white/50 text-white">Design</button>
+                <button id="tab-edit" onclick="switchTab('edit')"
+                    class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full opacity-50 hover:opacity-100 transition-all duration-300 text-white border-transparent">Edit</button>
             </div>
 
             <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
@@ -1082,7 +1084,8 @@
         <div id="ai-resize-handle"></div>
         <div id="ai-header" class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="pandak_pfp_.png" alt="Gulša AI Avatar" class="w-10 h-10 rounded-full border border-[var(--ai-accent-dim)] object-cover shadow-[0_0_15px_var(--ai-accent-glow)] transition-all duration-[3000ms]">
+                <img src="pandak_pfp_.png" alt="Gulša AI Avatar"
+                    class="w-10 h-10 rounded-full border border-[var(--ai-accent-dim)] object-cover shadow-[0_0_15px_var(--ai-accent-glow)] transition-all duration-[3000ms]">
                 <div>
                     <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
                     <div class="flex items-center gap-1.5 mt-1">
@@ -1209,11 +1212,11 @@
 
         function switchTab(tab) {
             currentActiveTab = tab;
-            
+
             // Update UI tab states
             const btnDesign = document.getElementById('tab-design');
             const btnEdit = document.getElementById('tab-edit');
-            
+
             if (tab === 'design') {
                 btnDesign.classList.remove('opacity-50', 'border-transparent');
                 btnDesign.classList.add('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
@@ -1225,7 +1228,7 @@
                 btnDesign.classList.add('opacity-50', 'border-transparent');
                 btnDesign.classList.remove('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
             }
-            
+
             // Re-render
             if (currentActiveClient) {
                 renderGalleryGrid();
@@ -1236,9 +1239,9 @@
             const grid = document.getElementById('gallery-grid');
             grid.innerHTML = "";
             const clientData = portfolioData[currentActiveClient] || { thumbnails: [], videos: [] };
-            
+
             const arr = currentActiveTab === 'design' ? clientData.thumbnails : clientData.videos;
-            
+
             if (!arr || arr.length === 0) {
                 grid.innerHTML = `<div class="col-span-full py-20 text-center text-white/30 italic uppercase-style text-xs tracking-widest font-bold">Obsah sa pripravuje...</div>`;
                 return;
@@ -1275,7 +1278,7 @@
         function openGallery(name) {
             const box = document.getElementById('gallery-box');
             currentActiveClient = name;
-            
+
             box.classList.remove('hidden');
             setTimeout(() => {
                 box.classList.replace('opacity-0', 'opacity-100');
@@ -1283,7 +1286,7 @@
             }, 50);
 
             document.getElementById('gallery-title').innerText = name;
-            
+
             // Predvolené otvorenie tabu "Design"
             switchTab('design');
 
