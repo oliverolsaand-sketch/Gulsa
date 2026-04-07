@@ -63,6 +63,11 @@
             }
         }
 
+        /* Safety net: cursor overlays must NEVER block interactions on any device */
+        #cursor-pointer, #cursor-glow {
+            pointer-events: none !important;
+        }
+
         @media (pointer: coarse) {
             * {
                 cursor: auto !important;
@@ -722,7 +727,83 @@
             animateCursor();
         }
 
-        // 4. UTILS & AI
+        // 4. DRAGGABLE AI WINDOW
+        (function () {
+            const win = document.getElementById('ai-window');
+            const handle = document.getElementById('ai-header');
+            if (!win || !handle) return;
+
+            let isDragging = false;
+            let startX, startY, origLeft, origTop;
+
+            function getWinPos() {
+                const rect = win.getBoundingClientRect();
+                return { left: rect.left, top: rect.top };
+            }
+
+            function clamp(val, min, max) {
+                return Math.min(Math.max(val, min), max);
+            }
+
+            function startDrag(clientX, clientY) {
+                isDragging = true;
+                const pos = getWinPos();
+                origLeft = pos.left;
+                origTop = pos.top;
+                startX = clientX;
+                startY = clientY;
+
+                // Switch from CSS bottom/right positioning to top/left absolute
+                win.style.position = 'fixed';
+                win.style.left = origLeft + 'px';
+                win.style.top = origTop + 'px';
+                win.style.bottom = 'auto';
+                win.style.right = 'auto';
+                win.style.transition = 'none';
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                const dx = clientX - startX;
+                const dy = clientY - startY;
+                const newLeft = clamp(origLeft + dx, 0, window.innerWidth - win.offsetWidth);
+                const newTop = clamp(origTop + dy, 0, window.innerHeight - win.offsetHeight);
+                win.style.left = newLeft + 'px';
+                win.style.top = newTop + 'px';
+            }
+
+            function endDrag() {
+                if (!isDragging) return;
+                isDragging = false;
+                win.style.transition = '';
+            }
+
+            // Mouse events
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                startDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
+            document.addEventListener('mouseup', endDrag);
+
+            // Touch events
+            handle.addEventListener('touchstart', (e) => {
+                const t = e.touches[0];
+                startDrag(t.clientX, t.clientY);
+            }, { passive: true });
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const t = e.touches[0];
+                moveDrag(t.clientX, t.clientY);
+            }, { passive: false });
+            document.addEventListener('touchend', endDrag);
+
+            // Give the handle a grab cursor on desktop
+            handle.style.cursor = 'grab';
+        })();
+
+        // 5. UTILS & AI
         function copyToClipboard(text, btn) {
             navigator.clipboard.writeText(text);
             const tooltip = btn.querySelector('.copy-tooltip');
