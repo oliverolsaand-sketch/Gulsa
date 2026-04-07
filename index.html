@@ -260,9 +260,12 @@
             position: fixed;
             bottom: 40px;
             right: 20px;
-            width: calc(100% - 40px);
-            max-width: 380px;
+            width: 380px;
+            max-width: 90vw;
             height: 520px;
+            max-height: 90vh;
+            min-width: 280px;
+            min-height: 350px;
             display: flex;
             flex-direction: column;
             z-index: 2000;
@@ -270,7 +273,20 @@
             backdrop-filter: blur(50px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 2.5rem;
+            overflow: hidden !important;
             box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+            transform: translate3d(0px, 0px, 0px);
+            will-change: transform, width, height;
+        }
+
+        #ai-resize-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            cursor: nwse-resize;
+            z-index: 2005;
         }
 
         #ai-header {
@@ -569,6 +585,7 @@
     </button>
 
     <div id="ai-window" class="hidden opacity-0 translate-y-10 transition-all duration-500">
+        <div id="ai-resize-handle"></div>
         <div id="ai-header">
             <div>
                 <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
@@ -727,79 +744,94 @@
             animateCursor();
         }
 
-        // 4. DRAGGABLE AI WINDOW
+        // 4. DRAGGABLE & RESIZABLE AI WINDOW
         (function () {
             const win = document.getElementById('ai-window');
             const handle = document.getElementById('ai-header');
+            const resizeHndl = document.getElementById('ai-resize-handle');
             if (!win || !handle) return;
 
-            let isDragging = false;
-            let startX, startY, origLeft, origTop;
+            let isDragging = false, isResizing = false;
+            let startX, startY, origX = 0, origY = 0;
+            let currentX = 0, currentY = 0;
+            let startWidth, startHeight;
 
-            function getWinPos() {
-                const rect = win.getBoundingClientRect();
-                return { left: rect.left, top: rect.top };
-            }
+            function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
 
-            function clamp(val, min, max) {
-                return Math.min(Math.max(val, min), max);
-            }
-
-            function startDrag(clientX, clientY) {
+            // Drag using transform
+            function startDrag(e) {
+                if (e.target.closest('#ai-resize-handle')) return; 
                 isDragging = true;
-                const pos = getWinPos();
-                origLeft = pos.left;
-                origTop = pos.top;
-                startX = clientX;
-                startY = clientY;
-
-                // Switch from CSS bottom/right positioning to top/left absolute
-                win.style.position = 'fixed';
-                win.style.left = origLeft + 'px';
-                win.style.top = origTop + 'px';
-                win.style.bottom = 'auto';
-                win.style.right = 'auto';
                 win.style.transition = 'none';
+                startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
             }
 
-            function moveDrag(clientX, clientY) {
+            function moveDrag(e) {
                 if (!isDragging) return;
+                e.preventDefault();
+                const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                
                 const dx = clientX - startX;
                 const dy = clientY - startY;
-                const newLeft = clamp(origLeft + dx, 0, window.innerWidth - win.offsetWidth);
-                const newTop = clamp(origTop + dy, 0, window.innerHeight - win.offsetHeight);
-                win.style.left = newLeft + 'px';
-                win.style.top = newTop + 'px';
+                
+                currentX = origX + dx;
+                currentY = origY + dy;
+                win.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
             }
 
-            function endDrag() {
-                if (!isDragging) return;
-                isDragging = false;
-                win.style.transition = '';
+            // Resize logic from top-left
+            function startResize(e) {
+                e.stopPropagation();
+                isResizing = true;
+                win.style.transition = 'none';
+                startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                const rect = win.getBoundingClientRect();
+                startWidth = rect.width;
+                startHeight = rect.height;
             }
 
-            // Mouse events
-            handle.addEventListener('mousedown', (e) => {
+            function moveResize(e) {
+                if (!isResizing) return;
                 e.preventDefault();
-                startDrag(e.clientX, e.clientY);
-            });
-            document.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
-            document.addEventListener('mouseup', endDrag);
+                const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                
+                const dx = startX - clientX;
+                const dy = startY - clientY;
+                
+                win.style.width = clamp(startWidth + dx, 280, window.innerWidth * 0.9) + 'px';
+                win.style.height = clamp(startHeight + dy, 350, window.innerHeight * 0.9) + 'px';
+            }
 
-            // Touch events
-            handle.addEventListener('touchstart', (e) => {
-                const t = e.touches[0];
-                startDrag(t.clientX, t.clientY);
-            }, { passive: true });
-            document.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const t = e.touches[0];
-                moveDrag(t.clientX, t.clientY);
-            }, { passive: false });
-            document.addEventListener('touchend', endDrag);
+            function endAction() {
+                if (isDragging) {
+                    origX = currentX;
+                    origY = currentY;
+                    isDragging = false;
+                }
+                if (isResizing) {
+                    isResizing = false;
+                }
+                win.style.transition = ''; 
+            }
 
-            // Give the handle a grab cursor on desktop
+            handle.addEventListener('mousedown', startDrag);
+            handle.addEventListener('touchstart', startDrag, { passive: true });
+            
+            if (resizeHndl) {
+                resizeHndl.addEventListener('mousedown', startResize);
+                resizeHndl.addEventListener('touchstart', startResize, { passive: true });
+            }
+
+            window.addEventListener('mousemove', (e) => { moveDrag(e); moveResize(e); }, { passive: false });
+            window.addEventListener('touchmove', (e) => { moveDrag(e); moveResize(e); }, { passive: false });
+            
+            window.addEventListener('mouseup', endAction);
+            window.addEventListener('touchend', endAction);
+
             handle.style.cursor = 'grab';
         })();
 
@@ -834,19 +866,35 @@
         function askAI() {
             const input = document.getElementById('ai-input');
             const history = document.getElementById('ai-chat-history');
-            if (!input.value.trim()) return;
+            const text = input.value.trim().toLowerCase();
+            if (!text) return;
 
             // User message
-            history.innerHTML += `<div class="bg-blue-600/20 p-4 rounded-3xl rounded-tr-none text-white text-xs self-end ml-10">${input.value}</div>`;
+            history.innerHTML += `<div class="bg-blue-600/20 p-4 rounded-3xl rounded-tr-none text-white text-xs self-end ml-10">${input.value.replace(/</g, "&lt;")}</div>`;
+            input.value = "";
 
-            // Bot logic (basic)
+            // Bot logic 
             setTimeout(() => {
-                const response = translations[currentLang]['ai-logic'];
+                let response = translations[currentLang]['ai-logic'];
+                
+                if (text.match(/cena|ceny|price|kolko|kolik|how much|cost/)) {
+                    if (currentLang === 'sk') response = "Cena za video edit začína od 20€ (záleží na dĺžke a efekte), thumbnaily stoja 4-10€ podľa typu. Pre presnú cenu napíš na Instagram/Discord!";
+                    else if (currentLang === 'cz') response = "Cena za video edit začíná od 20€ (záleží na délce a efektu), thumbnaily stojí 4-10€ podle typu. Pro přesnou cenu napiš na Instagram/Discord!";
+                    else response = "Video editing starts from 20€ (depending on length and effects), thumbnails cost 4-10€ depending on the style. For an exact price, DM me on Instagram/Discord!";
+                } else if (text.match(/prax|skusenosti|experience|klienti|clients|ako dlho/)) {
+                    if (currentLang === 'sk') response = "Editujem už 3 roky, primárne pracujem pre YouTuberov ako PandaK, AJHT TV, DrWoolf a ďalších. Mám za sebou stovky videí.";
+                    else if (currentLang === 'cz') response = "Edituji už 3 roky, primárně pracuji pro YouTubery jako PandaK, AJHT TV, DrWoolf a další. Mám za sebou stovky videí.";
+                    else response = "I've been editing for 3 years, mainly working with YouTubers like PandaK, AJHT TV, DrWoolf and others. I've edited hundreds of videos.";
+                } else if (text.match(/adobe|premiere|after effects|photoshop|v com|akom|program|software/)) {
+                    if (currentLang === 'sk') response = "Strihám predovšetkým v Adobe Premiere Pro, vizuálne efekty riešim v After Effects a thumbnaily robím vo Photoshope.";
+                    else if (currentLang === 'cz') response = "Stříhám především v Adobe Premiere Pro, vizuální efekty dělám v After Effects a thumbnaily tvořím ve Photoshopu.";
+                    else response = "I primarily use Adobe Premiere Pro for editing, After Effects for visual effects, and Photoshop for thumbnails.";
+                }
+
                 history.innerHTML += `<div class="bg-white/5 p-4 rounded-3xl rounded-tl-none text-zinc-400 text-xs leading-relaxed">${response}</div>`;
                 history.scrollTop = history.scrollHeight;
             }, 600);
-
-            input.value = "";
+            
             history.scrollTop = history.scrollHeight;
         }
 
