@@ -63,6 +63,16 @@
             }
         }
 
+        @media (pointer: coarse) {
+            * {
+                cursor: auto !important;
+            }
+
+            #cursor-pointer, #cursor-glow {
+                display: none !important;
+            }
+        }
+
         .uppercase-style {
             text-transform: uppercase !important;
         }
@@ -695,20 +705,22 @@
         const glw = document.getElementById('cursor-glow');
         let mouseX = 0, mouseY = 0, ptrX = 0, ptrY = 0, glwX = 0, glwY = 0;
 
-        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        if (window.matchMedia('(pointer: fine)').matches) {
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
-        function animateCursor() {
-            ptrX += (mouseX - ptrX) * 0.25;
-            ptrY += (mouseY - ptrY) * 0.25;
-            if (ptr) ptr.style.transform = `translate(${ptrX}px, ${ptrY}px)`;
+            function animateCursor() {
+                ptrX += (mouseX - ptrX) * 0.25;
+                ptrY += (mouseY - ptrY) * 0.25;
+                if (ptr) ptr.style.transform = `translate(${ptrX}px, ${ptrY}px)`;
 
-            glwX += (mouseX - glwX) * 0.05;
-            glwY += (mouseY - glwY) * 0.05;
-            if (glw) glw.style.transform = `translate(calc(${glwX}px - 50%), calc(${glwY}px - 50%))`;
+                glwX += (mouseX - glwX) * 0.05;
+                glwY += (mouseY - glwY) * 0.05;
+                if (glw) glw.style.transform = `translate(calc(${glwX}px - 50%), calc(${glwY}px - 50%))`;
 
-            requestAnimationFrame(animateCursor);
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
         }
-        animateCursor();
 
         // 4. UTILS & AI
         function copyToClipboard(text, btn) {
