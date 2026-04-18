@@ -1307,7 +1307,7 @@
     </section>
 
     <footer class="py-20 text-center opacity-10">
-        <p class="text-[9px] uppercase-style tracking-[1.5em] font-bold">©2026 GULŠA • VISUAL ENGINEERING</p>
+        <p class="text-[9px] uppercase-style tracking-[1.5em] font-bold">©2026 GULŠA</p>
     </footer>
 
     <button id="ai-trigger" onclick="toggleChat()">
@@ -1428,6 +1428,125 @@
             });
 
             document.getElementById('ai-welcome').innerText = translations[lang]['ai-welcome'];
+            renderReviews(lang);
+        }
+
+        const reviewsData = {
+            sk: [
+                {
+                    text: "Moc hezká práce, řekl bych že i prémiová, Moc radím!",
+                    author: "PandaK",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Dodanie bolo rýchle a miniatúra, na to že bola zadarmo, pekná.",
+                    author: "AJHT TV",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Výborná spolupráca - rýchly, kreatívny a vždy doručí kvalitnú miniaturu.",
+                    author: "DrWoolf",
+                    subs: "1,4k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Objednávku jsem dostala rychle. Kvalitní práce and dobrá komunikace. Rozhodně doporučuji.",
+                    author: "Sheltix",
+                    subs: "300 subs",
+                    stars: 5
+                },
+                {
+                    text: "Dneska ráno som ho poprosil a večer som to dostal ešte lepšie ako som si predstavoval... Vrelo doporučam 👍🏻",
+                    author: "Drindo",
+                    subs: "450+ subs",
+                    stars: 5
+                }
+            ],
+            cz: [
+                {
+                    text: "Moc hezká práce, řekl bych že i prémiová. Moc radím!",
+                    author: "PandaK",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Dodání bylo rychlé a miniatura, na to že byla zdarma, pěkná.",
+                    author: "AJHT TV",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Výborná spolupráce - rychlý, kreativní a vždy doručí kvalitní miniaturu.",
+                    author: "DrWoolf",
+                    subs: "1,4k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Objednávku jsem dostala rychle. Kvalitní práce a dobrá komunikace. Rozhodně doporučuji.",
+                    author: "Sheltix",
+                    subs: "300 subs",
+                    stars: 5
+                },
+                {
+                    text: "Dnes ráno jsem ho požádal a večer jsem to dostal ještě lépe než jsem si představoval... Vrele doporučuji 👍🏻",
+                    author: "Drindo",
+                    subs: "450+ subs",
+                    stars: 5
+                }
+            ],
+            en: [
+                {
+                    text: "Very nice work, I would even say premium. Highly recommend!",
+                    author: "PandaK",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Delivery was fast and the thumbnail, considering it was free, looked great.",
+                    author: "AJHT TV",
+                    subs: "6k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "Excellent collaboration - fast, creative and always delivers quality thumbnails.",
+                    author: "DrWoolf",
+                    subs: "1,4k+ subs",
+                    stars: 5
+                },
+                {
+                    text: "I received my order quickly. Quality work and great communication. Definitely recommend.",
+                    author: "Sheltix",
+                    subs: "300 subs",
+                    stars: 5
+                },
+                {
+                    text: "I asked him in the morning and by evening I got it even better than I imagined... Highly recommend 👍🏻",
+                    author: "Drindo",
+                    subs: "450+ subs",
+                    stars: 5
+                }
+            ]
+        };
+
+        function renderReviews(lang) {
+            const container = document.getElementById('reviews-slider');
+            if (!container) return;
+            const data = reviewsData[lang] || reviewsData.sk;
+            const html = data.map(r => `
+                <div class="glass-card p-10 flex flex-col justify-between">
+                    <div>
+                        <span class="text-yellow-500 mb-4 block">${'★'.repeat(r.stars)}</span>
+                        <p class="italic text-zinc-400 mb-6">"${r.text}"</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white uppercase-style text-xs">${r.author}</p>
+                        <p class="text-[10px] text-green-500 font-bold mt-1">${r.subs}</p>
+                    </div>
+                </div>
+            `).join('');
+            container.innerHTML = html + html;
         }
 
         // 2. PORTFOLIO DATA (Categorised)
@@ -1488,7 +1607,7 @@
                 btnDesign.style.border = '1.5px solid #00c8ff';
                 btnDesign.style.background = 'rgba(0,200,255,0.1)';
                 btnDesign.style.opacity = '1';
-                
+
                 btnEdit.style.color = 'white';
                 btnEdit.style.border = '1.5px solid transparent';
                 btnEdit.style.background = 'rgba(255,255,255,0.03)';
@@ -2002,7 +2121,7 @@
         // 7. DRAG TO SCROLL & AUTO INFINITE LOOP FOR REVIEWS
         const slider = document.getElementById('reviews-slider');
         if (slider) {
-            slider.innerHTML += slider.innerHTML; // duplicate for loop
+            // slider.innerHTML += slider.innerHTML; // Loop redundancy handled by renderReviews()
             let isDown = false;
             let isHovered = false;
             let startX, scrollLeft;
@@ -2098,6 +2217,7 @@
             drawBg();
         }
         initGlobalBg();
+        renderReviews(currentLang || 'sk');
 
     </script>
 </body>
