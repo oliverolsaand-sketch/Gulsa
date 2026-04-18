@@ -1,8 +1,3 @@
-Viewed gulsa%20-%20portfolio.html:1-800
-Viewed gulsa%20-%20portfolio.html:801-1600
-Viewed gulsa%20-%20portfolio.html:1601-2031
-
-```html
 <!DOCTYPE html>
 <html lang="sk">
 
@@ -14,6 +9,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css" />
 
     <style>
@@ -35,23 +31,11 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
         body {
             cursor: none !important;
-            background-color: var(--bg);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            opacity: 0;
-            animation: bodyFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes bodyFadeIn {
-            100% {
-                opacity: 1;
-            }
-        }
-
-        /* CURSOR */
+        /* 1. CUSTOM CURSOR - Desktop Only */
         @media (pointer: fine) {
+
             #cursor-pointer {
                 position: fixed;
                 top: 0;
@@ -81,16 +65,21 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             }
         }
 
+        /* Safety net: cursor overlays must NEVER block interactions on any device */
         #cursor-pointer,
         #cursor-glow {
             pointer-events: none !important;
         }
 
         @media (pointer: coarse) {
-            body, * {
+
+            body,
+            * {
                 cursor: auto !important;
             }
-            #cursor-pointer, #cursor-glow {
+
+            #cursor-pointer,
+            #cursor-glow {
                 display: none !important;
             }
         }
@@ -103,7 +92,23 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             scroll-behavior: smooth;
         }
 
-        /* BACKGROUND & REVEALS */
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            opacity: 0;
+            animation: bodyFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes bodyFadeIn {
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* 2. DYNAMICKÉ POZADIE (GLOBAL 3D) & SMOOTH REVEAL */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -183,17 +188,21 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 transform: scale(4) translateZ(100px) rotateX(90deg) rotateY(45deg);
                 filter: blur(30px) brightness(3);
             }
+
             40% {
                 opacity: 1;
                 transform: scale(0.9) translateZ(0) rotateX(0deg) rotateY(0deg);
                 filter: blur(0px) brightness(1.5);
             }
+
             100% {
                 opacity: 1;
                 transform: scale(1) translateZ(0) rotateX(0deg) rotateY(0deg);
                 filter: blur(0px) brightness(1);
             }
         }
+
+        /* No need for nth-child custom properties anymore since they all slam similarly but with slight delays */
 
         .hero-frag-box::after {
             content: "GULŠA";
@@ -220,6 +229,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 mask-position: 150% 0;
                 -webkit-mask-position: 150% 0;
             }
+
             100% {
                 mask-position: -50% 0;
                 -webkit-mask-position: -50% 0;
@@ -269,9 +279,11 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             0% {
                 box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4), 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--ai-accent-glow);
             }
+
             70% {
                 box-shadow: 0 0 0 20px rgba(255, 255, 255, 0), 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--ai-accent-glow);
             }
+
             100% {
                 box-shadow: 0 0 0 0 rgba(255, 255, 255, 0), 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px var(--ai-accent-glow);
             }
@@ -298,7 +310,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             height: 28px;
         }
 
-        /* COMPONENTS */
+        /* 3. KOMPONENTY */
         .glass-card {
             background: var(--glass);
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -310,10 +322,15 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         }
 
         .glass-card:hover {
+            box-shadow: inset 0 0 40px var(--ai-accent-glow), 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: scale(1.02);
+            border-color: var(--ai-accent);
+        }
+
+        .glass-card:hover {
             transform: scale(1.02) translateY(-10px);
             background: var(--glass-hover);
             border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 0 40px var(--ai-accent-glow), 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .btn-main {
@@ -325,11 +342,76 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             letter-spacing: 0.2em;
             font-size: 0.75rem;
             display: inline-block;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .btn-main:hover {
-            transform: scale(1.1);
+        button,
+        .btn-main,
+        .contact-btn {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
+        button:hover,
+        .btn-main:hover,
+        .contact-btn:hover {
+            transform: translateY(-2px) scale(1.04) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        #tab-design:hover {
+            box-shadow: 0 6px 20px rgba(0, 200, 255, 0.25) !important;
+        }
+
+        #tab-edit:hover {
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.25) !important;
+        }
+
+        button:active,
+        .btn-main:active,
+        .contact-btn:active {
+            transform: scale(0.97) !important;
+            transition: 0.1s !important;
+        }
+
+        @keyframes thumbGlow {
+            0% {
+                box-shadow: 2px 0 8px rgba(255, 255, 255, 0.15), 0 0 0 rgba(255, 255, 255, 0);
+            }
+
+            25% {
+                box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+            }
+
+            50% {
+                box-shadow: -2px 0 8px rgba(255, 255, 255, 0.15);
+            }
+
+            75% {
+                box-shadow: 0 -2px 8px rgba(255, 255, 255, 0.15);
+            }
+
+            100% {
+                box-shadow: 2px 0 8px rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        .thumb-card:hover {
+            animation: thumbGlow 2s linear infinite;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .ebynovec-short {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .ebynovec-short {
+                width: 160px;
+                min-width: 160px;
+                max-width: 160px;
+            }
         }
 
         .price-tag {
@@ -408,7 +490,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             font-weight: 700;
         }
 
-        /* LANGUAGE SELECTOR */
+        /* 4. LANGUAGE SELECTOR - Fixed Flags */
         .lang-container {
             position: relative;
             font-size: 10px;
@@ -471,8 +553,13 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             color: #1e40af;
         }
 
+        /* ============================================
+           5. AI WINDOW — ULTRA-PREMIUM OP EDITION
+           CSS variables are driven by JS color engine
+           ============================================ */
         :root {
             --ai-accent: rgba(0, 255, 100, 1);
+            /* cycles via JS */
             --ai-accent-dim: rgba(0, 255, 100, 0.25);
             --ai-accent-glow: rgba(0, 255, 100, 0.12);
         }
@@ -491,23 +578,35 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             flex-direction: column;
             z-index: 2000;
             background: rgba(4, 4, 6, 0.88);
+            /* Deep glassmorphism */
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
+            /* Border driven by JS CSS var */
             border: 1px solid var(--ai-accent-dim);
             border-radius: 2.5rem;
             overflow: hidden !important;
             box-shadow: 0 30px 80px var(--ai-accent-glow), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
             will-change: transform, opacity, filter;
+            /* Extreme entrance — starts blurred, scaled-down, far below */
             opacity: 0;
             transform: translateY(100px) scale(0.8);
             filter: blur(20px);
             pointer-events: none;
+            /* Gentle floating animation (non-conflicting with entrance) */
             animation: floatingChat 7s ease-in-out infinite;
         }
 
+        /* Pulsing neon border — keyframe on border-color via CSS var fallback */
         @keyframes borderPulse {
-            0%, 100% { box-shadow: 0 0 15px var(--ai-accent-glow), 0 30px 80px var(--ai-accent-glow); }
-            50% { box-shadow: 0 0 35px var(--ai-accent-dim), 0 30px 80px var(--ai-accent-glow); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px var(--ai-accent-glow), 0 30px 80px var(--ai-accent-glow);
+            }
+
+            50% {
+                box-shadow: 0 0 35px var(--ai-accent-dim), 0 30px 80px var(--ai-accent-glow);
+            }
         }
 
         #ai-window.ai-open {
@@ -515,7 +614,10 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             transform: translateY(0) scale(1);
             filter: blur(0px);
             pointer-events: all;
-            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            /* 1.5s Apple-spring entrance */
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.5s cubic-bezier(0.16, 1, 0.3, 1);
             animation: floatingChat 7s ease-in-out infinite, borderPulse 3s ease-in-out infinite;
         }
 
@@ -524,14 +626,24 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             transform: translateY(100px) scale(0.85);
             filter: blur(20px);
             pointer-events: none;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes floatingChat {
-            0%, 100% { translate: 0px 0px; }
-            50% { translate: 0px -10px; }
+
+            0%,
+            100% {
+                translate: 0px 0px;
+            }
+
+            50% {
+                translate: 0px -10px;
+            }
         }
 
+        /* AI message bubbles — border & glow use CSS variable updated by JS */
         .ai-bubble-glow {
             background: var(--ai-accent-glow);
             border: 1px solid var(--ai-accent-dim);
@@ -541,6 +653,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             transition: border-color 0.1s, box-shadow 0.1s, background 0.1s;
         }
 
+        /* Neon input border — uses CSS var updated by JS */
         #ai-input {
             border: 1px solid var(--ai-accent-dim) !important;
             box-shadow: 0 0 12px var(--ai-accent-glow) !important;
@@ -552,6 +665,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             box-shadow: 0 0 22px var(--ai-accent-dim), inset 0 0 10px var(--ai-accent-glow) !important;
         }
 
+        /* Message bounce-in animation */
         .chat-msg-anim {
             animation: messageBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
@@ -559,9 +673,20 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         }
 
         @keyframes messageBounceIn {
-            0% { opacity: 0; transform: translateY(24px) scale(0.95); }
-            60% { opacity: 1; transform: translateY(-4px) scale(1.01); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.95);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(-4px) scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .ai-send-btn {
@@ -577,6 +702,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             box-shadow: 0 0 25px var(--ai-accent-dim);
         }
 
+        /* Thinking dots loader */
         .thinking-dots {
             display: inline-block;
             font-weight: bold;
@@ -588,12 +714,29 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         }
 
         @keyframes dots {
-            0%, 20% { color: rgba(255, 255, 255, 0); text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0); }
-            40% { color: white; text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0); }
-            60% { text-shadow: .25em 0 0 white, .5em 0 0 rgba(255, 255, 255, 0); }
-            80%, 100% { text-shadow: .25em 0 0 white, .5em 0 0 white; }
+
+            0%,
+            20% {
+                color: rgba(255, 255, 255, 0);
+                text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            40% {
+                color: white;
+                text-shadow: .25em 0 0 rgba(255, 255, 255, 0), .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            60% {
+                text-shadow: .25em 0 0 white, .5em 0 0 rgba(255, 255, 255, 0);
+            }
+
+            80%,
+            100% {
+                text-shadow: .25em 0 0 white, .5em 0 0 white;
+            }
         }
 
+        /* Radial mouse glow overlay */
         #ai-mouse-glow {
             position: absolute;
             width: 300px;
@@ -660,81 +803,81 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             text-transform: uppercase !important;
         }
 
-        #ai-chat-history::-webkit-scrollbar { width: 2px; }
-        #ai-chat-history::-webkit-scrollbar-track { background: transparent; }
-        #ai-chat-history::-webkit-scrollbar-thumb { background: var(--ai-accent-dim); border-radius: 10px; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
-
-        /* ALL TEAL DESIGN TAGS + EDIT TAGS */
-        .tag-pill, #tab-design, #tab-edit {
-            border-radius: 100px !important;
-            padding: 3px 12px !important;
-            font-size: 11px !important;
-            letter-spacing: 0.08em !important;
-            text-transform: uppercase !important;
-            display: inline-block !important;
-            font-weight: 800 !important;
-            transition: all 0.3s ease !important;
+        /* Ultra-thin custom scrollbar */
+        #ai-chat-history::-webkit-scrollbar {
+            width: 2px;
         }
 
-        .tag-edit, #tab-edit {
-            background: rgba(0, 255, 136, 0.1) !important;
-            color: #00ff88 !important;
-            border: 1px solid rgba(0, 255, 136, 0.3) !important;
-        }
-
-        .tag-edit:hover, #tab-edit:hover, #tab-edit.active-tab {
-            border-color: #00ff88 !important;
-            background: rgba(0, 255, 136, 0.15) !important;
-            box-shadow: 0 0 12px rgba(0, 255, 136, 0.2) !important;
-        }
-
-        .tag-design, #tab-design {
-            color: #00c8ff !important;
-            border: 1px solid rgba(0, 200, 255, 0.35) !important;
-            background: rgba(0, 200, 255, 0.08) !important;
-        }
-
-        .tag-design:hover, .tag-design:active, #tab-design:hover, #tab-design.active-tab {
-            border-color: #00c8ff !important;
-            background: rgba(0, 200, 255, 0.15) !important;
-            box-shadow: 0 0 12px rgba(0, 200, 255, 0.2) !important;
-        }
-
-        /* THUMBNAIL CARDS */
-        .thumb-card {
-            padding: 0;
-            margin: 0;
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
+        #ai-chat-history::-webkit-scrollbar-track {
             background: transparent;
-            display: block;
+        }
+
+        #ai-chat-history::-webkit-scrollbar-thumb {
+            background: var(--ai-accent-dim);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .tag-pill {
+            border-radius: 100px;
+            padding: 3px 10px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: inline-block;
+            font-weight: 800;
+        }
+
+        .tag-edit {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .tag-design {
+            background: rgba(0, 187, 178, 0.199);
+            color: rgb(0, 255, 255);
+            border: 1px solid rgba(0, 255, 255, 6);
+        }
+
+        .short-card-wrapper {
+            animation: fadeUpStagger 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
             cursor: pointer;
+        }
+
+        .short-card-inner {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            overflow: hidden;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
         }
 
-        .thumb-card img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            margin: 0;
-            padding: 0;
-        }
-
-        .thumb-card:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.15),
-                        0 8px 24px rgba(0, 0, 0, 0.4);
-            transform: translateY(-3px);
+        .short-card-wrapper:hover .short-card-inner {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes fadeUpStagger {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         #clients-section .glass-card {
@@ -745,51 +888,6 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
         #clients-section .grid {
             gap: 18px !important;
-        }
-
-        /* MOBILE OPTIMIZATION */
-        @media (max-width: 768px) {
-            #clients-section > .grid {
-                grid-template-columns: 1fr !important;
-                gap: 10px !important;
-            }
-            #gallery-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 8px !important;
-            }
-            #gallery-grid.flex {
-                flex-direction: row;
-            }
-            #reviews-slider {
-                flex-direction: column !important;
-                padding: 0 !important;
-            }
-            #reviews-slider > div {
-                min-width: 100% !important;
-                margin-bottom: 16px;
-            }
-            #faq-section > .grid {
-                grid-template-columns: 1fr !important;
-            }
-            h1 { font-size: clamp(3rem, 15vw, 6rem) !important; }
-            h2 { font-size: clamp(2.5rem, 10vw, 4rem) !important; }
-            h3 { font-size: clamp(1.5rem, 6vw, 2.5rem) !important; }
-            p, span:not(.font-bold), div { font-size: clamp(0.875rem, 3.5vw, 1.125rem); }
-            input, textarea, select { font-size: 16px !important; }
-            button, a:not(.thumb-card), .contact-btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center;}
-            .tag-pill, #tab-design, #tab-edit { min-height: auto; font-size: 11px !important; }
-            * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-            .glass-card { background: rgba(5, 5, 8, 0.95); }
-            #ai-window { background: rgba(5, 5, 8, 0.98) !important; }
-        }
-
-        @media (hover: none) {
-            .thumb-card:hover { transform: none !important; box-shadow: none !important; border-color: rgba(255, 255, 255, 0.1) !important; }
-            .thumb-card:active {
-                transform: scale(0.97) !important;
-                opacity: 0.85 !important;
-                transition: all 0.15s !important;
-            }
         }
     </style>
 </head>
@@ -853,27 +951,45 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
     <section id="about-section" class="max-w-7xl mx-auto px-6 py-40">
         <div class="glass-card p-12 flex flex-col md:flex-row items-center gap-16">
+            <!-- GULŠA PFP: Advanced Cyber-Shatter Effect (Full Color) -->
             <div
                 class="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 mx-auto md:mx-0 relative group overflow-hidden shadow-[0_10px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:scale-[1.05] rounded-[2rem] bg-black/20 backdrop-blur-md z-50">
+
+                <!-- Rotating Glow Border Generator -->
                 <div class="absolute w-[250%] h-[250%] top-[-75%] left-[-75%] pointer-events-none z-0 opacity-100 transition-opacity duration-500"
                     style="background: conic-gradient(transparent, transparent, var(--ai-accent-glow), #fff, transparent, transparent); animation: spinBorder 3s linear infinite;">
                 </div>
-                <div class="absolute inset-[2px] bg-black/30 rounded-[1.9rem] z-10 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
+
+                <!-- Inner Shield (creates the 2px border effect) -->
+                <div
+                    class="absolute inset-[2px] bg-black/30 rounded-[1.9rem] z-10 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
                 </div>
+
+                <!-- The Photo (Full Color) -->
                 <img src="./Gulsa" alt="Gulša"
                     class="absolute inset-[2px] w-[calc(100%-4px)] h-[calc(100%-4px)] object-cover rounded-[1.9rem] z-20 transition-all duration-700 transform group-hover:scale-[1.05] filter brightness-110 saturate-[1.1]">
-                <div class="absolute inset-[2px] rounded-[1.9rem] z-25 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.9)]">
+
+                <!-- Vignette Overlay to blend the image into the dark UI softly at the edges -->
+                <div
+                    class="absolute inset-[2px] rounded-[1.9rem] z-25 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.9)]">
                 </div>
+
+                <!-- Advanced SVG Shattered Glass Effect Overlay on Sides -->
                 <svg width="100%" height="100%"
                     class="absolute inset-[2px] z-30 pointer-events-none mix-blend-screen opacity-70 group-hover:opacity-100 transition-all duration-500 rounded-[1.9rem]"
                     viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <path d="M 0 0 L 15 25 M 15 25 L 5 40 M 15 25 L 35 15 M 35 15 L 55 5 M 35 15 L 45 25 M 15 25 L 25 45 M 0 15 L 15 25"
+                    <!-- Top Left Crack / Shatter with more detail -->
+                    <path
+                        d="M 0 0 L 15 25 M 15 25 L 5 40 M 15 25 L 35 15 M 35 15 L 55 5 M 35 15 L 45 25 M 15 25 L 25 45 M 0 15 L 15 25"
                         stroke="rgba(255,255,255,0.9)" stroke-width="0.3" fill="none"
                         style="filter: drop-shadow(0 0 4px var(--ai-accent))" />
                     <polygon points="0,0 15,25 5,40" fill="rgba(255,255,255,0.2)" stroke="none" />
                     <polygon points="0,0 15,25 35,15" fill="rgba(255,255,255,0.1)" stroke="none" />
                     <polygon points="15,25 35,15 45,25" fill="rgba(255,255,255,0.05)" stroke="none" />
-                    <path d="M 100 100 L 80 75 M 80 75 L 95 60 M 80 75 L 60 85 M 60 85 L 45 80 M 80 75 L 70 55 M 100 85 L 80 75"
+
+                    <!-- Bottom Right Crack / Shatter with more detail -->
+                    <path
+                        d="M 100 100 L 80 75 M 80 75 L 95 60 M 80 75 L 60 85 M 60 85 L 45 80 M 80 75 L 70 55 M 100 85 L 80 75"
                         stroke="rgba(255,255,255,0.9)" stroke-width="0.3" fill="none"
                         style="filter: drop-shadow(0 0 4px var(--ai-accent))" />
                     <polygon points="100,100 80,75 95,60" fill="rgba(255,255,255,0.2)" stroke="none" />
@@ -884,28 +1000,36 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 <span class="text-blue-600 font-bold uppercase-style text-[10px] mb-4 block">Visual Engineer</span>
                 <h2 class="text-4xl md:text-6xl font-black uppercase-style tracking-tighter mb-6">Gulša</h2>
                 <div class="space-y-4 text-zinc-400 text-lg leading-relaxed">
-                    <p data-i18n="about-1">Strihám už <span class="text-white font-bold">3 roky</span>, z toho posledný log sa venujem strihu profesionálnejšie v <span class="text-white font-bold">Adobe Premiere Pro</span>.</p>
-                    <p data-i18n="about-2">Aktuálne sa neustále posúvam vpred a učím sa pokročilú postprodukciu v <span class="text-white font-bold">After Effects</span>.</p>
-                    <p data-i18n="about-3">Okrem videa sa venujem aj grafike – už približne rok designujem thumbnaily cez <span class="text-white font-bold">Photoshop</span>.</p>
+                    <p data-i18n="about-1">Strihám už <span class="text-white font-bold">3 roky</span>, z toho posledný
+                        rok sa venujem strihu profesionálnejšie v <span class="text-white font-bold">Adobe Premiere
+                            Pro</span>.</p>
+                    <p data-i18n="about-2">Aktuálne sa neustále posúvam vpred a učím sa pokročilú postprodukciu v <span
+                            class="text-white font-bold">After Effects</span>.</p>
+                    <p data-i18n="about-3">Okrem videa sa venujem aj grafike – už približne rok designujem thumbnaily
+                        cez <span class="text-white font-bold">Photoshop</span>.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="toolbox-section" class="max-w-7xl mx-auto px-6 py-40">
-        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">Toolbox</h2>
+        <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20">
+            Toolbox</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 opacity-80 max-w-4xl mx-auto">
-            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+            <div
+                class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg"
                     alt="Premiere Pro" class="w-16 h-16">
                 <span class="font-bold text-xs tracking-widest uppercase-style text-center">Adobe Premiere pro</span>
             </div>
-            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+            <div
+                class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg"
                     alt="After Effects" class="w-16 h-16">
                 <span class="font-bold text-xs tracking-widest uppercase-style text-center">Adobe After Effects</span>
             </div>
-            <div class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
+            <div
+                class="glass-card p-10 flex flex-col items-center justify-center gap-6 hover:opacity-100 transition-all">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg"
                     alt="Photoshop" class="w-16 h-16">
                 <span class="font-bold text-xs tracking-widest uppercase-style text-center">Adobe Photoshop</span>
@@ -920,7 +1044,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <button onclick="openGallery('Gulša')" class="glass-card p-10 text-left relative overflow-hidden group">
                 <div class="flex justify-between items-start mb-4">
                     <div class="flex items-center gap-4">
-                        <img class="client-pfp" src="./gulsa_pfp.jpg"
+                        <img class="client-pfp" src="./pfp_gulsa.jpg"
                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
                             alt="avatar">
                         <div class="letter-avatar" style="display:none">G</div>
@@ -1044,18 +1168,26 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <h2 id="gallery-title"
                 class="text-5xl md:text-7xl font-black uppercase-style mb-10 text-center italic tracking-tighter"></h2>
 
+            <!-- Category Tabs -->
             <div id="gallery-tabs" class="flex justify-center gap-6 mb-20">
-                <button id="tab-design" onclick="switchTab('design')" class="active-tab">Design</button>
-                <button id="tab-edit" onclick="switchTab('edit')" class="opacity-50">Edit</button>
+                <button id="tab-design" onclick="switchTab('design')"
+                    class="px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full transition-all duration-300"
+                    style="color: #00c8ff; border: 1.5px solid #00c8ff; background: rgba(0,200,255,0.1);">Design</button>
+                <button id="tab-edit" onclick="switchTab('edit')"
+                    class="px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full transition-all duration-300 opacity-50"
+                    style="color: white; border: 1.5px solid transparent; background: rgba(255,255,255,0.03);">Edit</button>
             </div>
 
             <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
         </div>
     </section>
 
+
+
     <section id="reviews-section" class="w-full py-40 overflow-hidden">
         <h2 class="text-6xl font-black uppercase-style tracking-tighter text-center mb-20 px-6 max-w-7xl mx-auto"
-            data-i18n="nav-reviews">Recenzie</h2>
+            data-i18n="nav-reviews">
+            Recenzie</h2>
         <div id="reviews-slider"
             class="flex gap-8 overflow-x-auto py-10 hide-scrollbar cursor-grab active:cursor-grabbing"
             style="will-change: scroll-position; padding-left: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem)); padding-right: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem));">
@@ -1072,7 +1204,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
-                    <p class="italic text-zinc-400 mb-6">"Dodanie bolo rýchle a miniatúra, na to že bola zadarmo, pekná."</p>
+                    <p class="italic text-zinc-400 mb-6">"Dodanie bolo rýchle a miniatúra, na to že bola zadarmo,
+                        pekná."</p>
                 </div>
                 <div>
                     <p class="font-bold text-white uppercase-style text-xs">AJHT TV</p>
@@ -1082,7 +1215,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
-                    <p class="italic text-zinc-400 mb-6">"Výborná spolupráca - rychlý, kreativní a vždy doručí kvalitní miniaturu."</p>
+                    <p class="italic text-zinc-400 mb-6">"Výborná spolupráca - rýchly, kreatívny a vždy doručí kvalitnú
+                        miniaturu."</p>
                 </div>
                 <div>
                     <p class="font-bold text-white uppercase-style text-xs">DrWoolf</p>
@@ -1092,7 +1226,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
-                    <p class="italic text-zinc-400 mb-6">"Obědnávku jsem dostala rychle. Kvalitní práce a dobrá komunikace. Rozhodně doporučuji."</p>
+                    <p class="italic text-zinc-400 mb-6">"Obědnávku jsem dostala rychle. Kvalitní práce a dobrá
+                        komunikace. Rozhodně doporučuji."</p>
                 </div>
                 <div>
                     <p class="font-bold text-white uppercase-style text-xs">Sheltix</p>
@@ -1102,7 +1237,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <div class="glass-card p-10 flex flex-col justify-between">
                 <div>
                     <span class="text-yellow-500 mb-4 block">★★★★★</span>
-                    <p class="italic text-zinc-400 mb-6">"Dneska ráno som ho poprosil a večer som to dostal ešte lepšie ako som si predstavoval... Vrelo doporučam 👍🏻 👍🏻"</p>
+                    <p class="italic text-zinc-400 mb-6">"Dneska ráno som ho poprosil a večer som to dostal ešte lepšie
+                        ako som si predstavoval... Vrelo doporučam 👍🏻 👍🏻"</p>
                 </div>
                 <div>
                     <p class="font-bold text-white uppercase-style text-xs">Drindo</p>
@@ -1126,6 +1262,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             <div class="glass-card p-10 flex flex-col justify-between text-center relative overflow-hidden group border-blue-500"
                 style="transform: scale(1.05); z-index: 5;">
                 <div class="absolute inset-0 bg-blue-500/10 pointer-events-none"></div>
+                <!-- Vlastne sa to vrati do class scale ked zbehne :hover -->
                 <div class="relative z-10">
                     <h4 class="text-xl font-bold uppercase-style mb-4">Video Edit</h4>
                     <p class="text-zinc-500 text-sm mb-6" data-i18n="p-edit">Adobe Premiere Pro, dynamický strih</p>
@@ -1183,6 +1320,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         <div class="ai-border-tracer"></div>
         <div class="absolute inset-[2px] bg-[rgba(5,5,8,0.98)] z-[-2] rounded-[2.3rem]"></div>
 
+        <!-- 3D Background Particles Canvas -->
         <canvas id="ai-canvas-particles" class="absolute inset-[2px] pointer-events-none z-[-1]"
             style="border-radius: 2.3rem;"></canvas>
         <div id="ai-mouse-glow" class="absolute pointer-events-none"
@@ -1191,7 +1329,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         <div id="ai-resize-handle"></div>
         <div id="ai-header" class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="./gulsaai.png" onerror="this.src='./pandak_pfp_.png'" alt="Gulša AI Avatar"
+                <img src="panda_pfp.jpg" alt="Gulša AI Avatar"
                     class="w-10 h-10 rounded-full border border-[var(--ai-accent-dim)] object-cover shadow-[0_0_15px_var(--ai-accent-glow)] transition-all duration-[3000ms]">
                 <div>
                     <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
@@ -1222,15 +1360,11 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
         </div>
     </div>
 
-    <!-- Lightbox for Design Thumbnails -->
-    <div id="lightbox" style="display:none; position:fixed;inset:0;z-index:9999; background:rgba(0,0,0,0.95); align-items:center;justify-content:center;">
-        <img id="lightbox-img" style="max-width:90vw;max-height:90vh; object-fit:contain;border-radius:8px; box-shadow:0 0 60px rgba(0,0,0,0.8);">
-        <button onclick="closeLightbox()" style="position:fixed;top:20px;right:24px; background:none;border:none; color:rgba(255,255,255,0.7); font-size:32px;cursor:pointer;">✕</button>
-    </div>
-
     <script>
+        // 0. API KEY CONFIGURATION
         const apiKey = "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";
 
+        // 1. TRANSLATIONS
         const translations = {
             sk: {
                 'nav-about': 'O mne', 'nav-clients': 'Klienti', 'nav-reviews': 'Recenzie', 'nav-pricing': 'Cenník',
@@ -1267,6 +1401,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             }
         };
 
+        // Opravené popisky s ikonkami knižnice Flag Icons
         const langLabels = {
             sk: '<span class="fi fi-sk"></span> SLOVENČINA',
             cz: '<span class="fi fi-cz"></span> ČEŠTINA',
@@ -1282,7 +1417,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
         function setLanguage(lang) {
             currentLang = lang;
-            document.getElementById('active-lang-display').innerHTML = langLabels[lang];
+            document.getElementById('active-lang-display').innerHTML = langLabels[lang]; // Používame innerHTML pre ikonku
             document.getElementById('lang-menu').classList.remove('show');
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1295,12 +1430,14 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             document.getElementById('ai-welcome').innerText = translations[lang]['ai-welcome'];
         }
 
+        // 2. PORTFOLIO DATA (Categorised)
         const portfolioData = {
             'Gulša': {
                 type: 'both',
                 thumbnails: [
-                    "./thumb_1.png", "./thumb_2.png", "./thumb_3.png", "./thumb_4.png", "./thumb_11.png", "./thumb_12.png",
-                    "./thumb_13.png", "./thumb_14.png", "./thumb_15.png", "./thumb_17.png", "./thumb_18.png", "./thumb_19.png", "./fps_challenge_2v2.png"
+                    "./thumb_19.png", "./thumb_18.png", "./thumb_17.png", "./thumb_16.png", "./thumb_15.png",
+                    "./thumb_14.png", "./thumb_13.png", "./thumb_12.png", "./thumb_11.png",
+                    "./thumb_1.png", "./thumb_2.png", "./thumb_3.png", "./thumb_4.png"
                 ],
                 videos: [
                     { link: "https://youtu.be/yhGVigTKi7U", thumb: "./fps_challenge_2v2.png", title: "Najlepší server v Česko-Slovensku?!" },
@@ -1308,12 +1445,12 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                     { link: "https://youtu.be/LY3dzMeiB6M", thumb: "./reakcie na odhalenie.. nahledak.png", title: "Tieto Packy sú Hrozné" }
                 ]
             },
-            'PandaK': { type: 'design', thumbnails: ["./panda_1.png"], videos: [] },
-            'AJHT TV': { type: 'design', thumbnails: ["./ajht_1.png", "./ajht_2.png"], videos: [] },
-            'DrWoolf': { type: 'design', thumbnails: ["./drw_1.png", "./drw_2.png", "./drw_3.png", "./drw_4.png", "./drw_5.png"], videos: [] },
+            'PandaK': { type: 'design', thumbnails: ["./pandak_pfp_.png", "./panda_1.png"], videos: [] },
+            'AJHT TV': { type: 'design', thumbnails: ["./ajht_2.png", "./ajht_1.png"], videos: [] },
+            'DrWoolf': { type: 'design', thumbnails: ["./drw_5.png", "./drw_4.png", "./drw_3.png", "./drw_2.png", "./drw_1.png"], videos: [] },
             'Sheltix': { type: 'design', thumbnails: ["./sheltix_1.png"], videos: [] },
-            'Drindo': { type: 'design', thumbnails: ["./drindo_1.png", "./drindo_2.png"], videos: [] },
-            'Adameantius': { type: 'design', thumbnails: ["./adam_1.png", "./adam_2.png", "./adam_3.png", "./adam_4.png", "./adam_5.png"], videos: [] },
+            'Drindo': { type: 'design', thumbnails: ["./drindo_2.png", "./drindo_1.png"], videos: [] },
+            'Adameantius': { type: 'design', thumbnails: ["./adam_5.png", "./adam_4.png", "./adam_3.png", "./adam_2.png", "./adam_1.png"], videos: [] },
             'Ebynovec': {
                 type: 'edit',
                 thumbnails: [],
@@ -1327,7 +1464,11 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
         async function getShortTitle(id) {
             try {
-                const res = await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/shorts/' + id + '&format=json');
+                const res = await fetch(
+                    'https://www.youtube.com/oembed?url=' +
+                    'https://www.youtube.com/shorts/' + id +
+                    '&format=json'
+                );
                 const data = await res.json();
                 return data.title;
             } catch { return ''; }
@@ -1343,15 +1484,25 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             const btnEdit = document.getElementById('tab-edit');
 
             if (tab === 'design') {
-                btnDesign.classList.remove('opacity-50');
-                btnDesign.classList.add('active-tab');
-                btnEdit.classList.add('opacity-50');
-                btnEdit.classList.remove('active-tab');
+                btnDesign.style.color = '#00c8ff';
+                btnDesign.style.border = '1.5px solid #00c8ff';
+                btnDesign.style.background = 'rgba(0,200,255,0.1)';
+                btnDesign.style.opacity = '1';
+                
+                btnEdit.style.color = 'white';
+                btnEdit.style.border = '1.5px solid transparent';
+                btnEdit.style.background = 'rgba(255,255,255,0.03)';
+                btnEdit.style.opacity = '0.5';
             } else {
-                btnEdit.classList.remove('opacity-50');
-                btnEdit.classList.add('active-tab');
-                btnDesign.classList.add('opacity-50');
-                btnDesign.classList.remove('active-tab');
+                btnEdit.style.color = '#00ff88';
+                btnEdit.style.border = '1.5px solid #00ff88';
+                btnEdit.style.background = 'rgba(0,255,136,0.1)';
+                btnEdit.style.opacity = '1';
+
+                btnDesign.style.color = 'white';
+                btnDesign.style.border = '1.5px solid transparent';
+                btnDesign.style.background = 'rgba(255,255,255,0.03)';
+                btnDesign.style.opacity = '0.5';
             }
 
             if (currentActiveClient) {
@@ -1373,13 +1524,20 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             }
 
             if (currentActiveClient === 'Ebynovec' && currentActiveTab === 'edit') {
-                grid.className = 'flex gap-[8px] md:gap-[20px] justify-start md:justify-center overflow-x-auto hide-scrollbar w-full pb-8';
+                grid.className = 'flex gap-[12px] md:gap-[20px] justify-start md:justify-center overflow-x-auto hide-scrollbar w-full pb-8';
+                grid.innerHTML += `<style>
+                    .short-card-new:hover {
+                        transform: translateY(-6px) scale(1.03) !important;
+                        border-color: rgba(255,255,255,0.2) !important;
+                        box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+                    }
+                </style>`;
                 arr.forEach((item, index) => {
                     const vidId = item.link.split('shorts/')[1] || item.link.split('v=')[1];
                     const delay = index * 0.1;
                     grid.innerHTML += `
-                        <div class="thumb-card group flex-none w-[160px] md:w-[200px]" style="aspect-ratio: 9/16; background:#000; animation: fadeUpStagger 0.6s cubic-bezier(0.23,1,0.32,1) both ${delay}s;" onclick="window.open('${item.link}', '_blank')">
-                            <img src="${item.thumb}" onerror="this.src='https://img.youtube.com/vi/${vidId}/mqdefault.jpg'" class="transition-transform duration-700 group-hover:scale-105" alt="Short thumbnail">
+                        <div class="thumb-card ebynovec-short short-card-new group flex-none aspect-[9/16] rounded-[10px] overflow-hidden relative cursor-pointer" style="background:#000; border:1.5px solid rgba(255,255,255,0.1); transition:all 0.45s cubic-bezier(0.23,1,0.32,1); animation: fadeUpStagger 0.6s cubic-bezier(0.23,1,0.32,1) both ${delay}s;" onclick="window.open('${item.link}', '_blank')">
+                            <img src="https://img.youtube.com/vi/${vidId}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style="aspect-ratio:9/16; object-fit:cover;" alt="Short thumbnail">
                             <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
                                 <div class="w-[44px] h-[44px] flex items-center justify-center rounded-full" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);">
                                     <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
@@ -1399,28 +1557,30 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 return;
             }
 
-            grid.className = 'grid grid-cols-2 md:grid-cols-2 gap-[8px] md:gap-10';
-
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-10';
             arr.forEach(item => {
                 if (currentActiveTab === 'design') {
+                    // Pre Design Thumbnaily
                     const imgPath = item;
                     const isSquare = item.includes('_pfp') || item.includes('_sq');
                     const aspectClass = isSquare ? 'aspect-square' : 'aspect-video';
                     grid.innerHTML += `
-                        <div class="thumb-card ${aspectClass}" onclick="openLightbox('${imgPath}')">
-                            <img src="${imgPath}" alt="${item}" class="transition-transform duration-700 hover:scale-[1.03]">
+                        <div class="thumb-card overflow-hidden group transition-all duration-500 hover:scale-[1.03]" style="border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0; background: rgba(255,255,255,0.02);">
+                            <img src="${imgPath}" alt="${item}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="display: block;">
                         </div>`;
                 } else {
+                    // Pre Edit Videá (Odkazy)
+                    const vidId = item.link.includes('v=') ? item.link.split('v=')[1].split('&')[0] : item.link.split('/').pop();
                     grid.innerHTML += `
-                        <div class="thumb-card flex flex-col justify-center gap-0 aspect-video group" onclick="window.open('${item.link}', '_blank')">
-                            <img src="${encodeURI(item.thumb)}" class="transition-transform duration-700 hover:scale-[1.03]" alt="${item.title || 'video'}">
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-                                <svg class="w-16 h-16 text-white popup-shadow" style="filter: drop-shadow(0 4px 15px rgba(0,0,0,0.9));" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
+                        <a href="${item.link}" target="_blank" class="thumb-card group transition-all hover:scale-[1.03] flex flex-col overflow-hidden" style="border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0; background: rgba(0,0,0,0.2);">
+                            <div class="aspect-video relative overflow-hidden">
+                                <img src="https://img.youtube.com/vi/${vidId}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${vidId}/hqdefault.jpg'" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="aspect-ratio: 16/9; object-fit: cover; display: block;">
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                    <svg class="w-16 h-16 text-white scale-[0.8] group-hover:scale-100 transition-transform duration-500 popup-shadow" style="filter: drop-shadow(0 4px 15px rgba(0,0,0,0.9));" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
+                                </div>
                             </div>
-                            <div class="absolute bottom-0 left-0 right-0 z-30" style="background: rgba(0,0,0,0.8); padding: 10px;">
-                                <h3 class="text-[10px] md:text-xs font-bold text-center text-white uppercase-style tracking-wider m-0">${item.title}</h3>
-                            </div>
-                        </div>`;
+                            <h3 class="text-xs md:text-sm font-bold p-3 text-center text-white/80 uppercase-style tracking-wider">${item.title}</h3>
+                        </a>`;
                 }
             });
         }
@@ -1455,38 +1615,14 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             box.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function openLightbox(src) {
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = src;
-            lb.style.display = 'flex';
-            lb.style.opacity = '0';
-            lb.style.transition = 'opacity 0.3s cubic-bezier(0.23,1,0.32,1)';
-            document.body.style.overflow = 'hidden';
-            requestAnimationFrame(() => lb.style.opacity = '1');
-        }
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            lb.style.opacity = '0';
-            setTimeout(() => {
-                lb.style.display = 'none';
-                document.body.style.overflow = '';
-            }, 300);
-        }
-        document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) closeLightbox();
-        });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeLightbox();
-        });
-
+        // 3. CURSOR
         const ptr = document.getElementById('cursor-pointer');
         const glw = document.getElementById('cursor-glow');
         let mouseX = 0, mouseY = 0, ptrX = 0, ptrY = 0, glwX = 0, glwY = 0;
 
         if (window.matchMedia('(pointer: fine)').matches) {
             document.body.classList.add('custom-cursor');
-            window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
             function animateCursor() {
                 ptrX += (mouseX - ptrX) * 0.25;
@@ -1502,6 +1638,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             animateCursor();
         }
 
+        // 4. DRAGGABLE & RESIZABLE AI WINDOW
         (function () {
             const win = document.getElementById('ai-window');
             const handle = document.getElementById('ai-header');
@@ -1515,6 +1652,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
             function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
 
+            // Drag using transform
             function startDrag(e) {
                 if (e.target.closest('#ai-resize-handle')) return;
                 isDragging = true;
@@ -1528,13 +1666,16 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 e.preventDefault();
                 const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
                 const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
                 const dx = clientX - startX;
                 const dy = clientY - startY;
+
                 currentX = origX + dx;
                 currentY = origY + dy;
                 win.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
             }
 
+            // Resize logic from top-left
             function startResize(e) {
                 e.stopPropagation();
                 isResizing = true;
@@ -1551,8 +1692,10 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 e.preventDefault();
                 const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
                 const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
                 const dx = startX - clientX;
                 const dy = startY - clientY;
+
                 win.style.width = clamp(startWidth + dx, 280, window.innerWidth * 0.9) + 'px';
                 win.style.height = clamp(startHeight + dy, 350, window.innerHeight * 0.9) + 'px';
             }
@@ -1586,6 +1729,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             handle.style.cursor = 'grab';
         })();
 
+        // 5. UTILS & AI
         function copyToClipboard(text, btn) {
             navigator.clipboard.writeText(text);
             const tooltip = btn.querySelector('.copy-tooltip');
@@ -1603,11 +1747,15 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             const isOpen = win.classList.contains('ai-open');
 
             if (!isOpen) {
+                // OPEN: Remove hidden, then trigger entrance animation
                 win.classList.remove('hidden', 'ai-closing');
+                // Force reflow so transition fires correctly
                 void win.offsetWidth;
                 win.classList.add('ai-open');
+                // Auto-focus input after animation
                 setTimeout(() => document.getElementById('ai-input')?.focus(), 820);
             } else {
+                // CLOSE: trigger exit animation, then hide
                 win.classList.remove('ai-open');
                 win.classList.add('ai-closing');
                 setTimeout(() => {
@@ -1626,6 +1774,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             if (!userPrompt) return;
 
             const submitBtn = inputField.nextElementSibling;
+
+            // UZAMKNUTIE VSTUPU POČAS ODPOVEDE (Input Protection)
             inputField.disabled = true;
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -1641,7 +1791,9 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             chatHistory.innerHTML += `<div id="${loadingId}" class="flex justify-start mb-4 chat-msg-anim"><div class="bg-white/5 text-white/50 p-3 rounded-2xl max-w-[80%] border border-white/5"><span class="thinking-dots"></span></div></div>`;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
+            // PASTE YOUR DISCORD WEBHOOK URL HERE (SAME AS DOTAZNIK OR DIFFERENT)
             const CHAT_DISCORD_WEBHOOK = "";
+            const apiKey = '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';
 
             try {
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -1653,7 +1805,10 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                     body: JSON.stringify({
                         model: 'llama-3.3-70b-versatile',
                         messages: [
-                            { role: 'system', content: 'Si Gulša AI. YouTuber a strihač (3r praxe, Premiere Pro). Ceny: MC náhľadovky 4-7€, IRL 5-10€, Video edit 20-50€. Ponúkaš aj 3D. Odpovedaj stručne a v slovenčine.' },
+                            {
+                                role: 'system',
+                                content: 'Si Gulša AI. YouTuber a strihač (3r praxe, Premiere Pro). Ceny: MC náhľadovky 4-7€, IRL 5-10€, Video edit 20-50€. Ponúkaš aj 3D. Odpovedaj stručne a v slovenčine.'
+                            },
                             { role: 'user', content: userPrompt }
                         ]
                     })
@@ -1663,37 +1818,46 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 const loadEl = document.getElementById(loadingId);
                 if (loadEl) loadEl.remove();
 
+                // ROBUSTNÉ ERROR HANDLING
                 if (!response.ok || data.error) {
                     throw new Error(data.error?.message || `API Error: ${response.status}`);
                 }
 
                 const aiText = data.choices[0].message.content;
+
                 chatHistory.innerHTML += '<div class="flex justify-start mb-4 chat-msg-anim"><div class="ai-bubble-glow text-white p-3 rounded-2xl max-w-[80%]">' + aiText + '</div></div>';
 
+                // LOG TO DISCORD
                 if (CHAT_DISCORD_WEBHOOK) {
                     fetch(CHAT_DISCORD_WEBHOOK, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ content: `🤖 **NOVÁ KONVERZÁCIA (GULŠA AI)**\n👤 **Klient:** ${userPrompt}\n🤖 **Gulša AI:** ${aiText}` })
+                        body: JSON.stringify({
+                            content: `🤖 **NOVÁ KONVERZÁCIA (GULŠA AI)**\n👤 **Klient:** ${userPrompt}\n🤖 **Gulša AI:** ${aiText}`
+                        })
                     }).catch(e => console.error("Chat log error:", e));
                 }
+
             } catch (error) {
                 console.error("AI Fetch Error:", error);
                 const loadEl = document.getElementById(loadingId);
                 if (loadEl) loadEl.remove();
                 chatHistory.innerHTML += '<div class="flex justify-start mb-4 chat-msg-anim"><div class="bg-red-500/20 text-red-200 p-3 rounded-2xl text-xs">Ospravedlňujem sa, niečo sa pokazilo a odpoveď sa nenačítala. Skús to prosím znovu.</div></div>';
             } finally {
+                // UVOĽNENIE VSTUPU A AUTO-FOCUS
                 inputField.disabled = false;
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '➔';
                 }
                 inputField.style.opacity = '1';
+
                 chatHistory.scrollTop = chatHistory.scrollHeight;
-                inputField.focus();
+                inputField.focus(); // AUTO-FOCUS func
             }
         }
 
+        // Close dropdown when clicking outside
         window.onclick = function (event) {
             if (!event.target.matches('.lang-active') && !event.target.closest('.lang-active')) {
                 const menu = document.getElementById('lang-menu');
@@ -1701,7 +1865,8 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             }
         }
 
-        let aiHue = 140; 
+        // DYNAMIC COLOR ENGINE & 3D PARTICLES SYSTEM WITH CONNECTIONS (Vanilla HTML5 Canvas)
+        let aiHue = 140; // Cyberpunk Green
         let aiHueDir = 0.2;
         let globalColorStr = '140, 100%, 50%';
 
@@ -1735,6 +1900,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             resize();
             if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(aiWin);
 
+            // Clean 3D Starfield specifically for AI window
             const stars = [];
             for (let i = 0; i < 150; i++) {
                 stars.push({
@@ -1767,6 +1933,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
                 const centerX = width / 2;
                 const centerY = height / 2;
 
+                // Sync with elegant global color string
                 const neonColorStr = (typeof globalColorStr !== 'undefined') ? globalColorStr : '140, 100%, 50%';
                 ctx.fillStyle = `hsl(${neonColorStr})`;
 
@@ -1811,11 +1978,13 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             initParticles();
         }
 
+        // Skrytie kurzora
         document.body.style.cursor = 'none';
         const style = document.createElement('style');
         style.innerHTML = '* { cursor: none !important; } #cursor-pointer { pointer-events: none !important; z-index: 99999 !important; }';
         document.head.appendChild(style);
 
+        // 6. ALL SMOOTH REVEAL OBSERVER
         document.querySelectorAll('section, header').forEach(el => el.classList.add('reveal'));
 
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.12 };
@@ -1823,9 +1992,6 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    entry.target.addEventListener('transitionend', function() {
-                        this.style.willChange = 'auto';
-                    }, { once: true });
                     observer.unobserve(entry.target);
                 }
             });
@@ -1833,9 +1999,10 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // 7. DRAG TO SCROLL & AUTO INFINITE LOOP FOR REVIEWS
         const slider = document.getElementById('reviews-slider');
         if (slider) {
-            slider.innerHTML += slider.innerHTML; 
+            slider.innerHTML += slider.innerHTML; // duplicate for loop
             let isDown = false;
             let isHovered = false;
             let startX, scrollLeft;
@@ -1859,7 +2026,7 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 
             function autoScrollReviews() {
                 if (!isHovered && !isDown) {
-                    slider.scrollLeft += 0.5;
+                    slider.scrollLeft += 0.5; // Auto loop speed significantly slowed
                     if (slider.scrollLeft >= slider.scrollWidth / 2) {
                         slider.scrollLeft = 0;
                     }
@@ -1869,23 +2036,13 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             autoScrollReviews();
         }
 
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            if (!scrollTimeout) {
-                requestAnimationFrame(() => {
-                    scrollTimeout = null;
-                });
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchstart', () => {}, { passive: true });
-        document.addEventListener('wheel', () => {}, { passive: true });
-
+        // 8. GLOBAL "TUFF" 3D BACKGROUND CANVAS
         function initGlobalBg() {
             const bgCanvas = document.getElementById('bg-canvas');
             if (!bgCanvas) return;
             const bctx = bgCanvas.getContext('2d');
             let w, h;
+
             function resizeBg() {
                 w = bgCanvas.width = window.innerWidth;
                 h = bgCanvas.height = window.innerHeight;
@@ -1893,71 +2050,50 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
             window.addEventListener('resize', resizeBg);
             resizeBg();
 
-            const isMobile = window.innerWidth < 768;
-            const isLowEnd = navigator.hardwareConcurrency <= 4 || isMobile;
-            const PARTICLE_COUNT = isLowEnd ? 15 : 45;
-            const DRAW_LINES = !isLowEnd;
-
-            const particles = [];
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    vx: (Math.random() * 2 - 1) * 0.5,
-                    vy: (Math.random() * 2 - 1) * 0.5,
-                    radius: Math.random() * 2 + 1
+            const stars = [];
+            // 400 particles flying towards camera
+            for (let i = 0; i < 400; i++) {
+                stars.push({
+                    x: Math.random() * w - w / 2,
+                    y: Math.random() * h - h / 2,
+                    z: Math.random() * w,
+                    vz: Math.random() * 2 + 0.8
                 });
             }
 
-            let animationFrameId;
-            let isTabVisible = true;
-
-            document.addEventListener('visibilitychange', () => {
-                isTabVisible = !document.hidden;
-                if (isTabVisible) drawBg();
-            });
-
             function drawBg() {
-                if (!isTabVisible) return;
-                
                 bctx.fillStyle = '#020202';
                 bctx.fillRect(0, 0, w, h);
 
+                const fl = 400; // Focal length
+                const cx = w / 2;
+                const cy = h / 2;
+
+                // Sync with the global Color Engine (fallback safely)
                 const neonColorStr = (typeof globalColorStr !== 'undefined') ? globalColorStr : '140, 100%, 50%';
-                
-                particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
+                bctx.fillStyle = `hsl(${neonColorStr})`;
 
-                    if (p.x < 0 || p.x > w) p.vx *= -1;
-                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                stars.forEach(s => {
+                    s.z -= s.vz;
+                    if (s.z <= 0) {
+                        s.z = w;
+                        s.x = Math.random() * w - cx;
+                        s.y = Math.random() * h - cy;
+                    }
 
-                    bctx.fillStyle = `hsl(${neonColorStr})`;
+                    const scale = fl / (fl + s.z);
+                    const px = cx + s.x * scale;
+                    const py = cy + s.y * scale;
+                    let radius = Math.max(0.1, 1.5 * scale);
+
+                    bctx.globalAlpha = Math.max(0, 1 - (s.z / w));
                     bctx.beginPath();
-                    bctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    bctx.arc(px, py, radius, 0, Math.PI * 2);
                     bctx.fill();
                 });
 
-                if (DRAW_LINES) {
-                    for (let i = 0; i < PARTICLE_COUNT; i++) {
-                        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
-                            const dx = particles[i].x - particles[j].x;
-                            const dy = particles[i].y - particles[j].y;
-                            const dist = Math.sqrt(dx * dx + dy * dy);
-
-                            if (dist < 150) {
-                                bctx.strokeStyle = `hsla(${neonColorStr}, ${1 - dist / 150})`;
-                                bctx.lineWidth = 0.5;
-                                bctx.beginPath();
-                                bctx.moveTo(particles[i].x, particles[i].y);
-                                bctx.lineTo(particles[j].x, particles[j].y);
-                                bctx.stroke();
-                            }
-                        }
-                    }
-                }
-
-                animationFrameId = requestAnimationFrame(drawBg);
+                bctx.globalAlpha = 1;
+                requestAnimationFrame(drawBg);
             }
             drawBg();
         }
@@ -1967,4 +2103,3 @@ Viewed gulsa%20-%20portfolio.html:1601-2031
 </body>
 
 </html>
-```
