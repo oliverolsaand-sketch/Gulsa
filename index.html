@@ -404,6 +404,27 @@
             transform: translateX(-50%);
         }
 
+        .client-pfp {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid currentColor;
+        }
+
+        .letter-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
         /* 4. LANGUAGE SELECTOR - Fixed Flags */
         .lang-container {
             position: relative;
@@ -739,6 +760,60 @@
             background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
         }
+
+        .tag-pill {
+            border-radius: 100px;
+            padding: 3px 10px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: inline-block;
+            font-weight: 800;
+        }
+
+        .tag-edit {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .tag-design {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .short-card-wrapper {
+            animation: fadeUpStagger 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+            cursor: pointer;
+        }
+
+        .short-card-inner {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+        }
+
+        .short-card-wrapper:hover .short-card-inner {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeUpStagger {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -816,7 +891,7 @@
                 </div>
 
                 <!-- The Photo (Full Color) -->
-                <img src="Gulsa.png" alt="Gulša"
+                <img src="gulsa_tuuff_pfp.jpg" alt="Gulša"
                     class="absolute inset-[2px] w-[calc(100%-4px)] h-[calc(100%-4px)] object-cover rounded-[1.9rem] z-20 transition-all duration-700 transform group-hover:scale-[1.05] filter brightness-110 saturate-[1.1]">
 
                 <!-- Vignette Overlay to blend the image into the dark UI softly at the edges -->
@@ -891,33 +966,126 @@
         <h2 class="text-6xl md:text-8xl font-black uppercase-style tracking-tighter text-center mb-20"
             data-i18n="nav-clients">Klienti</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <button onclick="openGallery('Gulša')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">3k+</span>
+            <button onclick="openGallery('Gulša')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_gulsa.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">G</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">3k+</span>
+                    <span class="tag-pill tag-design">Design</span><span class="tag-pill tag-edit">Edit</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">Gulša</h3>
             </button>
-            <button onclick="openGallery('PandaK')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">6k+ subs</span>
+            <button onclick="openGallery('PandaK')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_pandak.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">P</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">6k+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">PandaK</h3>
             </button>
-            <button onclick="openGallery('AJHT TV')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">6k+ subs</span>
+            <button onclick="openGallery('AJHT TV')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_ajhttv.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">A</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">6k+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">AJHT TV</h3>
             </button>
-            <button onclick="openGallery('DrWoolf')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">1,4k+ subs</span>
+            <button onclick="openGallery('DrWoolf')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_drwoolf.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">D</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">1,4k+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">DrWoolf</h3>
             </button>
-            <button onclick="openGallery('Sheltix')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">300+ subs</span>
+            <button onclick="openGallery('Sheltix')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_sheltix.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">S</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">300+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">Sheltix</h3>
             </button>
-            <button onclick="openGallery('Drindo')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">450+ subs</span>
+            <button onclick="openGallery('Drindo')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_drindo.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">D</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">450+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">Drindo</h3>
             </button>
-            <button onclick="openGallery('Adameantius')" class="glass-card p-10 text-left">
-                <span class="text-white/20 text-xs font-bold uppercase-style mb-2 block">1,3k+ subs</span>
+            <button onclick="openGallery('Adameantius')"
+                class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_adameantius.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">A</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">1,3k+ subs</span>
+                    <span class="tag-pill tag-design">Design</span>
+                </div>
                 <h3 class="text-3xl font-extrabold text-white">Adameantius</h3>
+            </button>
+            <button onclick="openGallery('Ebynovec')" class="glass-card p-10 text-left relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-4">
+                        <img class="client-pfp" src="./images/pfp_ebynovec.jpg"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            alt="avatar">
+                        <div class="letter-avatar" style="display:none">E</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white/20 text-xs font-bold uppercase-style block">150K+ odberateľov</span>
+                    <span class="tag-pill tag-edit">Edit</span>
+                </div>
+                <h3 class="text-3xl font-extrabold text-white">Ebynovec</h3>
             </button>
         </div>
 
@@ -1084,7 +1252,7 @@
         <div id="ai-resize-handle"></div>
         <div id="ai-header" class="flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="pandak_pfp_.png" alt="Gulša AI Avatar"
+                <img src="panda_pfp.jpg" alt="Gulša AI Avatar"
                     class="w-10 h-10 rounded-full border border-[var(--ai-accent-dim)] object-cover shadow-[0_0_15px_var(--ai-accent-glow)] transition-all duration-[3000ms]">
                 <div>
                     <h4 class="text-white font-bold text-[10px] uppercase-style tracking-widest">GULŠA AI</h4>
@@ -1189,9 +1357,9 @@
         const portfolioData = {
             'Gulša': {
                 thumbnails: [
-                    "thumb_19.png", "thumb_18.png", "thumb_17.png", "thumb_16.png", "thumb_15.png",
-                    "thumb_14.png", "thumb_13.png", "thumb_12.png", "thumb_11.png",
-                    "thumb_1.png", "thumb_2.png", "thumb_3.png", "thumb_4.png"
+                    "thumb_19.png", "thumb_18.jpg", "thumb_17.jpg", "thumb_16.png", "thumb_15.png",
+                    "thumb_14.jpg", "thumb_13.png", "thumb_12.png", "thumb_11.jpg",
+                    "thumb_1.jpg", "thumb_2.jpg", "thumb_3.jpg", "thumb_4.jpg"
                 ],
                 videos: [
                     { link: "https://youtu.be/yhGVigTKi7U", thumb: "fps challenge 2v2.png", title: "Najlepší server v Česko-Slovensku?!" },
@@ -1199,13 +1367,33 @@
                     { link: "https://youtu.be/LY3dzMeiB6M", thumb: "reakcie na odhalenie.. nahledak.png", title: "Tieto Packy sú Hrozné" }
                 ]
             },
-            'PandaK': { thumbnails: ["pandak_pfp_.png", "panda_1.png"], videos: [] },
-            'AJHT TV': { thumbnails: ["ajht_2.png", "ajht_1.png"], videos: [] },
-            'DrWoolf': { thumbnails: ["drw_5.png", "drw_4.png", "drw_3.png", "drw_2.png"], videos: [] },
+            'PandaK': { thumbnails: ["panda_pfp.jpg", "panda_1.jpg"], videos: [] },
+            'AJHT TV': { thumbnails: ["ajht_2.png", "ajht_1.jpg"], videos: [] },
+            'DrWoolf': { thumbnails: ["drw_5.png", "drw_4.jpg", "drw_3.jpg", "drw_2.png", "drw_1.jpg"], videos: [] },
             'Sheltix': { thumbnails: ["sheltix_1.png"], videos: [] },
             'Drindo': { thumbnails: ["drindo_2.png", "drindo_1.png"], videos: [] },
-            'Adameantius': { thumbnails: ["adam_5.png", "adam_4.png", "adam_3.png", "adam_2.png", "adam_1.png"], videos: [] }
+            'Adameantius': { thumbnails: ["adam_5.png", "adam_4.jpg", "adam_3.png", "adam_2.png", "adam_1.png"], videos: [] },
+            'Ebynovec': {
+                thumbnails: [],
+                videos: [
+                    { link: "https://www.youtube.com/shorts/tMqbJC5xWE4", thumb: "https://img.youtube.com/vi/tMqbJC5xWE4/hqdefault.jpg", title: "Short 1" },
+                    { link: "https://www.youtube.com/shorts/JU2kPnOMDvc", thumb: "https://img.youtube.com/vi/JU2kPnOMDvc/hqdefault.jpg", title: "Short 2" },
+                    { link: "https://www.youtube.com/shorts/eFufnINN1BE", thumb: "https://img.youtube.com/vi/eFufnINN1BE/hqdefault.jpg", title: "Short 3" }
+                ]
+            }
         };
+
+        async function getShortTitle(id) {
+            try {
+                const res = await fetch(
+                    'https://www.youtube.com/oembed?url=' +
+                    'https://www.youtube.com/shorts/' + id +
+                    '&format=json'
+                );
+                const data = await res.json();
+                return data.title;
+            } catch { return ''; }
+        }
 
         let currentActiveClient = null;
         let currentActiveTab = 'design';
@@ -1243,10 +1431,39 @@
             const arr = currentActiveTab === 'design' ? clientData.thumbnails : clientData.videos;
 
             if (!arr || arr.length === 0) {
+                grid.className = 'grid grid-cols-1 gap-10';
                 grid.innerHTML = `<div class="col-span-full py-20 text-center text-white/30 italic uppercase-style text-xs tracking-widest font-bold">Obsah sa pripravuje...</div>`;
                 return;
             }
 
+            if (currentActiveClient === 'Ebynovec' && currentActiveTab === 'edit') {
+                grid.className = 'flex gap-[12px] overflow-x-auto hide-scrollbar w-full pb-8';
+                arr.forEach((item, index) => {
+                    const vidId = item.link.split('shorts/')[1] || item.link.split('v=')[1];
+                    const delay = index * 0.1;
+                    grid.innerHTML += `
+                        <div class="short-card-wrapper group flex-none w-[130px] md:w-[160px]" style="animation-delay: ${delay}s" onclick="window.open('${item.link}', '_blank')">
+                            <div class="short-card-inner w-full h-auto aspect-[9/16] relative transition-all duration-500">
+                                <img src="${encodeURI(item.thumb)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Short thumbnail">
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10 bg-white/5">
+                                    <div class="w-10 h-10 bg-white/20 backdrop-blur-md flex items-center justify-center rounded-full ml-1 shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+                                        <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-[12px] text-white/70 px-[8px] py-[6px] tracking-wide overflow-hidden" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; text-transform:none; font-style:normal;" id="title-${vidId}"></div>
+                        </div>`;
+                    if (vidId) {
+                        getShortTitle(vidId).then(title => {
+                            const el = document.getElementById(`title-${vidId}`);
+                            if (el && title) el.innerText = title;
+                        });
+                    }
+                });
+                return;
+            }
+
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-10';
             arr.forEach(item => {
                 if (currentActiveTab === 'design') {
                     // Pre Design Thumbnaily (Obnova funkčnej cesty pre pôvodné weby)
@@ -1264,7 +1481,7 @@
                     grid.innerHTML += `
                         <a href="${item.link}" target="_blank" class="glass-card p-4 rounded-[2.5rem] border border-white/10 group backdrop-blur-[25px] hover:scale-[1.03] transition-all bg-black/20 shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:shadow-[0_10px_50px_var(--ai-accent-glow)] flex flex-col justify-center gap-4">
                             <div class="overflow-hidden rounded-[1.5rem] aspect-video relative flex-shrink-0">
-                                <img src="${encodeURI(item.thumb)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <img src="${encodeURI(item.thumb)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="${item.title || 'video'}">
                                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                                     <svg class="w-16 h-16 text-white scale-[0.8] group-hover:scale-100 transition-transform duration-500 popup-shadow" style="filter: drop-shadow(0 4px 15px rgba(0,0,0,0.9));" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6V4z"></path></svg>
                                 </div>
@@ -1469,6 +1686,8 @@
             chatHistory.innerHTML += `<div id="${loadingId}" class="flex justify-start mb-4 chat-msg-anim"><div class="bg-white/5 text-white/50 p-3 rounded-2xl max-w-[80%] border border-white/5"><span class="thinking-dots"></span></div></div>`;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
+            // PASTE YOUR DISCORD WEBHOOK URL HERE (SAME AS DOTAZNIK OR DIFFERENT)
+            const CHAT_DISCORD_WEBHOOK = "";
             const apiKey = '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';
 
             try {
@@ -1502,6 +1721,17 @@
                 const aiText = data.choices[0].message.content;
 
                 chatHistory.innerHTML += '<div class="flex justify-start mb-4 chat-msg-anim"><div class="ai-bubble-glow text-white p-3 rounded-2xl max-w-[80%]">' + aiText + '</div></div>';
+
+                // LOG TO DISCORD
+                if (CHAT_DISCORD_WEBHOOK) {
+                    fetch(CHAT_DISCORD_WEBHOOK, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            content: `🤖 **NOVÁ KONVERZÁCIA (GULŠA AI)**\n👤 **Klient:** ${userPrompt}\n🤖 **Gulša AI:** ${aiText}`
+                        })
+                    }).catch(e => console.error("Chat log error:", e));
+                }
 
             } catch (error) {
                 console.error("AI Fetch Error:", error);
