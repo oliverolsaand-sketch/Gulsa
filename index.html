@@ -763,7 +763,7 @@
 
         .tag-pill {
             border-radius: 100px;
-            padding: 2px 10px;
+            padding: 3px 10px;
             font-size: 11px;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -771,68 +771,16 @@
             font-weight: 800;
         }
 
-        .tag-design {
-            background: rgba(0, 200, 255, 0.08);
-            border: 1px solid rgba(0, 200, 255, 0.25);
-            color: #00c8ff;
-        }
-
         .tag-edit {
-            background: rgba(0, 255, 136, 0.08);
-            border: 1px solid rgba(0, 255, 136, 0.25);
+            background: rgba(0, 255, 136, 0.1);
             color: #00ff88;
-        }
-
-        .tab-btn-design {
-            background: transparent;
-            border: 1px solid rgba(0, 200, 255, 0.3);
-            color: rgba(0, 200, 255, 0.6);
-            border-radius: 100px;
-            padding: 6px 18px;
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-            font-weight: 800;
-        }
-
-        .tab-btn-design.active {
-            background: rgba(0, 200, 255, 0.12);
-            border-color: #00c8ff;
-            color: #00c8ff;
-            box-shadow: 0 0 16px rgba(0, 200, 255, 0.2);
-        }
-
-        .tab-btn-design:not(.active):hover {
-            background: rgba(0, 200, 255, 0.08);
-            border-color: rgba(0, 200, 255, 0.6);
-            color: #00c8ff;
-        }
-
-        .tab-btn-edit {
-            background: transparent;
             border: 1px solid rgba(0, 255, 136, 0.3);
-            color: rgba(0, 255, 136, 0.6);
-            border-radius: 100px;
-            padding: 6px 18px;
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-            font-weight: 800;
         }
 
-        .tab-btn-edit.active {
-            background: rgba(0, 255, 136, 0.12);
-            border-color: #00ff88;
-            color: #00ff88;
-            box-shadow: 0 0 16px rgba(0, 255, 136, 0.2);
-        }
-
-        .tab-btn-edit:not(.active):hover {
-            background: rgba(0, 255, 136, 0.08);
-            border-color: rgba(0, 255, 136, 0.6);
-            color: #00ff88;
+        .tag-design {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .short-card-wrapper {
@@ -867,99 +815,14 @@
             }
         }
 
-        @media (hover: none) {
-            .glass-card:hover, .btn-main:hover, .price-tag:hover, .contact-btn:hover, .short-card-new:hover, .short-card-wrapper:hover .short-card-inner {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            .glass-card:active, .btn-main:active, .price-tag:active, .contact-btn:active, .short-card-new:active {
-                transform: scale(0.98) !important;
-                opacity: 0.85;
-                transition: all 0.15s;
-            }
+        #clients-section .glass-card {
+            padding: 28px 24px !important;
+            min-height: 100px;
+            border-radius: 18px !important;
         }
-
-        button, a {
-            min-height: 44px;
-            min-width: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        @media (max-width: 1024px) {
-            #clients-section .grid, #gallery-grid, #faq-section .grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            }
-            #reviews-slider > div {
-                min-width: 45vw;
-            }
-        }
-
-        @media (max-width: 768px) {
-            * { -webkit-tap-highlight-color: transparent; }
-            html, body { overflow-x: hidden; width: 100%; }
-            section { padding: clamp(50px, 10vw, 80px) 20px !important; }
-            h1 { font-size: clamp(2.2rem, 10vw, 4rem) !important; }
-            h2 { font-size: clamp(1.6rem, 7vw, 2.5rem) !important; }
-            h3 { font-size: clamp(1.1rem, 5vw, 1.5rem) !important; }
-            p { font-size: clamp(0.9rem, 4vw, 1rem) !important; }
-
-            .glass-card, #ai-window, .ai-bubble-glow, #ai-trigger {
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-                background: rgba(10, 10, 10, 0.95) !important;
-            }
-            nav { height: 60px; padding: 0 20px !important; }
-            nav > a { font-size: 1.1rem !important; }
-
-            #mobile-menu-overlay {
-                position: fixed; inset: 0; background: rgba(5, 5, 5, 0.97); backdrop-filter: none;
-                display: flex; flex-direction: column; align-items: center; justify-content: center;
-                gap: 40px; z-index: 90; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-            }
-            #mobile-menu-overlay.open { opacity: 1; pointer-events: all; }
-            #mobile-menu-overlay a { font-size: 1.8rem; letter-spacing: 0.1em; opacity: 0; transform: translateY(-10px); transition: all 0.3s; }
-            #mobile-menu-overlay.open a { opacity: 1; transform: translateY(0); }
-
-            header { height: 100svh; }
-            .hero-title-container h1 { font-size: clamp(2.5rem, 12vw, 4rem) !important; animation: none !important; transform: none !important; filter: none !important; }
-            header p { font-size: clamp(0.85rem, 4vw, 1rem) !important; }
-            header .btn-main { display: block; width: 100%; margin-bottom: 12px; }
-
-            #clients-section > .grid {
-                display: flex !important; flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 8px;
-            }
-            #clients-section > .grid::-webkit-scrollbar { display: none; }
-            #clients-section > .grid > button { scroll-snap-align: start; min-width: 130px; padding: 16px 14px; flex-shrink: 0; }
-            .client-pfp, .letter-avatar { width: 52px !important; height: 52px !important; }
-            #clients-section h3 { font-size: 13px !important; }
-            #clients-section .tag-pill { font-size: 9px !important; padding: 2px 8px !important; }
-
-            #gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
-
-            .shorts-container { scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: none; }
-            .shorts-container::-webkit-scrollbar { display: none; }
-            .short-card-new { scroll-snap-align: start; min-width: 140px !important; max-width: 140px !important; }
-
-            #reviews-slider { flex-direction: column !important; padding: 0 !important; gap: 16px !important; }
-            #reviews-slider > div { min-width: 100% !important; padding: 20px !important; font-size: 0.9rem; }
-
-            #faq-section .grid { grid-template-columns: 1fr !important; }
-            .price-tag, .glass-card { width: 100%; }
-
-            #ai-input { font-size: 16px !important; }
-
-            #about-section > div { flex-direction: column !important; align-items: center; }
-            #about-section img, #about-section .w-64 { width: 200px !important; height: 200px !important; max-width: 200px !important; max-height: 200px !important; margin: 0 auto; }
-            #about-section .flex-grow { text-align: center; }
-            #toolbox-section .grid { display: flex; flex-wrap: wrap; justify-content: center; }
-            .contact-btn { width: 100%; }
-        }
-
-        @media (max-width: 480px) {
-            #gallery-grid { grid-template-columns: 1fr !important; }
+        
+        #clients-section .grid {
+            gap: 18px !important;
         }
     </style>
 </head>
@@ -1242,8 +1105,10 @@
 
             <!-- Category Tabs -->
             <div id="gallery-tabs" class="flex justify-center gap-6 mb-20">
-                <button id="tab-design" onclick="switchTab('design')" class="tab-btn-design active">Design</button>
-                <button id="tab-edit" onclick="switchTab('edit')" class="tab-btn-edit">Edit</button>
+                <button id="tab-design" onclick="switchTab('design')"
+                    class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_var(--ai-accent-glow)] border-white/50 text-white">Design</button>
+                <button id="tab-edit" onclick="switchTab('edit')"
+                    class="glass-card px-8 py-3 text-sm md:text-xl font-bold uppercase-style tracking-widest rounded-full opacity-50 hover:opacity-100 transition-all duration-300 text-white border-transparent">Edit</button>
             </div>
 
             <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
@@ -1553,11 +1418,15 @@
             const btnEdit = document.getElementById('tab-edit');
 
             if (tab === 'design') {
-                btnDesign.classList.add('active');
-                btnEdit.classList.remove('active');
+                btnDesign.classList.remove('opacity-50', 'border-transparent');
+                btnDesign.classList.add('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
+                btnEdit.classList.add('opacity-50', 'border-transparent');
+                btnEdit.classList.remove('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
             } else {
-                btnEdit.classList.add('active');
-                btnDesign.classList.remove('active');
+                btnEdit.classList.remove('opacity-50', 'border-transparent');
+                btnEdit.classList.add('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
+                btnDesign.classList.add('opacity-50', 'border-transparent');
+                btnDesign.classList.remove('shadow-[0_0_20px_var(--ai-accent-glow)]', 'border-white/50');
             }
 
             // Re-render
@@ -1580,11 +1449,11 @@
             }
 
             if (currentActiveClient === 'Ebynovec' && currentActiveTab === 'edit') {
-                grid.className = 'flex gap-[12px] md:gap-[20px] justify-start md:justify-center overflow-x-auto hide-scrollbar w-full pb-8 shorts-container';
+                grid.className = 'flex gap-[12px] md:gap-[20px] justify-start md:justify-center overflow-x-auto hide-scrollbar w-full pb-8';
                 grid.innerHTML += `<style>
                     .short-card-new:hover {
                         transform: translateY(-6px) scale(1.03) !important;
-                        border-color: rgba(255,255,255,0.3) !important;
+                        border-color: rgba(255,255,255,0.2) !important;
                         box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
                     }
                 </style>`;
@@ -1657,23 +1526,15 @@
             const clientInfo = portfolioData[name];
             const clientType = clientInfo ? clientInfo.type : 'both';
             const tabsContainer = document.getElementById('gallery-tabs');
-            const btnDesign = document.getElementById('tab-design');
-            const btnEdit = document.getElementById('tab-edit');
 
             if (clientType === 'both') {
                 tabsContainer.style.display = 'flex';
-                btnDesign.style.display = 'inline-block';
-                btnEdit.style.display = 'inline-block';
                 switchTab('design');
             } else if (clientType === 'design') {
-                tabsContainer.style.display = 'flex';
-                btnDesign.style.display = 'inline-block';
-                btnEdit.style.display = 'none';
+                tabsContainer.style.display = 'none';
                 switchTab('design');
             } else if (clientType === 'edit') {
-                tabsContainer.style.display = 'flex';
-                btnDesign.style.display = 'none';
-                btnEdit.style.display = 'inline-block';
+                tabsContainer.style.display = 'none';
                 switchTab('edit');
             }
 
