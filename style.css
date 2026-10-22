@@ -1,0 +1,868 @@
+:root {
+  --ink:        #f4f1ea;
+  --ink-dim:    rgba(244, 241, 234, 0.56);
+  --bg:         #07080b;
+  --amber:      #e8a35c;
+  --edge:       rgba(244, 241, 234, 0.14);
+  --serif: Georgia, "Times New Roman", serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+body.is-ready { overflow: visible; }
+
+/* A short centered accent instead of a full-width rule -- reads as a beat
+   in the page continuing rather than "new page starts here". Only
+   .site-end needs one now: work lives inside it as an internal block,
+   not its own top-level section, so this single mark is where the whole
+   combined closing block begins. */
+.site-end::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(8rem, 40%); height: 1px;
+  background: linear-gradient(90deg, transparent, var(--edge), transparent);
+}
+
+.loader {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  background: var(--bg);
+  transition: opacity 0.7s ease, visibility 0.7s;
+}
+.loader.is-gone { opacity: 0; visibility: hidden; }
+.loader-inner { width: min(280px, 70vw); text-align: center; }
+.loader-label {
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 1.1rem;
+}
+.loader-rail { height: 1px; background: var(--edge); overflow: hidden; }
+.loader-bar {
+  height: 100%; background: var(--amber);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.loader-pct { margin-top: 0.9rem; font-size: 0.7rem; font-variant-numeric: tabular-nums; color: var(--ink-dim); }
+
+.track { position: relative; }
+.stage {
+  position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  overflow: hidden; background: #000;
+}
+#seq { display: block; width: 100%; height: 100%; }
+
+.stage-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 45%, transparent 40%, rgba(0,0,0,0.5) 100%),
+    linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 45%);
+}
+
+.scroll-hint {
+  position: absolute; left: 50%; bottom: 1.8rem;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--ink-dim); transition: opacity 0.5s ease;
+}
+.scroll-hint-rail { width: 1px; height: 3rem; background: var(--edge); overflow: hidden; }
+.scroll-hint-rail i {
+  display: block; width: 100%; height: 40%; background: var(--amber);
+  animation: railDrop 2.1s ease-in-out infinite;
+}
+@keyframes railDrop {
+  0%   { transform: translateY(-100%); }
+  60%  { transform: translateY(250%); }
+  100% { transform: translateY(250%); }
+}
+
+.after { position: relative; background: var(--bg); }
+
+/* Turntable + manifesto now live layered on top of the cloud canvas
+   inside the same pinned stage, opacity-driven by the crossfade in the
+   combined script -- no more separate track/stage with its own
+   flex-centered layout and a hard reset scrolling into it. */
+#turnStage {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  background: var(--bg);
+}
+.turn-figure { flex: 0 1 420px; height: 100%; display: flex; }
+#turnSeq { display: block; width: 100%; height: 100%; }
+.turn-copy { flex: 1 1 360px; order: 1; display: flex; align-items: center; }
+.turn-figure { order: 2; }
+.manifesto-copy {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  line-height: 1.4;
+  text-align: left;
+}
+.manifesto-label {
+  display: flex; align-items: center;
+  margin-bottom: 1.4rem;
+}
+.manifesto-label i { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); display: inline-block; }
+.manifesto-line {
+  display: inline-block;
+  color: rgba(244, 241, 234, 0.14);
+  filter: blur(3px);
+  transform: translateY(0.15em);
+  transition: color 1.1s cubic-bezier(0.22, 1, 0.36, 1), filter 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.manifesto-line.is-lit { color: var(--ink); filter: blur(0); transform: translateY(0); }
+@media (max-width: 767px) {
+  #turnStage { flex-direction: column; justify-content: center; padding: clamp(1.5rem, 6vw, 3rem); }
+  .turn-copy { display: none; }
+  .turn-figure { flex: 1 1 auto; width: 100%; order: 1; }
+}
+
+.intro {
+  display: grid; place-content: center; text-align: center;
+  padding: 1.25rem clamp(2rem, 8vw, 6rem);
+}
+.title {
+  margin: 0; font-family: var(--serif); font-weight: 400;
+  font-size: clamp(4rem, 15vw, 11rem); line-height: 0.9; letter-spacing: -0.03em;
+}
+.subtitle {
+  margin: 1.1rem auto 0; max-width: 30rem;
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem); font-weight: 300; line-height: 1.5;
+  color: var(--ink-dim); text-wrap: balance;
+}
+
+
+/* ---------- the feed: work trails the cursor ----------
+   Drag across and the thumbnails fall out behind the pointer, tilting with
+   the direction of travel, then burning off a couple of seconds later. The
+   set loops, so it never runs dry. The section is deliberately taller than
+   the screen and pins while you pass it — otherwise a fast scroll blows
+   straight through the one part of the page you're meant to play with. */
+.sheet-section { position: relative; height: 230vh; }
+.sheet-stage {
+  position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  overflow: hidden; background: var(--bg);
+  border-top: 1px solid var(--edge);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+/* the requested swap: a tiled pixel-art parchment/map texture standing in
+   for the plain dark ground, cropped so its own jagged border never shows,
+   dimmed underneath so the trail and copy stay legible over it */
+.sheet-bg {
+  position: absolute; inset: 0;
+  background-image: url('../assets/texture-map.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 102%;
+  image-rendering: pixelated;
+  opacity: 0.9;
+}
+.sheet-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(7,8,11,0.55) 0%, rgba(7,8,11,0.72) 55%, rgba(7,8,11,0.55) 100%);
+}
+.sheet-head {
+  position: absolute; z-index: 60;
+  top: clamp(2rem, 7vh, 4rem); left: clamp(1.5rem, 6vw, 6rem);
+  max-width: 20rem; pointer-events: none;
+}
+.sheet-eyebrow {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 1rem;
+}
+.sheet-eyebrow i { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); display: inline-block; }
+.sheet-lede {
+  margin: 0; font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem); line-height: 1.25;
+  color: var(--ink); text-wrap: balance;
+}
+
+.sheet-hint {
+  position: absolute; z-index: 61; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--ink-dim); pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.sheet-stage.is-active .sheet-hint { opacity: 0; }
+
+.sheet-field { position: absolute; inset: 0; pointer-events: none; }
+
+.sheet-item {
+  position: absolute; top: 0; left: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+  overflow: hidden;
+  background: #05060a;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+}
+.sheet-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* three shapes, because the real work comes in three shapes */
+.sheet-item.is-wide   { width: clamp(132px, 15vw, 210px); aspect-ratio: 16 / 9; }
+.sheet-item.is-square { width: clamp(96px, 10vw, 136px);  aspect-ratio: 1 / 1; }
+.sheet-item.is-banner { width: clamp(190px, 22vw, 300px); aspect-ratio: 1920 / 333; }
+
+/* reduced motion: no trail at all, just a calm grid of the set */
+.sheet-section.is-static { height: auto; }
+.sheet-stage.is-static { position: relative; height: auto; cursor: default; }
+.sheet-stage.is-static .sheet-field {
+  position: relative; inset: auto; display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.6rem;
+  padding: clamp(5rem, 14vh, 9rem) clamp(1.5rem, 6vw, 6rem) clamp(3rem, 8vh, 5rem);
+}
+.sheet-stage.is-static .sheet-item {
+  position: relative; opacity: 1; transform: none !important;
+  width: auto !important; aspect-ratio: 16 / 9 !important; box-shadow: none;
+}
+.sheet-stage.is-static .sheet-hint { display: none; }
+
+
+/* ---------- selected work ----------
+   The thesis: this work is built to be loud in a feed. So the grid holds it
+   quiet — desaturated and dimmed — and lets each piece bloom to full colour
+   as it wipes into view, then again under the cursor. The restraint around
+   it is what makes the colour land. Lives inside .site-end now, as its
+   first block -- .site-end's own top padding already gives it room under
+   the section's opening accent, so this only needs horizontal inset plus
+   space before the bio card that follows. */
+.work {
+  display: grid; grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding: 0 clamp(1.5rem, 6vw, 7rem) clamp(3rem, 8vh, 5rem);
+}
+@media (min-width: 900px) {
+  .work { grid-template-columns: minmax(15rem, 1fr) 2.2fr; }
+  .work-intro {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; height: 100svh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-right: clamp(1rem, 3vw, 3rem);
+  }
+}
+
+.work-eyebrow {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 1.5rem;
+}
+.work-eyebrow i {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--amber);
+  display: inline-block; box-shadow: 0 0 0 0 rgba(232,163,92,0.7);
+  animation: workPulse 2.8s ease-out infinite;
+}
+@keyframes workPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(232,163,92,0.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(232,163,92,0); }
+  100% { box-shadow: 0 0 0 0 rgba(232,163,92,0); }
+}
+
+.work-lede {
+  max-width: 20rem; font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem); line-height: 1.25;
+  margin: 0; color: var(--ink); text-wrap: balance;
+}
+
+.work-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: clamp(0.6rem, 1.3vw, 1rem); }
+
+.work-card {
+  position: relative; display: block; overflow: hidden;
+  grid-column: span 8; height: 320px;
+  background: #05060a; color: var(--ink); text-decoration: none;
+  /* wipes open as it enters the viewport */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.work-card.is-in { clip-path: inset(0 0 0 0); }
+.work-card:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+@media (min-width: 640px) {
+  .work-card { height: 430px; }
+  .work-card:nth-child(1) { grid-column: span 5; }
+  .work-card:nth-child(2) { grid-column: span 3; }
+  .work-card:nth-child(3) { grid-column: span 3; }
+  .work-card:nth-child(4) { grid-column: span 5; }
+  /* the wipe cascades rather than firing all at once */
+  .work-card:nth-child(2) { transition-delay: 0.09s; }
+  .work-card:nth-child(3) { transition-delay: 0.05s; }
+  .work-card:nth-child(4) { transition-delay: 0.14s; }
+}
+
+.work-card img,
+.work-card video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.16);
+  filter: grayscale(0.72) contrast(1.02) brightness(0.62);
+  transition: transform 1.3s cubic-bezier(0.16,1,0.3,1), filter 0.75s ease;
+}
+/* settles back once revealed — the drift is what makes it feel filmed */
+.work-card.is-in img,
+.work-card.is-in video { transform: scale(1.04); }
+.work-card:hover img,
+.work-card:hover video,
+.work-card:focus-visible img,
+.work-card:focus-visible video { filter: grayscale(0) contrast(1.04) brightness(1); transform: scale(1.11); }
+
+.work-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: linear-gradient(to top, rgba(5,6,10,0.92) 0%, rgba(5,6,10,0.25) 42%, transparent 72%);
+  transition: opacity 0.6s ease;
+}
+.work-card:hover::after { opacity: 0.82; }
+
+/* real metadata, not decoration: when it ran and what it was */
+.work-meta {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 3;
+  display: flex; justify-content: space-between;
+  padding: 1.05rem clamp(1.1rem, 2.4vw, 1.6rem);
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(244,241,234,0.62);
+  opacity: 0; transform: translateY(-6px);
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+.work-card:hover .work-meta,
+.work-card:focus-visible .work-meta { opacity: 1; transform: translateY(0); }
+
+.work-caption {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: 1.5rem clamp(1.25rem, 3vw, 2rem);
+  transform: translateY(calc(100% - 3.4rem));
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.work-card:hover .work-caption,
+.work-card:focus-visible .work-caption { transform: translateY(0); }
+
+.work-caption h3 {
+  margin: 0; font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.25rem, 2vw, 1.7rem); line-height: 1.1;
+}
+.work-caption p {
+  margin: 0.55rem 0 0; max-width: 26rem; font-size: 0.84rem; line-height: 1.5;
+  color: var(--ink-dim);
+  opacity: 0; transform: translateY(5px);
+  transition: opacity 0.4s ease 0.08s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s;
+}
+.work-card:hover .work-caption p,
+.work-card:focus-visible .work-caption p { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card { clip-path: none; transition: none; }
+  .work-card img, .work-caption, .work-caption p, .work-meta { transition: none; }
+  .work-card img { transform: scale(1.02); }
+  .work-eyebrow i { animation: none; }
+}
+
+
+/* ---------- blocky pass ----------
+   The work is voxel work, so the chrome stops being round. Corners get
+   chamfered in fixed pixel steps rather than smooth radii, accent dots
+   become square pixels, and edges read as cut blocks. No game assets are
+   used — it's the grammar, not the textures. */
+
+/* square pixels instead of round dots */
+.work-eyebrow i,
+.sheet-eyebrow i,
+.manifesto-label i { border-radius: 0 !important; }
+
+/* the pill loses its capsule and becomes a cut tile */
+.sheet-toggle {
+  border-radius: 0 !important;
+  clip-path: polygon(
+    5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px),
+    calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px
+  );
+}
+
+/* trailing thumbnails get the same chipped edge */
+.sheet-item { border-radius: 0 !important; }
+.sheet-item .sheet-inner,
+.sheet-item img {
+  clip-path: polygon(
+    4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px
+  );
+}
+
+/* section seams as a dashed block run rather than a hairline */
+.work, .sheet-stage {
+  border-top: 0 !important;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--edge) 0 8px,
+    transparent 8px 16px
+  );
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+/* keep pixel art crisp wherever it is genuinely pixel art */
+.sheet-bg { image-rendering: pixelated; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-item .sheet-inner { clip-path: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint-rail i { animation: none; }
+}
+
+/* ---------- site end ----------
+   The actual end of the page: who this is and how to reach them, in one
+   card, styled like a normal site footer -- a divider, the card, then a
+   small copyright line. Nothing comes after this. */
+
+/* A plain, flat footer -- no floating glass card, no borders boxing the
+   content in, just a top rule separating it from the page and a second,
+   quieter rule separating the bio from the copyright line underneath.
+   That's the classic pattern: content row, then a thin divider, then a
+   small print row -- not a card sitting on the page. */
+.site-end {
+  position: relative;
+  padding: clamp(4rem, 12vh, 8rem) 0 0;
+}
+/* ---------- about: sticky photo, headline + bio both scroll-revealed ----------
+   Same sticky-background trick the earlier reveal-hero used: the photo is
+   pinned with position: sticky, then pulled back up out of the flow with
+   a matching negative bottom margin, so the text that follows starts at
+   the top of the block instead of after the image. That text is normal
+   in-flow content, so it scrolls past the pinned photo over a real
+   distance. Each word is its own span (about.js); every frame, each
+   word's brightness is set from its own distance to a fixed focus line
+   partway down the viewport -- no pinning, no per-word stagger by index,
+   just where each word actually is. */
+.about { position: relative; }
+.about-bg {
+  position: sticky; top: 0; height: 100vh; height: 100svh;
+  margin-bottom: -100vh; margin-bottom: -100svh;
+  overflow: hidden;
+  z-index: 0;
+}
+.about-bg img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(0.42) saturate(0.8);
+}
+.about-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(5,6,9,0.78) 0%, rgba(5,6,9,0.42) 30%, rgba(5,6,9,0.7) 75%, rgba(5,6,9,1) 100%);
+}
+.about-copy {
+  position: relative; z-index: 1;
+  max-width: 64rem; margin: 0 auto;
+  padding: 34vh clamp(1.5rem, 6vw, 7rem) 4vh;
+}
+.about-eyebrow {
+  margin: 0 0 1.25rem;
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.about-headline {
+  margin: 0 0 2.75rem;
+  max-width: 44rem;
+  font-family: var(--sans); font-weight: 700; text-transform: uppercase;
+  letter-spacing: -0.015em;
+  font-size: clamp(1.7rem, 3.4vw, 2.7rem); line-height: 1.28;
+}
+.about-para {
+  margin: 0 0 1.1rem;
+  max-width: 40rem;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.7;
+}
+/* The closing line, styled like an actual signature at the bottom of a
+   letter -- a script face instead of the site's usual serif/sans, so it
+   reads as Gulsa signing his own words rather than just another line of
+   body copy. */
+.about-signature {
+  margin: 2rem 0 0;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: clamp(3.4rem, 7.5vw, 6.2rem);
+  line-height: 1;
+  color: var(--ink);
+}
+.about-copy .contact-tabs {
+  margin-top: 2rem; justify-content: flex-start;
+  /* jump target for "Get a quote" -- offset so the signature above the
+     handles stays on screen instead of the tabs landing flush at the top */
+  scroll-margin-top: 30vh;
+}
+.reveal-block .w {
+  display: inline-block;
+  color: var(--ink);
+  opacity: 0.18;
+}
+/* the marquee runs full-bleed: inset padding here would leave both rows
+   starting short of the edges, which reads as the strip not being full */
+.reviews {
+  position: relative; z-index: 1;
+  padding: 0 0 clamp(2rem, 5vh, 3rem);
+}
+.reviews-eyebrow {
+  margin: 0 0 clamp(2rem, 6vh, 3rem);
+  padding: 0 clamp(1.5rem, 6vw, 7rem);
+  text-align: center;
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.reviews-track {
+  display: flex; flex-direction: column; gap: 1.25rem;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+}
+.reviews-row {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: reviewsScroll 46s linear infinite;
+}
+.reviews-row-b { animation-direction: reverse; animation-duration: 52s; }
+.reviews-row:hover { animation-play-state: paused; }
+@keyframes reviewsScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.review-card {
+  flex: 0 0 clamp(16rem, 24vw, 21rem);
+  padding: 1.6rem 1.75rem;
+  background: rgba(5, 6, 9, 0.82);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 60px -25px rgba(0, 0, 0, 0.8);
+}
+.review-stars {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem; letter-spacing: 0.15em;
+  color: var(--amber);
+}
+.review-text {
+  margin: 0 0 1.4rem;
+  font-size: 0.96rem; line-height: 1.6;
+  color: var(--ink);
+}
+.review-author { display: flex; flex-direction: column; gap: 0.15rem; }
+.review-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.review-role {
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reviews-row { animation: none; }
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-up.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.ggfx-promo {
+  position: relative; z-index: 1;
+  max-width: 46rem;
+  margin: clamp(2rem, 5vh, 3.5rem) auto clamp(2.5rem, 6vh, 4rem);
+  padding: clamp(2rem, 5vh, 2.75rem) clamp(1.5rem, 6vw, 3rem);
+  background: rgba(5, 6, 9, 0.82);
+  border-radius: 1.75rem;
+  box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.7);
+}
+.ggfx-promo-eyebrow {
+  margin: 0 0 1.25rem;
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--amber);
+}
+.ggfx-promo-top {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.ggfx-promo-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 4rem; height: 4rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(232, 163, 92, 0.16);
+  color: var(--amber);
+}
+.ggfx-promo-icon::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(232, 163, 92, 0.55);
+  animation: ggfxPulse 2.6s ease-out infinite;
+}
+.ggfx-promo-icon svg { width: 1.8rem; height: 1.8rem; }
+@keyframes ggfxPulse {
+  0%   { transform: scale(0.85); opacity: 0.7; }
+  70%  { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ggfx-promo-icon::after { animation: none; opacity: 0; }
+}
+.ggfx-promo-bar {
+  flex: 1 1 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.15rem 1.75rem;
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--amber), #f0bd7e 60%, var(--amber));
+  color: var(--bg);
+  font-weight: 700; font-size: clamp(1rem, 1.6vw, 1.15rem);
+  text-decoration: none;
+  box-shadow: 0 12px 32px -8px rgba(232, 163, 92, 0.4);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+.ggfx-promo-bar span { font-weight: 400; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+.ggfx-promo-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(232, 163, 92, 0.3);
+}
+.ggfx-promo-bar:hover span { transform: translateX(3px); }
+.ggfx-promo-title {
+  margin: 0 0 0.85rem;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.2rem, 4.4vw, 3.2rem);
+  color: var(--ink);
+}
+.ggfx-promo-desc {
+  margin: 0; max-width: 30rem;
+  font-size: 0.98rem; line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.pricing {
+  padding: 0 clamp(1.5rem, 6vw, 7rem);
+}
+.pricing-head {
+  position: relative; z-index: 1;
+  max-width: 40rem; margin: 0 auto clamp(2.5rem, 7vh, 4rem);
+  text-align: center;
+}
+.pricing-eyebrow {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.pricing-lede {
+  margin: 0;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  color: var(--ink);
+}
+.pricing-grid {
+  max-width: 74rem; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.5rem;
+}
+.pricing-card {
+  position: relative;
+  padding: 2rem 1.75rem;
+  background: rgba(5, 6, 9, 0.82);
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px -25px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.8);
+}
+.pricing-card.is-featured {
+  background: rgba(232, 163, 92, 0.14);
+  box-shadow: 0 0 0 1px rgba(232, 163, 92, 0.35), 0 24px 60px -25px rgba(232, 163, 92, 0.35);
+}
+.pricing-card.is-featured:hover {
+  box-shadow: 0 0 0 1px rgba(232, 163, 92, 0.45), 0 30px 70px -22px rgba(232, 163, 92, 0.45);
+}
+.pricing-card.is-featured .pricing-tag { color: var(--amber); }
+.pricing-badge {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--amber), #f0bd7e);
+  color: var(--bg);
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em;
+  vertical-align: middle;
+}
+.pricing-tag {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.pricing-price {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.8rem, 3.2vw, 2.3rem); font-weight: 700;
+  color: var(--ink);
+}
+.pricing-price span { color: var(--ink-dim); font-weight: 400; margin: 0 0.2rem; }
+.pricing-features {
+  list-style: none; margin: 0 0 2rem; padding: 0;
+  display: flex; flex-direction: column; gap: 0.7rem;
+}
+.pricing-features li {
+  position: relative; padding-left: 1.2rem;
+  font-size: 0.92rem; color: var(--ink-dim);
+}
+.pricing-features li strong { color: var(--amber); font-weight: 600; }
+.pricing-features li::before {
+  content: ''; position: absolute; left: 0; top: 0.5em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--amber);
+}
+.pricing-cta {
+  display: block; text-align: center;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 600; font-size: 0.85rem;
+  text-decoration: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.pricing-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* The about photo is sticky and its scrim ends fully opaque, and it stays
+   pinned to the last pixel of .about -- which leaves less scroll than the
+   viewport is tall. Without its own layer this sits under it. */
+.site-credits {
+  position: relative; z-index: 2; background: var(--bg);
+  margin-top: clamp(3rem, 9vh, 4.5rem);
+  padding: clamp(3rem, 8vh, 4.5rem) clamp(1.5rem, 6vw, 7rem) clamp(2.5rem, 6vh, 3.5rem);
+  border-top: 1px solid var(--edge);
+  text-align: center;
+  overflow: hidden;
+}
+/* a soft pool of amber light behind the name, so the sign-off reads as a
+   deliberate closing beat instead of leftover footer space */
+.site-credits::before {
+  content: ''; position: absolute; z-index: 0;
+  left: 50%; top: 44%; transform: translate(-50%, -50%);
+  width: min(30rem, 86%); aspect-ratio: 2.2 / 1;
+  background: radial-gradient(ellipse at center,
+    rgba(232,163,92,0.10), rgba(232,163,92,0.03) 45%, transparent 72%);
+  pointer-events: none;
+}
+.site-credits > * { position: relative; z-index: 1; }
+
+.site-credits-label {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  margin: 0 0 1rem;
+  font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.site-credits-label i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--amber); display: inline-block;
+}
+/* restrained on purpose: this is a credit line, not a headline. Set at
+   name scale in the site's own sans, no effects competing with the work
+   above it. */
+.site-credits-name {
+  margin: 0 0 1.6rem;
+  font-family: var(--sans); font-weight: 600;
+  font-size: clamp(1.5rem, 3.2vw, 2.15rem);
+  line-height: 1.1; letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.site-credits-copy {
+  margin: clamp(1.75rem, 4vh, 2.5rem) 0 0;
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.45);
+}
+.site-credits .contact-tab { margin: 0 auto; }
+.credits-dc { padding: 0.85rem 1.6rem; border-color: rgba(114, 137, 234, 0.32); }
+.credits-dc:hover {
+  border-color: rgba(114, 137, 234, 0.85);
+  background: rgba(114, 137, 234, 0.1);
+  box-shadow: 0 16px 44px -14px rgba(114, 137, 234, 0.6);
+  transform: translateY(-3px);
+}
+
+/* Same two click-to-copy handles gulsa.eu shows in its own big centered
+   "Chceš spolupracovať?" section, just a small tab pair folded into the
+   footer card here instead of a separate section. */
+.contact-tabs {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem;
+}
+.contact-tab {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  background: rgba(244, 241, 234, 0.04);
+  border: 1px solid var(--edge);
+  color: var(--ink);
+  font: inherit; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s cubic-bezier(0.22,1,0.36,1), color 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.contact-tab:hover {
+  background: rgba(244, 241, 234, 0.08);
+  border-color: rgba(244, 241, 234, 0.28);
+  transform: translateY(-2px);
+}
+.contact-tab.is-copied { border-color: var(--amber); color: var(--amber); }
+.contact-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.contact-icon.ig { color: #e1477e; }
+.contact-icon.dc { color: #7289ea; }
+
+.site-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem clamp(1.5rem, 6vw, 7rem);
+  pointer-events: none;
+}
+.site-chrome-mark {
+  pointer-events: auto;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.88;
+  transition: opacity 0.3s ease;
+}
+.site-chrome-mark:hover { opacity: 1; }
+.site-chrome-contact {
+  pointer-events: auto;
+  font-family: var(--sans); font-weight: 600;
+  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--edge);
+  background: rgba(7, 8, 11, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.site-chrome-contact:hover {
+  background: rgba(7, 8, 11, 0.55);
+  border-color: rgba(232, 163, 92, 0.4);
+}
