@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Gulsa</title>
+<meta name="description" content="Minecraft thumbnails, video edits and short-form animation. Selected work, rates, and how to get in touch.">
+
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="site-chrome">
+  <a class="site-chrome-mark" href="#" aria-label="Back to top">Gulsa</a>
+  <a class="site-chrome-contact" href="#reach">Contact</a>
+</div>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-label">Loading sequence</div>
+    <div class="loader-rail"><div class="loader-bar" id="loaderBar"></div></div>
+    <div class="loader-pct" id="loaderPct">0%</div>
+  </div>
+</div>
+
+<section class="track" id="track">
+  <div class="stage" id="stage">
+    <canvas id="seq"></canvas>
+    <div class="stage-vignette"></div>
+    <div class="scroll-hint" id="scrollHint">
+      <div class="scroll-hint-rail"><i></i></div>
+    </div>
+  </div>
+</section>
+
+<main class="after">
+
+  <section class="track" id="turnTrack">
+    <div class="stage" id="turnStage">
+      <div class="turn-figure" id="turnFigure">
+        <canvas id="turnSeq"></canvas>
+      </div>
+      <div class="turn-copy"><div>
+  <div class="manifesto-label"><i></i></div>
+  <p class="manifesto-copy">
+    <span class="manifesto-line">Every thumbnail starts the same way — a blank canvas and a title nobody's clicked yet.</span>
+    <span class="manifesto-line">Cut. Color. Caption. A hundred small calls before anyone presses play.</span>
+    <span class="manifesto-line">PvP taught me to read a fight before it happens — editing is the same instinct, just slower.</span>
+    <span class="manifesto-line">The click matters. What happens in the three seconds after it matters more.</span>
+    <span class="manifesto-line">This is what four years of thumbnails, edits and short-form animation looks like from the inside.</span>
+  </p>
+</div></div>
+    </div>
+  </section>
+
+  <!-- The feed: an endless cursor trail of the work; pins while you pass it. -->
+  <section class="sheet-section" id="sheetSection">
+    <div class="sheet-stage" id="sheetStage">
+      <div class="sheet-bg"></div>
+      <div class="sheet-scrim"></div>
+      <div class="sheet-head">
+        <div class="sheet-eyebrow"><i></i>The Feed</div>
+        <p class="sheet-lede">This is how the work lands.</p>
+      </div>
+      <div class="sheet-hint" id="sheetHint">Move your cursor</div>
+      <div class="sheet-field" id="sheetField"></div>
+    </div>
+  </section>
+
+  <!-- Who Gulsa is and how to reach him, in one card styled like a normal
+       site footer -- the true last thing on the page. -->
+  <footer class="site-end" id="contact">
+    <!-- Selected projects, part of the same closing footer now
+         instead of its own section. -->
+    <div class="work">
+    <div class="work-intro">
+      <div class="work-eyebrow"><i></i>Selected Projects</div>
+      <p class="work-lede">Every one of these was built to stop a thumb mid-scroll.</p>
+    </div>
+    <div class="work-grid">
+      <a class="work-card" data-card href="#">
+        <video src="assets/work/block-clash.mp4" autoplay muted loop playsinline preload="auto" aria-label="Block Clash"></video>
+      </a>
+      <a class="work-card" data-card href="#">
+        <img src="assets/work/behind-the-thumbnails.jpg" alt="Behind the Thumbnails">
+      </a>
+      <a class="work-card" data-card href="#">
+        <img src="assets/work/off-the-clock.jpg" alt="Off the Clock">
+      </a>
+      <a class="work-card" data-card href="#">
+        <video src="assets/work/smp-boss-arc.mp4" autoplay muted loop playsinline preload="auto" aria-label="SMP Boss Arc"></video>
+      </a>
+    </div>
+    </div>
+
+    <!-- About: sticky background photo with the headline and bio both
+         scrolling over it, each word brightening as it crosses the focus
+         line -- the same treatment the reference video showed, now with
+         Gulsa's own photo and real bio copy instead of the old plain
+         circular-photo card. -->
+    <div class="about">
+      <div class="about-bg">
+        <img src="assets/about.jpg" alt="">
+        <div class="about-scrim"></div>
+      </div>
+      <div class="about-copy">
+        <p class="about-eyebrow">Visual Engineer</p>
+        <p class="reveal-block about-headline">Every cut starts with a read on the moment — three years behind the timeline, for creators who need it fast and clean. This is the person behind the cuts.</p>
+        <p class="reveal-block about-para">I'm 15 years old and I've been playing Minecraft for almost 4 years — it's the world that taught me not just how to play, but how to create.</p>
+        <p class="reveal-block about-para">That passion is what eventually grew into my interest in graphic design and video editing. I love seeing how much my work has improved over time, and I'm always learning new things to keep pushing it further.</p>
+        <p class="reveal-block about-para">Outside of creating, I'm curious by nature — I like experimenting and constantly looking for ways to improve, whether that's in design, editing, or the game itself.</p>
+        <p class="reveal-block about-signature">Gulsa</p>
+        <div class="contact-tabs" id="reach">
+          <button class="contact-tab" type="button" data-copy="_gulsa_yt">
+            <svg class="contact-icon ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>_gulsa_yt</span>
+          </button>
+          <button class="contact-tab" type="button" data-copy="gulsa_yt">
+            <svg class="contact-icon dc" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.419-2.157 2.419z"></path>
+            </svg>
+            <span>gulsa_yt</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Reviews, GGFX and Pricing scroll over the same pinned photo as
+           the bio above -- no separate section, no separate background,
+           just more content flowing past the one sticky image. -->
+      <div class="reviews">
+            <p class="reviews-eyebrow">What clients say</p>
+            <div class="reviews-track">
+              <div class="reviews-row reviews-row-a">
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Really beautiful work — I'd even call it premium. Highly recommend!&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Pandak</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Delivery was fast, and the thumbnail looked great — especially since it was free.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">AJHT</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Excellent to work with — fast, creative, and always delivers a quality thumbnail.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">DrWoolf</span><span class="review-role">1,4k+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;My order came back fast. Quality work and great communication. Highly recommend.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Sheltix</span><span class="review-role">300 subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Asked him this morning, had it back by evening — even better than I imagined... Highly recommend 👍🏻&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Drindo</span><span class="review-role">450+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Really beautiful work — I'd even call it premium. Highly recommend!&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Pandak</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Delivery was fast, and the thumbnail looked great — especially since it was free.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">AJHT</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Excellent to work with — fast, creative, and always delivers a quality thumbnail.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">DrWoolf</span><span class="review-role">1,4k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;My order came back fast. Quality work and great communication. Highly recommend.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Sheltix</span><span class="review-role">300 subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Asked him this morning, had it back by evening — even better than I imagined... Highly recommend 👍🏻&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Drindo</span><span class="review-role">450+ subs</span></div>
+                </div>
+              </div>
+              <div class="reviews-row reviews-row-b">
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Asked him this morning, had it back by evening — even better than I imagined... Highly recommend 👍🏻&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Drindo</span><span class="review-role">450+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;My order came back fast. Quality work and great communication. Highly recommend.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Sheltix</span><span class="review-role">300 subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Excellent to work with — fast, creative, and always delivers a quality thumbnail.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">DrWoolf</span><span class="review-role">1,4k+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Delivery was fast, and the thumbnail looked great — especially since it was free.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">AJHT</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Really beautiful work — I'd even call it premium. Highly recommend!&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Pandak</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Asked him this morning, had it back by evening — even better than I imagined... Highly recommend 👍🏻&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Drindo</span><span class="review-role">450+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;My order came back fast. Quality work and great communication. Highly recommend.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Sheltix</span><span class="review-role">300 subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Excellent to work with — fast, creative, and always delivers a quality thumbnail.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">DrWoolf</span><span class="review-role">1,4k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Delivery was fast, and the thumbnail looked great — especially since it was free.&rdquo;</p>
+                  <div class="review-author"><span class="review-name">AJHT</span><span class="review-role">6k+ subs</span></div>
+                </div>
+                <div class="review-card" aria-hidden="true">
+                  <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <p class="review-text">&ldquo;Really beautiful work — I'd even call it premium. Highly recommend!&rdquo;</p>
+                  <div class="review-author"><span class="review-name">Pandak</span><span class="review-role">6k+ subs</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      <div class="ggfx-promo reveal-up">
+        <p class="ggfx-promo-eyebrow">My Store</p>
+        <div class="ggfx-promo-top">
+          <div class="ggfx-promo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"></path>
+              <path d="M3 7l9 5 9-5"></path>
+              <path d="M12 12v10"></path>
+            </svg>
+          </div>
+          <a class="ggfx-promo-bar" href="https://ggfx.store" target="_blank" rel="noopener noreferrer">
+            Visit ggfx.store <span>→</span>
+          </a>
+        </div>
+        <h3 class="ggfx-promo-title">GGFX</h3>
+        <p class="ggfx-promo-desc">Premium graphics packs, overlays and PSD thumbnail templates for creators — organized layers, instant download, ready to edit.</p>
+      </div>
+
+      <div class="pricing">
+        <div class="pricing-head reveal-up">
+          <p class="pricing-eyebrow">Pricing</p>
+          <p class="pricing-lede">Simple rates for the work I do most.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card reveal-up">
+            <span class="pricing-tag">Video Edit</span>
+            <p class="pricing-price">By agreement</p>
+            <ul class="pricing-features">
+              <li><strong>Adobe Premiere Pro</strong></li>
+              <li>Dynamic pacing &amp; sound design</li>
+              <li>Priced to the project</li>
+            </ul>
+            <a class="pricing-cta" href="#reach">Get a quote</a>
+          </div>
+          <div class="pricing-card is-featured reveal-up">
+            <span class="pricing-tag">GFX &amp; Thumbnails <span class="pricing-badge">Most booked</span></span>
+            <p class="pricing-price">8€<span>–</span>20€</p>
+            <ul class="pricing-features">
+              <li><strong>3D renders, high-end lighting</strong></li>
+              <li>Multiple concepts</li>
+              <li>Fast turnaround</li>
+            </ul>
+            <a class="pricing-cta" href="#reach">Get a quote</a>
+          </div>
+          <div class="pricing-card reveal-up">
+            <span class="pricing-tag">Custom Animations</span>
+            <p class="pricing-price">10€<span>–</span>20€</p>
+            <ul class="pricing-features">
+              <li><strong>~10 seconds, priced by complexity</strong></li>
+              <li>After Effects</li>
+              <li>Loop-ready exports</li>
+            </ul>
+            <a class="pricing-cta" href="#reach">Get a quote</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-credits">
+      <p class="site-credits-label"><i></i>Made by</p>
+      <h3 class="site-credits-name">Drolgo9</h3>
+      <button class="contact-tab credits-dc" type="button" data-copy="Drolgo9">
+        <svg class="contact-icon dc" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.419-2.157 2.419z"></path>
+        </svg>
+        <span>DC: Drolgo9</span>
+      </button>
+      <p class="site-credits-copy">&copy; 2026 Gulsa &middot; All rights reserved</p>
+    </div>
+  </footer>
+</main>
+
+<script src="js/hero.js"></script>
+<script src="js/turntable.js"></script>
+<script src="js/work.js"></script>
+<script src="js/feed.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/about.js"></script>
+<script src="js/reveal.js"></script>
+</body>
+</html>
